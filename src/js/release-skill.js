@@ -41,7 +41,6 @@ const SkillEvent = function(){
   this.end = function(hero){
     $(document).off('keydown');
   }
-
 }
 
 export default SkillEvent;

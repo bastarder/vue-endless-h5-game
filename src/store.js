@@ -6,14 +6,17 @@ const UPDATE_HERO = "UPDATE_HERO";
 
 Vue.use(Vuex)
 
-// console.log(Unit);
 var hero = new Unit();
 var monster = new Unit();
 
 const store = new Vuex.Store({
   state: {
     hero,
-    monster
+    monster,
+    EVENT_FIGHT_MONSTERS:[
+      new Unit(),
+      new Unit()
+    ]
   },
   mutations: {
     [UPDATE_HERO] (state, obj) {

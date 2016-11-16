@@ -1,5 +1,8 @@
 <template>
   <div class="game-fight row">
+    <div class="col-xs-12">
+      {{ round + 1}} / {{ monsters.length }}
+    </div>
     <div class="col-xs-6">
 
       <div>
@@ -83,13 +86,13 @@
     <div class="col-xs-12">
       <hr>
       <div>
-        <button type="button" class="btn btn-large btn-block btn-danger" @click="fight">Fight!</button>
+        <button type="button" class="btn btn-large btn-block btn-danger" @click="next">Next</button>
       </div>
       <hr>
       <div>
-        <button @click="changeHp" class="btn btn-info btn-sm">血量变更</button>
+        <!--<button @click="changeHp" class="btn btn-info btn-sm">血量变更</button>
         <button @click="changeMp" class="btn btn-info btn-sm">魔法变更</button>
-        <input  v-model="a"/>
+        <input  v-model="a"/>-->
       </div>
 
     </div>
@@ -102,16 +105,21 @@
   import Fight from '../js/fight'
   import SkillEvent from '../js/release-skill'
 
-  var monster = new Unit();
-
   export default {
     data () {
       return {
-        hero: this.$store.state.hero,
-        monster: this.$store.state.monster,
-        a: 10,
-        b: 100,
+        hero: {},
+        monster: {},
+        monsters: [],
+        round : -1,
+        SkillEvent : null,
       }
+    },
+    created() {
+      // 实例创建完毕, 获取战斗信息;
+      this.hero = this.$store.state.hero;
+      this.monsters = this.$store.state.EVENT_FIGHT_MONSTERS;
+      this.next();
     },
     computed : {
 
@@ -121,28 +129,32 @@
       $('[data-toggle="tooltip"]').popover();
     },
     methods : {
-      selectSkill (skill){
-        _.each(this.hero.$skills, item => {
-          if(item.id === skill.id){
-            item.active = true;
-          }else{
-            item.active = false;
-          }
-        })
+      start (){
+        // MonsterAI.start();
+        // this.SkillEvent = new SkillEvent();
+        // this.SkillEvent.start();
       },
-      fight (skill){
+      end (){
+        // MonsterAI.end();
+        // this.SkillEvent.end();
+      },
+      next (){
+        this.SkillEvent && this.SkillEvent.end();
+        if(this.round + 1 >= this.monsters.length){
+          return ;
+        }
+        this.SkillEvent = new SkillEvent();
+        this.round ++;
+        this.monster = this.monsters[this.round];
+        this.SkillEvent.start(this.hero,this.event_fight);
+      },
+      event_fight (skill){
         var action = Fight(this.hero, this.monster, skill);
+        // this.end();
       },
-      changeHp (){
-        this.hero.$hp = this.hero.$hp + Number(this.a);
-        console.log(this.a)
-      },
-      changeMp (){
-        this.hero.$mp = this.hero.$mp + Number(this.a);
-      }
     },
     mounted (){
-      new SkillEvent().start(this.hero,this.fight);
+
     }
   }
 </script>
@@ -174,7 +186,6 @@
    vertical-align: top;
    overflow: hidden;
    position: relative;
-   border: 2px solid gray;
  }
 
  .game-fight .skill-list .skill .coolTime{

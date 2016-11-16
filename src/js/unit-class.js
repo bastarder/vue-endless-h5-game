@@ -6,7 +6,7 @@ class Unit {
   constructor(x, y) {
     this.$type = 1;      // 单位类型
     this.$showName = 'unit1' // 展示名称
-    this.$id = 1000001  // 编号
+    this.$id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
     this.$hp = 250;       // 当前生命值
     this.$mp = 60;       // 当前魔法值
     this.$maxHp = 300;    // 生命最大值
