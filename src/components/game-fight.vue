@@ -99,13 +99,13 @@
   import Unit from '../js/unit-class'
   import Fight from '../js/fight'
 
-  var hero = new Unit();
   var monster = new Unit();
 
   export default {
     data () {
       return {
-        hero, monster,
+        hero: this.$store.state.hero,
+        monster: this.$store.state.monster,
         a: 10,
         b: 100,
       }
@@ -128,7 +128,7 @@
         })
       },
       fight (){
-        var action = Fight(hero,monster);
+        var action = Fight(this.hero, this.monster);
       },
       changeHp (){
         this.hero.$hp = this.hero.$hp + Number(this.a);

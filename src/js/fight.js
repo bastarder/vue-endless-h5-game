@@ -38,7 +38,7 @@ const Fight = (attacker, enemy) => {
     if(!_events[i].event){
       continue;
     };
-    _events[i].event.call(attacker, action);
+    _events[i].event.apply(attacker, [action, attacker, enemy]);
   }
 
   // 处理对方 被动效果;
@@ -46,7 +46,7 @@ const Fight = (attacker, enemy) => {
     if(!_events_be[i].event){
       continue;
     };
-    _events_be[i].event.call(enemy, action);
+    _events_be[i].event.apply(enemy, [action, attacker, enemy]);
   }
 
   var actionList = {

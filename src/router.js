@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
+import store from "./store"
 
 import ViewHome from './components/view-home.vue'
 import GameFight from './components/game-fight.vue'
