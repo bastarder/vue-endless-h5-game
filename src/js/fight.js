@@ -1,11 +1,9 @@
-const Fight = (attacker, enemy) => {
+const Fight = (attacker, enemy, skill) => {
   
   let _status = _.filter(attacker.$status, { type: '1' });
 
-  let _skills =  _.filter(attacker.$skills, 'active');
-
   var _events = _.sortBy(
-      _status.concat(_skills), [ skill => 0 - skill.weight ]
+      _status.concat(skill), [ skill => 0 - skill.weight ]
     );
   
   var _events_be = _.sortBy(

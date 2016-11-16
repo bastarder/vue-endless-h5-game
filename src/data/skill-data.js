@@ -7,6 +7,8 @@ const SKILL_TABLE = [
     logo: '毒',
     dsc : '简简单单的一击',
     label : ['普攻','伤害'],
+    defaultTime : 1000,
+    coolTime : 0,
     event: function(action){
       action.change('enemy_changeHp', 0 - 50);
     },
@@ -20,6 +22,8 @@ const SKILL_TABLE = [
     logo: '狂',
     dsc : '这是一个用来测试的技能对象2',
     label : ['测试2','伤害2'],
+    defaultTime : 5000,
+    coolTime : 0,
     event: function(action){
       action.change('attacker_changeState',[{
         id: 2000001,
@@ -36,6 +40,8 @@ const SKILL_TABLE = [
     logo: '盾',
     dsc : '释放一个圣盾,免疫50%上海',
     label : ['测试2','伤害2'],
+    defaultTime : 3000,
+    coolTime : 0,
     event: function(action){
       action.change('attacker_changeState',[{
         id: 2000002,

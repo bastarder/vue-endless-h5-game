@@ -35,9 +35,12 @@
       <div class="skill-list">
         <template v-for="(skill,index) in hero.$skills">
           <div 
-            :class="['list-group-item', skill.active ? 'active': '']"
+            :class="['skill']"
             @click="selectSkill(skill)">
-            {{ skill.name }}
+            <div class="shadow" v-if="skill.coolTime !== 0">
+              {{ (skill.coolTime / 1000).toFixed(1) }} S
+            </div>
+            <!--{{ skill.name }}-->
           </div>
         </template>
       </div>
@@ -98,6 +101,7 @@
   import Vue from 'vue'
   import Unit from '../js/unit-class'
   import Fight from '../js/fight'
+  import SkillEvent from '../js/release-skill'
 
   var monster = new Unit();
 
@@ -127,8 +131,8 @@
           }
         })
       },
-      fight (){
-        var action = Fight(this.hero, this.monster);
+      fight (skill){
+        var action = Fight(this.hero, this.monster, skill);
       },
       changeHp (){
         this.hero.$hp = this.hero.$hp + Number(this.a);
@@ -139,12 +143,15 @@
       }
     },
     mounted (){
-      
+      new SkillEvent().start(this.hero,this.fight);
     }
   }
 </script>
 
 <style>
+ .game-fight .state-list{
+   height: 24px;
+ }
  .game-fight .state-list .state{
    cursor: pointer;
    width: 14px;
@@ -157,9 +164,28 @@
    display:inline-block;
    margin: 4px 4px 0px 0px;
  }
- .game-fight .list-group-item{
-   padding: 4px 10px;
-   cursor: pointer;
+ .game-fight .skill-list .skill{
+   display: inline-block;
+   margin-right: 4px;
+   color:white;
+   background-color: green;
+   width: 50px;
+   height: 50px;
+   border-radius: 4px;
+   vertical-align: top;
+   overflow: hidden;
+ }
+
+ .game-fight .skill-list .skill .shadow{
+   position: absolute;
+   width: 50px;
+   height: 50px;
+   line-height: 50px;
+   text-align: center;
+   background: black;
+   opacity: 0.3;
+   color: yellow;
+   border-radius: 4px;
  }
 
 </style>
