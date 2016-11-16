@@ -1,82 +1,75 @@
 <template>
   <div class="coolTime-progress">
-    <div class="arrow-block arr1"></div>
-    <!--<div class="arrow-block arr2"></div>-->
-    <div class="arrow-block arr3"></div>
-    <!--<div class="arrow-block arr4"></div>-->
+    <div class="left-block">
+      <div class="left" :style="{ transform: left}"></div>
+    </div>
+    <div class="right-block">
+      <div class="right" :style="{ transform: right}"></div>
+    </div>
   </div>
 </template>
 
 <script>
+ 
 export default {
-  data () {
-    return {
-      msg: 'game-header'
+  props: [
+    'value',
+    'max'
+  ],
+  computed : {
+    right (){
+      var per = 1 - this.value / this.max;
+      if(per <= 0.5){
+        var rotate = (per / 0.5 * 180).toFixed(0);
+      }else{
+        var rotate = 180;
+      }
+      return 'rotate(' + rotate + 'deg)';
+    },
+    left (){
+      var per = 1 - this.value / this.max;
+      if(per > 0.5 && per <=1){
+        var rotate = (180 - (1 - per) / 0.5 * 180).toFixed(0);
+      }else{
+        var rotate = 0;
+      }
+      
+      return 'rotate(' + rotate + 'deg)';
     }
   }
+
 }
 </script>
 
 <style>
   .coolTime-progress {
+    width: 80px;
+    height: 80px;  
     position: absolute;
-    width: 50px;
-    height: 50px;
+    border-radius: 50%;
+    top: -15px;
+    left: -15px;
+    opacity: 0.6;
   }
-
-  .arrow-block{
-    overflow: hidden;
-    border: 25px solid #000001;
-    opacity: 0.6;
-    width: 0px;
-    height: 0px;
+  .coolTime-progress .left-block, .coolTime-progress .right-block {
+    width: 80px; 
+    height: 80px;
+    position: absolute;
   }
-
-  .arrow-block.arr1{
+  .coolTime-progress .left, .coolTime-progress .right {
     position: absolute;
-    opacity: 0.6;
-    border-left: 25px #000 solid;
-    border-top: 0px #000 solid;
-    border-right: 0px #000 solid;
-    border-bottom: 25px transparent solid;
-    left: 25px;
-    top: 0px;
+    display: block;
+    width: 80px; 
+    height: 80px;
+    background:black;
+    border-radius: 50%;
+    transform: rotate(0deg);
   }
-
-  /*.arrow-block.arr2{
-    position: absolute;
-    opacity: 0.6;
-    border-left: 0px #000 solid;
-    border-top: 25px transparent solid;
-    border-right: 25px #000 solid;
-    border-bottom: 0px #000 solid;
-    left: 25px;
-    top: 0px;
-  }*/
-
-  .arrow-block.arr3{
-    position: absolute;
-    opacity: 0.6;
-    border-left: 0px #000 solid;
-    border-top: 0px #000 solid;
-    border-right: 25px #000 solid;
-    border-bottom: 25px transparent solid;
-    left: 25px;
-    top: 25px;
+  .coolTime-progress .right-block, .right {
+    clip: rect(0, auto, auto, 40px);
   }
-
-  /*.arrow-block.arr4{
-    position: absolute;
-    opacity: 0.6;
-    border-left: 25px #000 solid;
-    border-top: 25px transparent solid;
-    border-right: 0px #000 solid;
-    border-bottom: 0px #000 solid;
-    left: 25px;
-    top: 25px;
-  }*/
-
-
-
+  .coolTime-progress .left-block, .left {
+    clip: rect(0, 40px, auto, 0);
+  }
 </style>
 

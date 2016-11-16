@@ -34,12 +34,11 @@
 
       <div class="skill-list">
         <template v-for="(skill,index) in hero.$skills">
-          <div 
-            :class="['skill']"
-            @click="selectSkill(skill)">
-            <div class="shadow" v-if="skill.coolTime !== 0">
+          <div :class="['skill']">
+            <div class="coolTime" v-if="skill.coolTime !== 0">
               {{ (skill.coolTime / 1000).toFixed(1) }} S
             </div>
+            <cooltime-progress :value="skill.coolTime" :max="skill.defaultTime"></cooltime-progress>
             <!--{{ skill.name }}-->
           </div>
         </template>
@@ -168,24 +167,25 @@
    display: inline-block;
    margin-right: 4px;
    color:white;
-   background-color: green;
+   background: green;
    width: 50px;
    height: 50px;
    border-radius: 4px;
    vertical-align: top;
    overflow: hidden;
+   position: relative;
+   border: 2px solid gray;
  }
 
- .game-fight .skill-list .skill .shadow{
+ .game-fight .skill-list .skill .coolTime{
    position: absolute;
    width: 50px;
    height: 50px;
    line-height: 50px;
    text-align: center;
-   background: black;
-   opacity: 0.3;
-   color: yellow;
+   color: white;
    border-radius: 4px;
+   z-index: 5;
  }
 
 </style>

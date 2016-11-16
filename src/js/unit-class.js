@@ -46,19 +46,19 @@ class Unit {
   changeHp(value) {
     
     if(this.$hp <= 0){  // 判断单位是否存活;
-      console.warn('增加HP失败,目标单位已死亡!',this);
+      // console.warn('增加HP失败,目标单位已死亡!',this);
       return false;      
     }
 
     this.$hp = Math.min(this.$hp + value, this.$maxHp);  // 更新Hp的值;
 
     if(this.$hp <= 0){   // 判断更新后 单位是否存活;
-      console.warn('增加HP失败,目标单位已死亡!',this);
+      // console.warn('增加HP失败,目标单位已死亡!',this);
       this.$alive = false;
       return false;
     }
 
-    console.warn('增加HP成功,当前HP:',this.$hp);
+    // console.warn('增加HP成功,当前HP:',this.$hp);
     return true;
   }
 

@@ -27,6 +27,7 @@ const SkillEvent = function(){
       console.warn('技能释放失败: [冷却中]', self)
       return false;
     }
+    console.warn('技能释放成功: [', self.name ,']',self)
     self.coolTime = self.defaultTime;
     var timer = setInterval(function(){
       self.coolTime -= 10;

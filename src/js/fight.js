@@ -59,8 +59,6 @@ const Fight = (attacker, enemy, skill) => {
     }
   }
 
-  console.log(actionList);
-
   // attacker
   for(var item in actionList.attacker){
     if(attacker[item]){
