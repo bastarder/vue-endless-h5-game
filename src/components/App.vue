@@ -7,7 +7,7 @@
       </div>
       <game-bottom></game-bottom>
     </div>
-    <!--<game-package></game-package>-->
+    <game-package></game-package>
     
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
  .container{
    padding: 6px;
    margin-top: 20px;
-   width: 652px;
+   width: 1000px;
    background: #A1A693;
  }
  .main{

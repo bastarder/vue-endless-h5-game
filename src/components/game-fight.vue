@@ -90,9 +90,7 @@
       </div>
       <hr>
       <div>
-        <!--<button @click="changeHp" class="btn btn-info btn-sm">血量变更</button>
-        <button @click="changeMp" class="btn btn-info btn-sm">魔法变更</button>
-        <input  v-model="a"/>-->
+        <button @click="test" class="btn btn-info btn-sm">test</button>
       </div>
 
     </div>
@@ -100,8 +98,6 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import Unit from '../js/unit-class'
   import Fight from '../js/fight'
   import SkillEvent from '../js/release-skill'
 
@@ -129,6 +125,14 @@
       $('[data-toggle="tooltip"]').popover();
     },
     methods : {
+      test (){
+        // console.log(this.hero.$package[0].num)
+        // this.$forceUpdate();
+        this.hero.$package.push({
+          name: 'Test',
+          num : (Math.random() * 1000).toFixed(0)
+        })
+      },
       start (){
         // MonsterAI.start();
         // this.SkillEvent = new SkillEvent();

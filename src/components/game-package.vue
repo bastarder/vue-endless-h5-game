@@ -1,7 +1,8 @@
 <template>
   <div class="game-package shadow-box">
     <div class="list">
-      <div class="item">
+
+      <!--<div class="item">
         <div class="item-name">神剑</div>
         <div class="item-progress">
           <div class="progress">
@@ -11,64 +12,32 @@
           </div>
         </div>
         <div class="badge">5</div>
-      </div>
-      <div class="item">
-        <div class="item-name">血瓶</div>
-        <div class="item-progress">
+      </div>-->
+      <div 
+        class="item" 
+        v-for="(item, index) in hero.$package" 
+        @mouseover="setInfo(item)"
+        @drop.prevent="drop($event,index)"
+        @dragover.prevent="void(0)">
+
+        <div draggable="true" @dragstart="dragstart($event,index)">
+          <div class="item-name" >{{ item.name }}</div>
+          <div class="item-progress">
+          </div>
+          <div class="badge">{{ item.num }}</div>
         </div>
-        <div class="badge">5</div>
+
       </div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-            <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
+
     </div>
     <div class="info">
       <div>
-        <span class="label">武器</span>
-        <span class="label">剑</span>
-        <span class="label">神圣的</span>
-        <span class="label">永恒的</span>
-        <span class="label">创世者</span>
-        <span class="label">神</span>
+        <span class="label" v-for="item in info.label">
+          {{ item }}
+        </span>
       </div>
       <div class="dsc">
-        传说中开天辟地诞生的一把神器!
+        {{ info.dsc }}
       </div>
     </div>
   </div>
@@ -79,9 +48,43 @@
 export default {
   data () {
     return {
-      msg: '123'
+      hero: {},
+      info: {}
     }
-  }
+  },
+  created() {
+    // 实例创建完毕, 获取战斗信息;
+    this.hero = this.$store.state.hero;
+    this.info = this.hero.$package[0];
+  },
+  methods :{
+    // @drop="drop" 
+    //     @dragover="dragover"
+    //     @dragstart="dragstart"
+    //     @dragenter="dragenter"
+    //     @dragleave="dragleave"
+    //     @dragend="dragend"
+    dragstart (event, index){
+      event.dataTransfer.setData("Text",index);
+      console.log('Start:',event);
+    },
+    drop (event, index){
+      var up = event.dataTransfer.getData("Text")
+      console.log('进行放置:',up,'=>',index)
+      var x = this.hero.$package[up];
+      this.hero.$package[up] = this.hero.$package[index];
+      this.hero.$package[index] = x;
+    },
+    setInfo (item){
+      this.info = item;
+    },
+    test (){
+      
+    }
+  },
+  computed : {
+
+  },
 }
 </script>
 
@@ -151,6 +154,6 @@ export default {
    background: white;
    color: black;
    border-radius: 0px;
-   
+   margin-left: 4px;
  }
 </style>
