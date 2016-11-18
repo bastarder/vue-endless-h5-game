@@ -1,7 +1,21 @@
 <template>
   <div class="game-fight row">
     <div class="col-xs-12">
-      {{ round + 1}} / {{ monsters.length }}
+      <div class="round">
+        <span class="round-logo" :style="{ 
+          'background':'url(./src/assets/fight-round.png)', 
+          'background-size' : '100%',
+          'display': 'inline-block',
+          'width' : '40px',
+          'height' : '40px',
+          'margin-left' : '248px',
+          'margin-right' : '8px',
+           }">
+        </span>
+        <div class="round-num">
+          <span>{{ round + 1}}</span>/<span>{{ monsters.length }}</span>
+        </div>
+      </div>
     </div>
     <div class="col-xs-6">
 
@@ -37,9 +51,9 @@
 
       <div class="skill-list">
         <template v-for="(skill,index) in hero.$skills">
-          <div :class="['skill']">
+          <div :class="['skill']" :style="{ background:'url(./src/assets/' + skill.id + '.png)', 'background-size' : '100%' }">
             <div class="coolTime" v-if="skill.coolTime !== 0">
-              {{ (skill.coolTime / 1000).toFixed(1) }} S
+              <!--{{ (skill.coolTime / 1000).toFixed(1) }} S-->
             </div>
             <cooltime-progress :value="skill.coolTime" :max="skill.defaultTime"></cooltime-progress>
             <!--{{ skill.name }}-->
@@ -190,6 +204,7 @@
    vertical-align: top;
    overflow: hidden;
    position: relative;
+   box-shadow: 0px 0px 2px gray;
  }
 
  .game-fight .skill-list .skill .coolTime{
@@ -201,6 +216,19 @@
    color: white;
    border-radius: 4px;
    z-index: 5;
+ }
+
+ .game-fight .round-logo{
+   margin-left: 248px;
+ }
+
+ .game-fight .round-num{
+   display: inline-block;
+   font-size: 32px;
+   line-height: 40px;
+   text-align: center;
+   vertical-align: top;
+   font-family: monospace;
  }
 
 </style>

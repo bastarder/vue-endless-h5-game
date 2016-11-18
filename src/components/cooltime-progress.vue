@@ -49,7 +49,7 @@ export default {
     border-radius: 50%;
     top: -15px;
     left: -15px;
-    opacity: 0.6;
+    opacity: 0.3;
   }
   .coolTime-progress .left-block, .coolTime-progress .right-block {
     width: 80px; 

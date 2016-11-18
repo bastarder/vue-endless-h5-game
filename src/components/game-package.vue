@@ -2,29 +2,20 @@
   <div class="game-package shadow-box">
     <div class="list">
 
-      <!--<div class="item">
-        <div class="item-name">神剑</div>
-        <div class="item-progress">
-          <div class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-              <span class="sr-only">45% Complete</span>
-            </div>
-          </div>
-        </div>
-        <div class="badge">5</div>
-      </div>-->
       <div 
         class="item" 
         v-for="(item, index) in hero.$package" 
-        @mouseover="setInfo(item)"
-        @drop.prevent="drop($event,index)"
-        @dragover.prevent="void(0)">
+        @mouseover="setInfo(item)">
+        
+        <div 
+          draggable="true" 
+          @drop.prevent="drop($event,index)"
+          @dragover.prevent="void(0)"
+          @dragstart="dragstart($event,index)">
 
-        <div draggable="true" @dragstart="dragstart($event,index)">
           <div class="item-name" >{{ item.name }}</div>
-          <div class="item-progress">
-          </div>
           <div class="badge">{{ item.num }}</div>
+
         </div>
 
       </div>
