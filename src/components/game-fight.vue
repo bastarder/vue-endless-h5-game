@@ -2,8 +2,8 @@
   <div class="game-fight row">
     <div class="col-xs-12">
       <div class="round">
+        <!--'background':'url(./src/assets/fight-round.png)', -->
         <span class="round-logo" :style="{ 
-          'background':'url(./src/assets/fight-round.png)', 
           'background-size' : '100%',
           'display': 'inline-block',
           'width' : '40px',
@@ -20,8 +20,8 @@
     <div class="col-xs-6 hero">
 
       <div class="unit-logo">
+        <!--'background':'url(./src/assets/hero-1.png)', -->
         <span class="label label-success logo" :style="{ 
-          'background':'url(./src/assets/hero-1.png)', 
           'background-size' : '100%'}"></span>
         <span class="label label-success level">{{hero.$level}}</span>
       </div>
@@ -47,7 +47,8 @@
       <div class="skill-list">
         <span class="skill tip">技能列表</span>
         <template v-for="(skill,index) in hero.$skills">
-          <div :class="['skill']" :style="{ background:'url(./src/assets/' + skill.id + '.png)', 'background-size' : '100%' }">
+          <!--:style="{ background:'url(./src/assets/' + skill.id + '.png)', 'background-size' : '100%' }"-->
+          <div :class="['skill']" >
             <div class="coolTime" v-if="skill.coolTime !== 0">
               <!--{{ (skill.coolTime / 1000).toFixed(1) }} S-->
             </div>
@@ -62,8 +63,8 @@
     <div class="col-xs-6">
 
       <div class="unit-logo">
+        <!--'background':'url(./src/assets/2000001.png)', -->
         <span class="label label-success logo" :style="{ 
-          'background':'url(./src/assets/2000001.png)', 
           'background-size' : '100%'}"></span>
         <span class="label label-success level">{{monster.$level}}</span>
       </div>
@@ -87,8 +88,8 @@
 
       <div class="drop-list">
         <span class="item tip">掉  落 列  表</span>
+        <!--'background':'url(./src/assets/300000'+ (index+1) +'.png)', -->
         <span class="item" v-for="(item,index) in 4" :style="{ 
-          'background':'url(./src/assets/300000'+ (index+1) +'.png)', 
           'background-size' : '100%'}"></span>
       </div>
 
