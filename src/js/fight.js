@@ -1,3 +1,5 @@
+import coolTimeEvent from './cool-time-event'
+
 const Fight = (attacker, enemy, skill) => {
   
   let _status = _.filter(attacker.$status, { type: '1' });
@@ -76,6 +78,15 @@ const Fight = (attacker, enemy, skill) => {
       console.warn('战斗中发现未知事件:' , item , actionList.enemy[item]);
     }
   }
+
+  _.each(attacker.$skills, skill => {
+    if(skill.coolTime < 300){
+      skill.coolTime = 1000
+      coolTimeEvent.call(skill, 1000)
+    }
+  })
+
+  return attacker.$alive && enemy.$alive;
 
 }
 

@@ -1,6 +1,8 @@
 import { EXP_TABLE } from "../data/game-data";
 import SKILL_TABLE from "../data/skill-data";
 import STATE_TABLE from "../data/state-data";
+import Vue from "vue";
+
 
 class Unit {
   constructor(x, y) {
@@ -15,6 +17,10 @@ class Unit {
     this.$maxExp = 5;   // 升级经验
     this.$level = 5;    // 等级
     this.$alive = true;
+    this.$resource = {
+      gold : 999,
+      gem : 111,
+    }
     this.$attr = {
       atk : 10,     // 攻击
       def : 10,     // 防御
@@ -30,12 +36,13 @@ class Unit {
       int : 4     // 智力
     }
     this.$status = [
-      _.cloneDeep(STATE_TABLE[0]),
+      // _.cloneDeep(STATE_TABLE[0]),
     ];
     this.$skills = [
       _.cloneDeep(SKILL_TABLE[0]),
       _.cloneDeep(SKILL_TABLE[1]),
-      _.cloneDeep(SKILL_TABLE[2])
+      _.cloneDeep(SKILL_TABLE[2]),
+      _.cloneDeep(SKILL_TABLE[3])
     ];  // 技能列表
     this.$package = [
       {
@@ -61,7 +68,7 @@ class Unit {
    * 生命值改变
    */
   changeHp(value) {
-    
+
     if(this.$hp <= 0){  // 判断单位是否存活;
       // console.warn('增加HP失败,目标单位已死亡!',this);
       return false;      
@@ -71,6 +78,7 @@ class Unit {
 
     if(this.$hp <= 0){   // 判断更新后 单位是否存活;
       // console.warn('增加HP失败,目标单位已死亡!',this);
+      this.$hp = 0;
       this.$alive = false;
       return false;
     }
@@ -137,8 +145,8 @@ class Unit {
             _.each(value.action,function(action){
               newState[action[0]] = action[1]
             });
+            newState.stateEvent && newState.stateEvent(self);
             self.$status.push(newState);
-            index = self.$status.length - 1;
           }else{
             console.warn("添加状态失败:",value);
             break;

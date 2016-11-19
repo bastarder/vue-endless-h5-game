@@ -17,94 +17,93 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-6 hero">
 
-      <div>
-        <div>
-          <span class="label label-success">单位</span>
-          <span class="label label-info">{{hero.$id}}</span>
-        </div>
-        <div style="height:6px;"></div>
-        <div>
-          <span class="label label-success">等级</span>
-          <span class="label label-info">{{hero.$level}}</span>
-        </div>
-
+      <div class="unit-logo">
+        <span class="label label-success logo" :style="{ 
+          'background':'url(./src/assets/hero-1.png)', 
+          'background-size' : '100%'}"></span>
+        <span class="label label-success level">{{hero.$level}}</span>
       </div>
 
-      <game-progress :max="this.hero.$maxHp" :value="this.hero.$hp" pclass="progress-bar-danger" showTip="true"></game-progress>
-      <game-progress :max="this.hero.$maxMp" :value="this.hero.$mp" pclass="progress-bar-info" showTip="true"></game-progress>
-      <game-progress :max="this.hero.$maxExp" :value="this.hero.$exp" pclass="progress-bar-info progress-bar-striped" pstyle="height:6px;"></game-progress>
-
-      <div class="state-list">
-        <template v-for="state in hero.$status">
-          <span 
-            class="state" 
-            :style="{ background: state.color }"
-            data-toggle="tooltip" 
-            data-trigger="hover"
-            :data-content="state.dsc">
-            {{ state.logo }}
-          </span>
-        </template>
+      <div class="unit-info">
+        <game-progress :max="this.hero.$maxHp" :value="this.hero.$hp" pclass="progress-bar-danger" showTip="true"></game-progress>
+        <game-progress :max="this.hero.$maxMp" :value="this.hero.$mp" pclass="progress-bar-info" showTip="true"></game-progress>
+        <game-progress :max="this.hero.$maxExp" :value="this.hero.$exp" pclass="progress-bar-info progress-bar-striped" pstyle="height:6px;"></game-progress>
+        <div class="state-list">
+          <template v-for="state in hero.$status">
+            <span 
+              class="state" 
+              :style="{ background: state.color }"
+              data-toggle="tooltip" 
+              data-trigger="hover"
+              :data-content="state.dsc">
+              {{ state.logo }}
+            </span>
+          </template>
+        </div>
       </div>
 
       <div class="skill-list">
+        <span class="skill tip">技能列表</span>
         <template v-for="(skill,index) in hero.$skills">
           <div :class="['skill']" :style="{ background:'url(./src/assets/' + skill.id + '.png)', 'background-size' : '100%' }">
             <div class="coolTime" v-if="skill.coolTime !== 0">
               <!--{{ (skill.coolTime / 1000).toFixed(1) }} S-->
             </div>
-            <cooltime-progress :value="skill.coolTime" :max="skill.defaultTime"></cooltime-progress>
+            <cooltime-progress :value="skill.coolTime" :max="skill.currentCoolTime"></cooltime-progress>
             <!--{{ skill.name }}-->
           </div>
         </template>
       </div>
 
     </div>
-    <div class="col-xs-1">
-      
-    </div>
-    <div class="col-xs-5">
-      <div>
-        <div>
-          <span class="label label-success">单位</span>
-          <span class="label label-info">{{monster.$id}}</span>
-        </div>
-        <div style="height:6px;"></div>
-        <div>
-          <span class="label label-success">等级</span>
-          <span class="label label-info">{{monster.$level}}</span>
-        </div>
 
+    <div class="col-xs-6">
+
+      <div class="unit-logo">
+        <span class="label label-success logo" :style="{ 
+          'background':'url(./src/assets/2000001.png)', 
+          'background-size' : '100%'}"></span>
+        <span class="label label-success level">{{monster.$level}}</span>
       </div>
 
-      <game-progress :max="this.monster.$maxHp" :value="this.monster.$hp" pclass="progress-bar-danger" showTip="true"></game-progress>
-      <game-progress :max="this.monster.$maxMp" :value="this.monster.$mp" pclass="progress-bar-info" showTip="true"></game-progress>
+      <div class="unit-info">
+        <game-progress :max="monster.$maxHp" :value="monster.$hp" pclass="progress-bar-danger" showTip="true"></game-progress>
+        <game-progress :max="monster.$maxMp" :value="monster.$mp" pclass="progress-bar-info" showTip="true"></game-progress>
+        <div class="state-list">
+          <template v-for="state in monster.$status">
+            <span 
+              class="state" 
+              :style="{ background: state.color }"
+              data-toggle="tooltip" 
+              data-trigger="hover"
+              :data-content="state.dsc">
+              {{ state.logo }}
+            </span>
+          </template>
+        </div>
+      </div>
 
-      <div class="state-list">
-        <template v-for="state in monster.$status">
-          <span 
-            class="state" 
-            :style="{ background: state.color }"
-            data-toggle="tooltip" 
-            data-trigger="hover"
-            :data-content="state.dsc">
-            {{ state.logo }}
-          </span>
-        </template>
+      <div class="drop-list">
+        <span class="item tip">掉  落 列  表</span>
+        <span class="item" v-for="(item,index) in 4" :style="{ 
+          'background':'url(./src/assets/300000'+ (index+1) +'.png)', 
+          'background-size' : '100%'}"></span>
       </div>
 
     </div>
 
     <div class="col-xs-12">
       <hr>
-      <div>
-        <button type="button" class="btn btn-large btn-block btn-danger" @click="next">Next</button>
-      </div>
+      <!--<div>
+        <button @click="end" class="btn btn-info btn-sm">test</button>
+      </div>-->
       <hr>
       <div>
-        <button @click="test" class="btn btn-info btn-sm">test</button>
+        <button type="button" class="btn btn-large btn-danger" @click="start" v-if="startButton">开始战斗</button>
+        <button type="button" class="btn btn-large btn-danger" @click="next" v-if="nextButton">继续战斗</button>
+        <button type="button" class="btn btn-large btn-danger" @click="end" v-if="endButton">结束战斗</button>
       </div>
 
     </div>
@@ -123,6 +122,9 @@
         monsters: [],
         round : -1,
         SkillEvent : null,
+        startButton : false,
+        nextButton : false,
+        endButton : false,
       }
     },
     created() {
@@ -130,6 +132,20 @@
       this.hero = this.$store.state.hero;
       this.monsters = this.$store.state.EVENT_FIGHT_MONSTERS;
       this.next();
+    },
+    watch : {
+      'hero.$alive' : function(alive, oldVal){
+        if(!alive){
+          console.warn('英雄死亡, 战斗失败');
+          this.end();
+        }
+      },
+      'monster.$alive' : function(alive, oldVal){
+        if(!alive){
+          console.warn('敌人死亡, 战斗成功');
+          this.end();
+        }
+      }
     },
     computed : {
 
@@ -148,27 +164,31 @@
         })
       },
       start (){
+        this.startButton = false;
+        this.SkillEvent = new SkillEvent();
+        this.SkillEvent.start(this.hero,this.event_fight);
         // MonsterAI.start();
-        // this.SkillEvent = new SkillEvent();
-        // this.SkillEvent.start();
       },
       end (){
+        this.SkillEvent.end.call(this.hero)
+        if(this.round + 1 >= this.monsters.length){
+          this.endButton = true;
+        }else{
+          this.nextButton = true;
+        }
         // MonsterAI.end();
-        // this.SkillEvent.end();
       },
       next (){
         this.SkillEvent && this.SkillEvent.end();
-        if(this.round + 1 >= this.monsters.length){
-          return ;
-        }
+        this.nextButton = false;
+        this.startButton = true;
         this.SkillEvent = new SkillEvent();
         this.round ++;
         this.monster = this.monsters[this.round];
-        this.SkillEvent.start(this.hero,this.event_fight);
       },
       event_fight (skill){
-        var action = Fight(this.hero, this.monster, skill);
-        // this.end();
+        Fight(this.hero, this.monster, skill);
+        this.$forceUpdate();
       },
     },
     mounted (){
@@ -193,11 +213,11 @@
    display:inline-block;
    margin: 4px 4px 0px 0px;
  }
+
  .game-fight .skill-list .skill{
    display: inline-block;
-   margin-right: 4px;
-   color:white;
-   background: green;
+   margin-left: 8px;
+   color:cadetblue;
    width: 50px;
    height: 50px;
    border-radius: 4px;
@@ -229,6 +249,54 @@
    text-align: center;
    vertical-align: top;
    font-family: monospace;
+ }
+
+ .unit-info{
+   padding-left: 64px;
+ }
+
+ .unit-logo .logo{
+   display: inline-block;
+   height: 58px;
+   width: 58px;
+   position: absolute;
+   top: 6px;
+   border: 2px solid brown;
+ }
+
+ .unit-logo .level{
+    display: inline-block;
+    position: absolute;
+    top: 45px;
+    left: 54px;
+    height: 17px;
+    width: 17px;
+    padding: 0px;
+    line-height: 17px;
+    border-radius: 3px 0px 0px 0px;
+ }
+
+ .drop-list {
+   padding-top: 10px;
+ }
+
+ .drop-list .item{
+   display: inline-block;
+   width: 50px;
+   height: 50px;
+   margin-left: 9px;
+   border-radius: 4px;
+   box-shadow: 0px 0px 2px gray;
+ }
+
+ .game-fight .skill.tip,.game-fight .item.tip{
+   color: cadetblue;
+   vertical-align: top;
+   border-radius: 0px 5px 5px 0px;
+   padding: 4px 4px 4px 7px;
+   border-left: 4px solid burlywood;
+   margin-left: 0px;
+   margin-right: 3px;
  }
 
 </style>

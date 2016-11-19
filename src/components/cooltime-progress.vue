@@ -65,10 +65,10 @@ export default {
     border-radius: 50%;
     transform: rotate(0deg);
   }
-  .coolTime-progress .right-block, .right {
+  .coolTime-progress .right-block, .coolTime-progress .right {
     clip: rect(0, auto, auto, 40px);
   }
-  .coolTime-progress .left-block, .left {
+  .coolTime-progress .left-block, .coolTime-progress .left {
     clip: rect(0, 40px, auto, 0);
   }
 </style>

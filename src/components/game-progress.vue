@@ -35,7 +35,7 @@ export default {
   .progress-tip{
     position: absolute;
     text-align: center;
-    width: 90%;
+    width: 70%;
     font-size: 12px;
     line-height: 20px;
   }

@@ -1,3 +1,5 @@
+import coolTimeEvent from './cool-time-event'
+
 const SkillEvent = function(){
   this.start = function(hero, callback){
     var self = this;
@@ -18,27 +20,29 @@ const SkillEvent = function(){
           var force = self.coolTimeStart.call(skill);
           force && callback(skill);
           break;
+        case 82:
+          var skill = hero.$skills[3];
+          var force = self.coolTimeStart.call(skill);
+          force && callback(skill);
+          break;
       }
     }); 
    }
   this.coolTimeStart = function(){
     var self = this;
     if(self.coolTime > 0){
-      console.warn('技能释放失败: [冷却中]', self)
+      // console.warn('技能释放失败: [冷却中]', self)
       return false;
     }
-    console.warn('技能释放成功: [', self.name ,']',self)
+    // console.warn('技能释放成功: [', self.name ,']',self)
     self.coolTime = self.defaultTime;
-    var timer = setInterval(function(){
-      self.coolTime -= 10;
-      if(self.coolTime < 0){
-        self.coolTime = 0;
-        clearInterval(timer);
-      }
-    },9);
+    coolTimeEvent.call(self)
     return true;
   }
-  this.end = function(hero){
+  this.end = function(){
+    _.each(this.$skills, skill => {
+      skill.coolTime = 0;
+    })
     $(document).off('keydown');
   }
 }

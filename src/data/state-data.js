@@ -10,9 +10,22 @@ const STATE_TABLE = [
     color: 'black',
     dsc : '你中毒了,每回合将会减少HP!',
     label : ['测试','状态'],
-    event: function(action, attacker ,enemy){
-      action.change('attacker_changeHp', -10);
-    },
+    stateEvent : function(hero) {
+      var self = this;
+      console.log(hero)
+      var duration = 5;
+      var per = 1;
+      var current = 1;
+      self.stateEventTimer = setInterval(function(){
+        hero.changeHp(-10);
+        current +=1;
+        if(current > 5){
+          clearInterval(self.stateEventTimer);
+          hero.removeState(self);
+        }
+      }, per * 1000);
+      this.actived = true;
+    }
   },
   {
     id: 2000002,
