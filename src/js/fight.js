@@ -1,57 +1,41 @@
 import coolTimeEvent from './cool-time-event'
+import actionClass from './fight-action-class'
 
 const Fight = (attacker, enemy, skill) => {
-  
-  let _status = _.filter(attacker.$status, { type: '1' });
 
-  var _events = _.sortBy(
-      _status.concat(skill), [ skill => 0 - skill.weight ]
-    );
-  
-  var _events_be = _.sortBy(
-      _.filter(enemy.$status, { type: '2' })
-    );
-    
-  // 初始化效果对象
-  var actionClass = function(){};
+  // 开始;
+  let event = _.concat(
+    _.filter(attacker.$status, { type: '1' }),
+    _.filter(enemy.$status, { type: '2' }),
+    [ skill ]
+  );
 
-  actionClass.prototype.change = function(key, value, cover) {
-    if(this[key]){
-      if(cover){
-        this[key] = value;
-      }else{
-        if(this[key] instanceof Array){
-          this[key] = this[key].concat(value);
-        }else{
-          this[key] += value;
-        }
-      }
-    }else{
-      this[key] = value;
-    }
-  }
+  // 提取事件;
+  var eventList = [];
 
+  // 拼接父技能;
+  _.each(event, skill => {
+    _.each(skill.eventList, item => {
+      item.father = skill;
+    })
+    eventList = eventList.concat(skill.eventList || []);
+  });
+
+  // 排序;
+  eventList = _.sortBy(eventList, ['weight']);
+
+  // 初始化行动对象;
   var action = new actionClass();
 
-  // 处理 主动效果;
-  for(let i = 0 ; i < _events.length ; i++){
-    if(!_events[i].event){
-      continue;
-    };
-    _events[i].event.apply(attacker, [action, attacker, enemy]);
-  }
+  // 计算最终行动对象;
+  _.each(eventList, item => {
+    item.event.apply(item.father, [action, attacker, enemy]);
+  })
 
-  // 处理对方 被动效果;
-  for(let i = 0 ; i < _events_be.length ; i++){
-    if(!_events_be[i].event){
-      continue;
-    };
-    _events_be[i].event.apply(enemy, [action, attacker, enemy]);
-  }
-
+  // 获取双方变更行动对象;
   var actionList = {
-    attacker:{},
-    enemy:{}
+    attacker: {},
+    enemy: {}
   };
   
   for(var item in action){
@@ -60,6 +44,8 @@ const Fight = (attacker, enemy, skill) => {
       actionList[item[1]][item[2]] = action[item[0]];
     }
   }
+
+  // ======== 处理 ========
 
   // attacker
   for(var item in actionList.attacker){
@@ -79,6 +65,7 @@ const Fight = (attacker, enemy, skill) => {
     }
   }
 
+  // 全局冷却 1秒;
   _.each(attacker.$skills, skill => {
     if(skill.coolTime < 300){
       skill.coolTime = 1000
@@ -86,6 +73,7 @@ const Fight = (attacker, enemy, skill) => {
     }
   })
 
+  // 返回是否存活; 目前无任何实际用途;
   return attacker.$alive && enemy.$alive;
 
 }

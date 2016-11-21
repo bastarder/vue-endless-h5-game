@@ -114,6 +114,7 @@
 <script>
   import Fight from '../js/fight'
   import SkillEvent from '../js/release-skill'
+  import MonsterAI from '../js/monstar-ai'
 
   export default {
     data () {

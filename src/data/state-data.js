@@ -35,11 +35,16 @@ const STATE_TABLE = [
     color: 'red',
     dsc : '坚守之盾,免疫50%伤害',
     label : ['测试','状态'],
-    event: function(action, attacker ,enemy){
-      if(action.enemy_changeHp){
-        action.change('enemy_changeHp', parseInt(action.enemy_changeHp * 0.5), true);
+    eventList: [
+      {
+        weight: 1,
+        event: function(action, attacker ,enemy){
+          if(action.enemy_changeHp){
+            action.change('enemy_changeHp', parseInt(action.enemy_changeHp * 0.5), true);
+          }
+        }
       }
-    },
+    ]
   }
 ]
 

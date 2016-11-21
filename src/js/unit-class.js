@@ -36,7 +36,8 @@ class Unit {
       int : 4     // 智力
     }
     this.$status = [
-      // _.cloneDeep(STATE_TABLE[0]),
+      _.cloneDeep(STATE_TABLE[0]),
+      _.cloneDeep(STATE_TABLE[1]),
     ];
     this.$skills = [
       _.cloneDeep(SKILL_TABLE[0]),
