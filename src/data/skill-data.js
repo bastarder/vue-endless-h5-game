@@ -9,12 +9,20 @@ const SKILL_TABLE = [
     defaultTime : 1000,
     currentCoolTime : 1000,
     coolTime : 0,
+    restrict : [
+      "[attacker]{$mp} >= {5}",
+      function(skill, attacker, enemy){
+        console.log('特殊规则')
+        return true;
+      }
+    ],
     eventList: [
       {
         weight: 1,
         event : function(action, attacker){
           // this 指向 所发动的技能本身; { id: 1000001, name: 'XXXX' ....}
           action.change('enemy_changeHp', 0 - 50);
+          action.change('attacker_changeMp', 0 - 5);
         }
       },
       {
@@ -35,6 +43,15 @@ const SKILL_TABLE = [
     defaultTime : 5000,
     currentCoolTime : 5000,
     coolTime : 0,
+    restrict : [
+      "[attacker]{$mp} >= {60}",
+      "[attacker]{$hp} <= {250}",
+      "[attacker]{$skills} nothas {1000003,1000001}",
+      function(skill, attacker, enemy){
+        console.log('特殊规则')
+        return true;
+      }
+    ],
     eventList: [
       {
         weight: 1,

@@ -65,6 +65,13 @@ class Unit {
     ]; // 包裹列表
   }
 
+  changeMp(value) {
+    this.$mp = Math.min(this.$mp + value, this.$maxMp);
+    if(this.$mp < 0){
+      this.$mp = 0;
+    }
+  }
+
   /**
    * 生命值改变
    */

@@ -167,12 +167,12 @@
       },
       start (){
         this.startButton = false;
-        this.SkillEvent = new SkillEvent();
-        this.SkillEvent.start(this.hero,this.event_fight);
+        this.SkillEvent = new SkillEvent(this.hero,this.event_fight);
+        this.SkillEvent.start();
         // MonsterAI.start();
       },
       end (){
-        this.SkillEvent.end.call(this.hero)
+        this.SkillEvent.end()
         if(this.round + 1 >= this.monsters.length){
           this.endButton = true;
         }else{

@@ -1,46 +1,33 @@
 import coolTimeEvent from './cool-time-event'
 
-const SkillEvent = function(){
-  this.start = function(hero, callback){
+const SkillEvent = function(hero,callback = function(){}){
+  this.hero = hero;
+  this.callback = callback;
+  this.start = function(){
     var self = this;
     $(document).on('keydown',function(event){ 
       switch (event.keyCode){
         case 81: 
-          var skill = hero.$skills[0];
-          var force = self.coolTimeStart.call(skill);
-          force && callback(skill);
+          var skill = self.hero.$skills[0];
+          self.callback(skill);
           break;
         case 87:
-          var skill = hero.$skills[1];
-          var force = self.coolTimeStart.call(skill);
-          force && callback(skill);
+          var skill = self.hero.$skills[1];
+          self.callback(skill);
           break;
         case 69:
-          var skill = hero.$skills[2];
-          var force = self.coolTimeStart.call(skill);
-          force && callback(skill);
+          var skill = self.hero.$skills[2];
+          self.callback(skill);
           break;
         case 82:
-          var skill = hero.$skills[3];
-          var force = self.coolTimeStart.call(skill);
-          force && callback(skill);
+          var skill = self.hero.$skills[3];
+          self.callback(skill);
           break;
       }
     }); 
    }
-  this.coolTimeStart = function(){
-    var self = this;
-    if(self.coolTime > 0){
-      // console.warn('技能释放失败: [冷却中]', self)
-      return false;
-    }
-    // console.warn('技能释放成功: [', self.name ,']',self)
-    self.coolTime = self.defaultTime;
-    coolTimeEvent.call(self)
-    return true;
-  }
   this.end = function(){
-    _.each(this.$skills, skill => {
+    _.each(this.hero.$skills, skill => {
       skill.coolTime = 0;
     })
     $(document).off('keydown');

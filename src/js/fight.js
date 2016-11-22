@@ -1,9 +1,18 @@
 import coolTimeEvent from './cool-time-event'
 import actionClass from './fight-action-class'
+import SkillAvailable from './skill-available'
 
 const Fight = (attacker, enemy, skill) => {
 
-  // 开始;
+  // 判断是否可以行动;
+  if(!SkillAvailable(skill, attacker, enemy)){
+    return ;
+  }
+
+  // 触发冷却;
+  coolTimeEvent.call(skill);
+
+  // 开始计算打击事件;
   let event = _.concat(
     _.filter(attacker.$status, { type: '1' }),
     _.filter(enemy.$status, { type: '2' }),
@@ -68,7 +77,6 @@ const Fight = (attacker, enemy, skill) => {
   // 全局冷却 1秒;
   _.each(attacker.$skills, skill => {
     if(skill.coolTime < 300){
-      skill.coolTime = 1000
       coolTimeEvent.call(skill, 1000)
     }
   })
