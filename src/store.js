@@ -16,7 +16,8 @@ const store = new Vuex.Store({
     EVENT_FIGHT_MONSTERS:[
       new Unit(),
       new Unit()
-    ]
+    ],
+    EVENT_MAP_DATA: null
   },
   mutations: {
     [UPDATE_HERO] (state, obj) {

@@ -20,7 +20,6 @@ Vue.component('game-package', GamePackage)
 Vue.component('game-progress', GameProgress)
 Vue.component('cooltime-progress', CooltimeProgress)
 
-
 const app = new Vue({
   store,
   router

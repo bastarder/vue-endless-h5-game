@@ -3,9 +3,8 @@ import SKILL_TABLE from "../data/skill-data";
 import STATE_TABLE from "../data/state-data";
 import Vue from "vue";
 
-
 class Unit {
-  constructor(x, y) {
+  constructor(obj) {
     this.$type = 1;      // 单位类型
     this.$showName = 'unit1' // 展示名称
     this.$id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
@@ -63,6 +62,7 @@ class Unit {
         dsc : '第一瓶药物!'
       },
     ]; // 包裹列表
+    obj ? _.assign(this, obj) : this.$defaultUnit = true;
   }
 
   changeMp(value) {
@@ -118,7 +118,6 @@ class Unit {
 
     console.warn('单位升级,当前经验值:',this.$exp,'当前等级:',this.$level,'下级所需经验:',this.$maxExp);
   }
-
 
   getState(obj, force) {
     return force? _.findIndex(this.$status,obj) : _.find(this.$status,obj);

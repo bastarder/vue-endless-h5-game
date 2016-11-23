@@ -2,21 +2,31 @@ import Vue from 'vue'
 import VueRouter from "vue-router";
 import store from "./store"
 
-import ViewHome from './components/view-home.vue'
+import GameHome from './components/game-home.vue'
 import GameFight from './components/game-fight.vue'
+import GameMap from './components/game-map.vue'
+import GameMapActive from './components/game-map-active.vue'
 
 Vue.component('game-fight', GameFight)
-Vue.component('view-home', ViewHome)
+Vue.component('game-home', GameHome)
+Vue.component('game-map', GameMap)
+Vue.component('game-map-active', GameMapActive)
 
 Vue.use(VueRouter)
 
 const routes = [
   { 
-    path: '/home', 
-    component: ViewHome
+    path: '/', 
+    component: GameHome
   },{ 
     path: '/fight', 
     component: GameFight
+  },{
+    path: '/map',
+    component: GameMap
+  },{
+    path: '/map-active',
+    component: GameMapActive
   }
 ]
 

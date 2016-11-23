@@ -5,7 +5,7 @@
       <div class="router-view">
         <router-view></router-view>
       </div>
-      <game-bottom></game-bottom>
+      <!--<game-bottom></game-bottom>-->
     </div>
     <game-package></game-package>
     
@@ -13,14 +13,7 @@
 </template>
 
 <script>
-
-export default {
-  data () {
-    return {
-      msg: 123
-    }
-  }
-}
+export default {}
 </script>
 
 <style>
@@ -43,10 +36,9 @@ export default {
    width: 640px;
  }
  .router-view{
-   height: 400px;
+   height: 440px;
    background: white;
    margin-top: 4px;
-   
    padding: 6px;
  }
 
