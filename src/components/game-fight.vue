@@ -85,12 +85,27 @@
           </template>
         </div>
       </div>
-
-      <div class="drop-list">
+      
+      <!--'background':'url(./src/assets/300000'+ (index+1) +'.png)', -->
+      <!--<div class="drop-list">
         <span class="item tip">掉  落 列  表</span>
-        <!--'background':'url(./src/assets/300000'+ (index+1) +'.png)', -->
+        
         <span class="item" v-for="(item,index) in 4" :style="{ 
           'background-size' : '100%'}"></span>
+      </div>-->
+      
+      <div class="skill-list">
+        <span class="skill tip">技能列表</span>
+        <template v-for="(skill,index) in monster.$skills">
+          <!--:style="{ background:'url(./src/assets/' + skill.id + '.png)', 'background-size' : '100%' }"-->
+          <div :class="['skill']" >
+            <div class="coolTime" v-if="skill.coolTime !== 0">
+              <!--{{ (skill.coolTime / 1000).toFixed(1) }} S-->
+            </div>
+            <cooltime-progress :value="skill.coolTime" :max="skill.currentCoolTime"></cooltime-progress>
+            <!--{{ skill.name }}-->
+          </div>
+        </template>
       </div>
 
     </div>
@@ -114,7 +129,7 @@
 <script>
   import Fight from '../js/fight'
   import SkillEvent from '../js/release-skill'
-  import MonsterAI from '../js/monstar-ai'
+  import MonsterAI from '../js/monster-ai'
 
   export default {
     data () {
@@ -124,6 +139,7 @@
         monsters: [],
         round : -1,
         SkillEvent : null,
+        MonsterAI : null,
         startButton : false,
         nextButton : false,
         endButton : false,
@@ -167,12 +183,14 @@
       },
       start (){
         this.startButton = false;
-        this.SkillEvent = new SkillEvent(this.hero,this.event_fight);
+        this.SkillEvent = new SkillEvent(this.hero, this.monster);
+        this.MonsterAI = new MonsterAI(this.hero, this.monster);
         this.SkillEvent.start();
-        // MonsterAI.start();
+        this.MonsterAI.start();
       },
       end (){
-        this.SkillEvent.end()
+        this.SkillEvent.end();
+        this.MonsterAI.end();
         if(this.round + 1 >= this.monsters.length){
           this.endButton = true;
         }else{
@@ -181,17 +199,11 @@
         // MonsterAI.end();
       },
       next (){
-        this.SkillEvent && this.SkillEvent.end();
         this.nextButton = false;
         this.startButton = true;
-        this.SkillEvent = new SkillEvent();
         this.round ++;
         this.monster = this.monsters[this.round];
-      },
-      event_fight (skill){
-        Fight(this.hero, this.monster, skill);
-        this.$forceUpdate();
-      },
+      }
     },
     mounted (){
 

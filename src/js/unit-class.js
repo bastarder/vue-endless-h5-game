@@ -9,10 +9,10 @@ class Unit {
     this.$type = 1;      // 单位类型
     this.$showName = 'unit1' // 展示名称
     this.$id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
-    this.$hp = 250;       // 当前生命值
-    this.$mp = 60;       // 当前魔法值
-    this.$maxHp = 300;    // 生命最大值
-    this.$maxMp = 150;    // 魔法最大值
+    this.$hp = 600;       // 当前生命值
+    this.$mp = 400;       // 当前魔法值
+    this.$maxHp = 600;    // 生命最大值
+    this.$maxMp = 400;    // 魔法最大值
     this.$exp = 1;      // 当前经验
     this.$maxExp = 5;   // 升级经验
     this.$level = 5;    // 等级
@@ -36,14 +36,14 @@ class Unit {
       int : 4     // 智力
     }
     this.$status = [
-      _.cloneDeep(STATE_TABLE[0]),
+      // _.cloneDeep(STATE_TABLE[0]),
       _.cloneDeep(STATE_TABLE[1]),
     ];
     this.$skills = [
-      _.cloneDeep(SKILL_TABLE[0]),
-      _.cloneDeep(SKILL_TABLE[1]),
+      _.cloneDeep(SKILL_TABLE[3]),
       _.cloneDeep(SKILL_TABLE[2]),
-      _.cloneDeep(SKILL_TABLE[3])
+      _.cloneDeep(SKILL_TABLE[1]),
+      _.cloneDeep(SKILL_TABLE[0]),
     ];  // 技能列表
     this.$package = [
       {
@@ -72,9 +72,6 @@ class Unit {
     }
   }
 
-  /**
-   * 生命值改变
-   */
   changeHp(value) {
 
     if(this.$hp <= 0){  // 判断单位是否存活;
@@ -95,9 +92,6 @@ class Unit {
     return true;
   }
 
-  /**
-   * 经验获取
-   */
   getExp(value) {
     // EXP_TABLE 经验列表 来源: "./game-data";
 
@@ -131,12 +125,16 @@ class Unit {
   }
 
   removeState(obj, force) {
-    return force? this.$status.splice(obj,1) : _.remove(this.$status,obj);
+    if (!force) {
+      obj = _.findIndex(this.$status,obj);
+      if(obj === -1){
+        return ;
+      }
+    };
+    this.$status[obj].stateEventTimer && clearInterval(this.$status[obj].stateEventTimer);
+    this.$status.splice(obj,1);
   }
 
-  /**
-   * 状态变更 
-   */
   changeState(changeList) {
     var self = this;
     _.each(changeList,function(value){

@@ -28,9 +28,8 @@ const SkillAvailable = function(skill, attacker, enemy){
 
     // 简易规则,计算结果;
     let _rule = rule.replace(/\s/g,'').match(/^\[([\w$]+)\]\{([\w$]+)\}([\w\W]+)\{([\w\W]+)\}/);
-    console.log(_rule)
+
     if(!_rule){
-      console.warn('错误的技能规则:',rule);
       return false;
     }
 
