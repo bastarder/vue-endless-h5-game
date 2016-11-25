@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Unit from './js/unit-class'
+import MAP_TABLE from './data/map-data'
 
 const UPDATE_HERO = "UPDATE_HERO";
 
@@ -13,6 +14,7 @@ const store = new Vuex.Store({
   state: {
     hero,
     monster,
+    mapList: _.cloneDeep(MAP_TABLE),
     EVENT_FIGHT_MONSTERS:[
       new Unit(),
       new Unit()

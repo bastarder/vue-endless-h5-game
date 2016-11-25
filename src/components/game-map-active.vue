@@ -13,7 +13,6 @@ export default {
     }
   },
   created (){
-    console.log()
     this.map = this.$store.state.EVENT_MAP_DATA;
   },
   methods : {

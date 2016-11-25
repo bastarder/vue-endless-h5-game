@@ -1,6 +1,7 @@
-import { EXP_TABLE } from "../data/game-data";
+import { EXP_TABLE } from "../data/hero-data";
 import SKILL_TABLE from "../data/skill-data";
 import STATE_TABLE from "../data/state-data";
+import { ITEM_TABLE } from "../data/item-data";
 import Vue from "vue";
 
 class Unit {
@@ -44,24 +45,7 @@ class Unit {
       _.cloneDeep(SKILL_TABLE[1]),
       _.cloneDeep(SKILL_TABLE[0]),
     ];  // 技能列表
-    this.$package = [
-      {
-        name: '神剑',
-        num : 1,
-        label : [
-          '武器', '剑', '神圣', '创始者',
-        ],
-        dsc : '传说中开天辟地诞生的一把神器!'
-      },
-      {
-        name: '血瓶',
-        num : 5,
-        label : [
-          '药物', '增益', '神圣',
-        ],
-        dsc : '第一瓶药物!'
-      },
-    ]; // 包裹列表
+    this.$package = _.cloneDeep(ITEM_TABLE)
     obj ? _.assign(this, obj) : this.$defaultUnit = true;
   }
 

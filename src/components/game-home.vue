@@ -1,7 +1,10 @@
 <template>
   <div class="game-home">
-    <router-link class="link" to="/map">回家</router-link>
+    <router-link class="link" to="/map">出征</router-link>
     <router-link class="link" to="/fight">战斗测试</router-link>
+    <router-link class="link" to="/fight">商店</router-link>
+    <router-link class="link" to="/fight">铁匠铺</router-link>
+    <router-link class="link" to="/fight">炼金术</router-link>
   </div>
 </template>
 
