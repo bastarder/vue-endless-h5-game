@@ -15,6 +15,7 @@ const store = new Vuex.Store({
     hero,
     monster,
     mapList: _.cloneDeep(MAP_TABLE),
+    NOTICE_ITEM: null,
     EVENT_FIGHT_MONSTERS:[
       new Unit(),
       new Unit()

@@ -15,6 +15,11 @@ export default {
     return {
       unit : 1
     }
+  },
+  methods : {
+    open(){
+
+    }
   }
 }
 
@@ -34,4 +39,5 @@ export default {
    padding: 10px;
    text-decoration: none;
  }
+
 </style>

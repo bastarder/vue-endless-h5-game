@@ -17,6 +17,9 @@ let Material = [
     label : [
       '食物','材料'
     ],
+    use : [
+      '[$hp]{10}',
+    ],
     dsc : '能卖钱,能吃,数量很多'
   },
 ];
@@ -28,7 +31,7 @@ let Equipment = [
     label: [
       '武器'
     ],
-    power : [
+    equip : [
       '[$attr.atk]{50}',
       '[$skills]{1000001}',
       '[$status]{2000001}',

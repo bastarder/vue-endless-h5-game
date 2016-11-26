@@ -2,7 +2,7 @@
   <div class="container">
     <!--<game-header></game-header>-->
     <div class="main">
-      <div class="router-view">
+      <div class="router-view" id="router-view">
         <router-view></router-view>
       </div>
       <!--<game-bottom></game-bottom>-->
@@ -36,6 +36,7 @@ export default {}
    width: 640px;
  }
  .router-view{
+   position: relative;
    height: 440px;
    background: white;
    margin-top: 4px;

@@ -2,9 +2,23 @@
   <div class="game-package shadow-box">
     <div class="list">
 
-      <template v-for="(item, index) in hero.$package">
-        <component-item :item="item" :position-index="'$package|' + index"></component-item>
-      </template>
+      <div 
+        class="item" 
+        v-for="(item, index) in hero.$package" 
+        @mouseover="setInfo(item)">
+        
+        <div 
+          draggable="true" 
+          @drop.prevent="drop($event,index)"
+          @dragover.prevent="void(0)"
+          @dragstart="dragstart($event,index)">
+
+          <div class="item-name" >{{ item.name }}</div>
+          <div class="badge">{{ item.num }}</div>
+
+        </div>
+
+      </div>
 
     </div>
 
@@ -95,6 +109,61 @@ export default {
    background: white;
    overflow: scroll;
  }
+ .game-package .item{
+   display: inline-block;
+   vertical-align: top;
+   text-align: center;
+   width: 44px;
+   height: 44px;
+   border: 1px solid #eee;
+   margin: 4px 4px;
+   box-shadow: 1px 1px 6px #eee;
+ }
+ .game-package .item:hover{
+   cursor: pointer;
+   box-shadow: 1px 1px 6px gray;
+   border: gray;
+ }
+ .game-package .item .item-progress,.game-package .item .progress{
+   height: 5px;
+   margin: 1px 3px;
+ }
+ 
+ .game-package .item .badge{
+   vertical-align: top;
+   padding: 1px 10px;
+   font-size: 10px;
+   margin-top: 2px;
+ }
+ .game-package .item .item-name{
+   font-size: 10px;
+   font-weight: 700;
+   color: brown;
+ }
 
-
+ .game-package .info{
+   margin-top: 10px;
+   height: 160px;
+   background: #eee;
+   padding: 10px;
+ }
+ .game-package .info .dsc{
+   margin-top: 10px;
+   background: white;
+   height: 110px;
+   text-align: center;
+   font-size: 75%;
+   font-weight: 700;
+   padding: 10px;
+ }
+ .game-package .info .label{
+   background: white;
+   color: black;
+   border-radius: 0px;
+   margin-left: 4px;
+ }
+ .notice-item{
+   top: 8px;
+   right: 8px;
+ }
 </style>
