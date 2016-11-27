@@ -39,6 +39,7 @@ export default {
     },
     mouseleave (){
       this.$store.state.NOTICE_ITEM && this.$store.state.NOTICE_ITEM.remove();
+      $('.notice-item').remove();
     },
     mousedown (event){
       if(event.button !== 2){

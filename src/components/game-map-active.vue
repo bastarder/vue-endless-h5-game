@@ -12,8 +12,9 @@
               'hero': block == '1' ,
               'end' : block == '3' ,
             }"
-            @mouseover="mouseover(x,y)">
-
+            @mouseover="mouseover(x,y)"
+            @click="autoPisition(x,y)">
+     
           </span>
         </div>
       </div>
@@ -60,9 +61,54 @@ export default {
         x: last[0],
         y: last[1]
       };
+      this.map.mapData[last[0]][last[1]] = '1';
+      
+      $(document).on('keydown',(event) => { 
+      console.log(123)
+      switch (event.keyCode){
+        case 38: // 左 上
+          this.map.mapData[this.start.x][this.start.y] = '0';
+          this.map.mapData[this.start.x - 1][this.start.y] = '1';
+          this.start.x -=1
+          break;
+        case 37: // 上 左
+          this.map.mapData[this.start.x][this.start.y] = '0';
+          this.map.mapData[this.start.x][this.start.y - 1] = '1';
+          this.start.y -= 1
+          break;
+        case 40: // 右 下
+          this.map.mapData[this.start.x][this.start.y] = '0';
+          this.map.mapData[this.start.x + 1][this.start.y] = '1';
+          this.start.x +=1
+          break;
+        case 39: // 下 右
+          this.map.mapData[this.start.x][this.start.y] = '0';
+          this.map.mapData[this.start.x][this.start.y + 1] = '1';
+          this.start.y +=1
+          break;
+      }
+      this.$forceUpdate();
+    }); 
+  },
+  updated (){
+    this.autoPisition();
   },
   methods : {
+    autoPisition (){
+      let [X,Y,Bx,By,row,col] = [628,428,40,40,this.map.row,this.map.col];
+      let mapElement = $('.map-data .map');
+      let hero = this.start;
+      let middleLeft = ((X - Bx * row)/2);
+      let middleTop = ((Y - By * col)/2);
+      let Ky = hero.x - (row - 1)/2;
+      let Kx = hero.y - (col - 1)/2;
+      let left = middleLeft - Kx * Bx;
+      let top = middleTop - Ky * By;
+      mapElement.css('left', left + 'px');
+      mapElement.css('top', top + 'px');
+    },
     mouseover(x,y){
+      return false;
           // this.map = this.$store.state.EVENT_MAP_DATA;
       this.map.clearPath();
       if(this.map.mapData[x][y] == '2'){
@@ -88,8 +134,8 @@ export default {
 }
 .map-block{
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   background: black;
   vertical-align: top;
 }
@@ -107,7 +153,8 @@ export default {
 }
 .map-data .map{
   position: absolute;
-  width: 840px;
-  height: 840px;
+  width: 800px;
+  height: 800px;
+  box-shadow: 0px 0px 10px black;
 }
 </style>
