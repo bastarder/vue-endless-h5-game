@@ -20,7 +20,7 @@ export default {
     return {}
   },
   created (){
-    console.log(this.positionIndex);
+    // console.log(this.positionIndex);
   },
   methods :{
     mouseover (){

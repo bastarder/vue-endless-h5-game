@@ -41,7 +41,6 @@ const Astar = function Astar(map, start, end) {
       // this.map.mapData[line.x][line.y].block_type = '4'
       path.push(line);
     }
-    console.log(path,opt);
     return path;
   }
   this.step = function() {
@@ -117,8 +116,7 @@ const Astar = function Astar(map, start, end) {
       return 10;
     }
   }
-  this.init();
+  return this.init();
 }
-
 
 export default Astar

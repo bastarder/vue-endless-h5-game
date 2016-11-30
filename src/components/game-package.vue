@@ -27,7 +27,7 @@ export default {
   },
   methods :{
     // @drop="drop" 
-    //     @dragover="dragover"
+    // @dragover="dragover"
     //     @dragstart="dragstart"
     //     @dragenter="dragenter"
     //     @dragleave="dragleave"

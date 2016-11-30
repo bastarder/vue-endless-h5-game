@@ -4,7 +4,9 @@ const MAP_TABLE = [
     name: '村庄',
     logo: '',
     dsc: '一个几乎毫无危险的地方.',
-    eventList: [],    // 特殊事件触发点;
+    eventList: [
+
+    ],    // 特殊事件触发点;
     monsterList: [],  // 怪物列表;
     itemList: [       // 物品列表;
       

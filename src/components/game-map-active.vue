@@ -12,25 +12,56 @@
               'hero': block.block_type == '1' ,
               'end' : block.block_type == '3' ,
             }"
-            @mouseover="mouseover(x,y)"
-            @click="autoPisition(x,y)">
+            @click="testModal(x,y)">
      
           </span>
         </div>
       </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" v-if="DialogEvent.record">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Hi Bastarder!</h4>
+          </div>
+          <div class="modal-body">
+            {{DialogEvent.record.msg}}
+            <div v-if="DialogEvent.record.need || DialogEvent.record.get">
+              <template v-for="(item,index) in DialogEvent.record.need">
+                <component-item :item="item" :position-index="'$MapEvent|' + index"></component-item>
+              </template>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default" v-for="btn in DialogEvent.record.buttons" @click="DialogEvent.callAction(btn.action)">
+              {{btn.title}}
+            </button>
+            <button class="btn btn-default" v-if="!DialogEvent.record.buttons" @click="DialogEvent.callAction(DialogEvent.next)">
+              {{ DialogEvent.isEnd ? '结束对话' : '下一步' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import DungeonCreater from '../js/dungeon-creater'
 import Astar from '../js/astar'
+import { MapDialog } from '../js/event-class'
+import { DIALOG_DATA } from '../data/event-data'
+
 export default {
   data () {
     return {
       map : null,
       start: null,
       end: null,
+      DialogEvent : {},
     }
   },
   created (){
@@ -56,7 +87,6 @@ export default {
     );
 
     var path = new Astar(this.map, this.start, this.end);
-    console.log(path);
 
   },
   updated (){
@@ -76,9 +106,11 @@ export default {
       mapElement.css('left', left + 'px');
       mapElement.css('top', top + 'px');
     },
-    mouseover(x,y){
-      // this.map = this.$store.state.EVENT_MAP_DATA;
-    }
+    testModal (){
+
+      this.DialogEvent = new MapDialog(DIALOG_DATA[0], this); // opt, scope
+
+    },
   }
 }
 
