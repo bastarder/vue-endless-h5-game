@@ -2,7 +2,6 @@ const Astar = function Astar(map, start, end) {
   function block(x, y) {
     this.x = x;
     this.y = y;
-    // this.code = x + '-' + y;
     this.parent = null;
     this.G = 0;
     this.H = null;
@@ -10,21 +9,40 @@ const Astar = function Astar(map, start, end) {
       return this.G + this.H;
     };
   }
-  this.map = map;
+  this.map = _.cloneDeep(map);
   this.init = function() {
-    start && this.map.setStart(start.x, start.y);
-    end && this.map.setEnd(end.x, end.y);
+    var opt = {
+      startBlock : start,
+      endBlock   : end,
+      stickList  : [],
+      openList   : [],
+      closeList  : [],
+      isInList : function(block, type) {
+        let index = _.findIndex(this[type],{
+          x:block.x,
+          y:block.y
+        })
+        return ~index && { index }
+      }
+    }
+    _.assign(this.map, opt)
+
     this.map.openList.push(this.map.startBlock);
+
     var line = this.step();
     if (!line.find) {
       console.info('无法生存路径!');
-      return;
+      return [];
     }
     line = line.endBlock;
+    let path = [];
     while (line.parent.parent) {
       line = line.parent;
-      this.map.mapData[line.x][line.y] = '4';
+      // this.map.mapData[line.x][line.y].block_type = '4'
+      path.push(line);
     }
+    console.log(path,opt);
+    return path;
   }
   this.step = function() {
     this.map.openList = this.map.openList.sort(function(a, b) {
@@ -99,6 +117,7 @@ const Astar = function Astar(map, start, end) {
       return 10;
     }
   }
+  this.init();
 }
 
 
