@@ -23,18 +23,18 @@ npm run build
 
 |功能|进度|开发者|备注|
 |:---:|:---:|:---:|:---:|
-|整体结构|`30%`|`bastarder`||
+|整体结构|`35%`|`bastarder`||
 |对战逻辑|`90%`|`bastarder`||
-|地图列表|`0%`|`bastarder `||
-|地图详情|`0%`|`bastarder `||
-|人物寻路|`0%`|`bastarder `||
-|特殊事件|`0%`|`bastarder `||
+|地图列表|`40%`|`bastarder `||
+|地图详情|`30%`|`bastarder `||
+|人物寻路|`90%`|`bastarder `||
+|特殊事件|`10%`|`bastarder `||
 |锻造系统|`10%`|`bastarder`||
 |强化系统|`10%`|`bastarder`||
 |随机商店|`0%`|`bastarder `||
 |UI设计|`10%`|`bastarder `||
 |技能逻辑|`100%`|`bastarder`||
-|物品逻辑|`0%`|`bastarder`||
+|物品逻辑|`10%`|`bastarder`||
 |单位逻辑|`70%`|`bastarder`||
 |技能数据|`10%`|`bastarder`||
 |单位数据|`5%`|`bastarder`||
