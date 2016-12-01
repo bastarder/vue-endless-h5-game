@@ -20,15 +20,13 @@ class Unit {
     this.$resource = {
       gold : 999,
       gem : 111,
-    }
-    this.$attr = {
-      atk : 10,     // 攻击
-      def : 10,     // 防御
-      str : 10,     // 力量
-      dex : 10,     // 敏捷
-      con : 10,     // 体质
-      int : 10      // 智力
-    }
+    },
+    this.$atk = 10,     // 攻击
+    this.$def = 10,     // 防御
+    this.$str = 10,     // 力量
+    this.$dex = 10,     // 敏捷
+    this.$con = 10,     // 体质
+    this.$int = 10,      // 智力
     this.$attrGrow = {
       str : 1,     // 力量
       dex : 2,     // 敏捷
@@ -92,8 +90,8 @@ class Unit {
       this.$level += 1;
       this.$maxExp = EXP_TABLE[this.$level - 1] || NaN;
       // 升级增加属性;
-      for(var key in this.$attr){
-        this.$attr[key] += this.$attrGrow[key];
+      for(var key in this.$attrGrow){
+        this[key] += this.$attrGrow[key];
       }
       console.warn('单位升级,属性增加!', this.$attrGrow);
     }else{

@@ -26,13 +26,13 @@ let Material = [
 
 let Equipment = [
   {
-    id: 4000001,
+    id: 3000003,
     name: '铁剑',
     label: [
       '武器'
     ],
     equip : [
-      '[$attr.atk]{50}',
+      '[$atk]{50}',
       '[$skills]{1000001}',
       '[$status]{2000001}',
       '[$maxHp]{50}',
