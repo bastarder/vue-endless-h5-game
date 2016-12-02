@@ -4,8 +4,10 @@ import STATE_TABLE from "../data/state-data";
 import { ITEM_TABLE } from "../data/item-data";
 import Vue from "vue";
 
+import CreateMonster from './create-monster'
+
 class Unit {
-  constructor(obj) {
+  constructor(obj = {}) {
     this.$type = 1;      // 单位类型
     this.$showName = 'unit1' // 展示名称
     this.$id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
@@ -33,18 +35,22 @@ class Unit {
       con : 3,     // 体质
       int : 4     // 智力
     }
-    this.$status = [
-      // _.cloneDeep(STATE_TABLE[0]),
-      _.cloneDeep(STATE_TABLE[1]),
-    ];
-    this.$skills = [
-      _.cloneDeep(SKILL_TABLE[3]),
-      _.cloneDeep(SKILL_TABLE[2]),
-      _.cloneDeep(SKILL_TABLE[1]),
-      _.cloneDeep(SKILL_TABLE[0]),
-    ];  // 技能列表
+    this.$status = [];
+    this.$skills = [];  // 技能列表
     this.$package = _.cloneDeep(ITEM_TABLE)
-    obj ? _.assign(this, obj) : this.$defaultUnit = true;
+
+    switch(obj.$type){
+      case 'Monster' : 
+        CreateMonster.call(this, obj);
+        break;
+      case 'Hero' : 
+        // CreateHero.call(this, obj);
+        break;
+      default : 
+        _.assign(this, obj);
+        break;
+    }
+
   }
 
   changeMp(value) {

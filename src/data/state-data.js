@@ -36,7 +36,7 @@ const STATE_TABLE = [
     label : ['测试','状态'],
     eventList: [
       {
-        weight: 1,
+        weight: 10,
         event: function(action, attacker ,enemy){
           if(action.enemy_changeHp){
             action.change('enemy_changeHp', parseInt(action.enemy_changeHp * 0.5), true);

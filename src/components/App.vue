@@ -3,7 +3,9 @@
     <!--<game-header></game-header>-->
     <div class="main">
       <div class="router-view" id="router-view">
-        <router-view></router-view>
+        <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+          <router-view></router-view>
+        </transition>
       </div>
       <!--<game-bottom></game-bottom>-->
     </div>
