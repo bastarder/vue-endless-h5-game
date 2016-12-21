@@ -1,20 +1,3 @@
-  // {
-  //   id: 8000001,
-  //   name: '村庄',
-  //   logo: '',
-  //   dsc: '一个几乎毫无危险的地方.',
-  //   eventList: [
-
-  //   ],    // 特殊事件触发点;
-  //   monsterList: [],  // 怪物列表;
-  //   itemList: [       // 物品列表;
-      
-  //   ],
-  //   rule: [          // 生成规则;
-
-  //   ]
-    
-  // },
 
 const MapEvent = {
   data: [],
@@ -84,8 +67,6 @@ const MapDialog = function(opt, $VueScope){
 
   _.assign(this,_.cloneDeep(opt));
 
-  this.start();
-
   return this;
 }
 
@@ -107,13 +88,3 @@ export {
   MapFight
 };
 
-// {
-//   x: 1,
-//   y: 2,
-//   event: [
-
-//   ]
-// }
-
-
-// 对话事件;

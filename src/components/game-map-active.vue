@@ -2,7 +2,7 @@
   <div class="game-map-active">
     <div class="map-data">
       <div class="map">
-        <div v-for="(line,x) in map.mapData">
+        <div v-for="(line,x) in map.$data.mapData">
           <span 
             v-for="(block,y) in line" 
             :class="{ 
@@ -12,7 +12,7 @@
               'hero': block.block_type == '1' ,
               'end' : block.block_type == '3' ,
             }"
-            @click="testModal(x,y)">
+            @click="autoPisition">
      
           </span>
         </div>
@@ -65,28 +65,29 @@ export default {
     }
   },
   created (){
-    this.map = new DungeonCreater({
-        row : 20,
-        col : 20,
-        lines : 15,    // 分支量;
-        inflex : 0.5  // 曲折度;
-    });
+    this.map = this.$store.state.EVENT_MAP_DATA;
+    // this.map = new DungeonCreater({
+    //     row : 20,
+    //     col : 20,
+    //     lines : 15,    // 分支量;
+    //     inflex : 0.5  // 曲折度;
+    // });
     
-    this.start = _.sample(
-      _.filter(
-        _.flattenDeep(this.map.mapData),
-        { block_type: this.map.$BLOCK_ROAD }
-      )
-    );
+    // this.start = _.sample(
+    //   _.filter(
+    //     _.flattenDeep(this.map.mapData),
+    //     { block_type: this.map.$BLOCK_ROAD }
+    //   )
+    // );
 
-    this.end = _.sample(
-      _.filter(
-        _.flattenDeep(this.map.mapData),
-        { block_type: this.map.$BLOCK_ROAD }
-      )
-    );
+    // this.end = _.sample(
+    //   _.filter(
+    //     _.flattenDeep(this.map.mapData),
+    //     { block_type: this.map.$BLOCK_ROAD }
+    //   )
+    // );
 
-    var path = new Astar(this.map, this.start, this.end);
+    // var path = new Astar(this.map, this.start, this.end);
 
   },
   updated (){
@@ -94,9 +95,9 @@ export default {
   },
   methods : {
     autoPisition (){
-      let [X,Y,Bx,By,row,col] = [628,428,20,20,this.map.row,this.map.col];
+      let [X,Y,Bx,By,row,col] = [628,428,40,40,this.map.$data.row,this.map.$data.col];
       let mapElement = $('.map-data .map');
-      let hero = this.start;
+      let hero = this.map.hero;
       let middleLeft = ((X - Bx * row)/2);
       let middleTop = ((Y - By * col)/2);
       let Ky = hero.x - (row - 1)/2;
@@ -124,8 +125,8 @@ export default {
 }
 .map-block{
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   background: black;
   vertical-align: top;
 }

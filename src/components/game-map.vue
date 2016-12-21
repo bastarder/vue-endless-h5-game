@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import MapInit from '../js/map-init';
 
 export default {
   data () {
@@ -29,7 +30,7 @@ export default {
   },
   methods : {
     goTo (map){
-      this.$store.state.EVENT_MAP_DATA = map;
+      this.$store.state.EVENT_MAP_DATA = new MapInit(map);
       location.href = '#/map-active';
     }
   }

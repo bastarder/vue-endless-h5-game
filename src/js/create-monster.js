@@ -1,3 +1,5 @@
+import PublicStaticGet from './public-static-get'
+
 const CreateMonster = function(option = {}){
 
   // 精英
@@ -28,16 +30,36 @@ const CreateMonster = function(option = {}){
     }
   }
 
+  // 处理增幅;
   let amplification = ['$maxHp','$mapMp','$good','$gem','$exp','$atk','$def','$str','$dex','$con','$int']
-  
+  _.each(amplification,key => {
+    option[key] && (option[key] = Math.ceil(option[key] * option.$elite));
+  });
 
-  delete option.$elite;  // 删除精英数据;
+  // 处理初始属性; 
+  option.$hp = option.$maxHp;
+  option.$mp = option.$maxMp;
 
-  _.assign(this,option);
+  // 对象化 状态,技能;
+  option.$skills = _.map(option.$skills,function(id){
+    return PublicStaticGet(id);
+  });
 
+  option.$status = _.map(option.$status,function(id){
+    return PublicStaticGet(id);
+  });
+
+  // 删除非必要属性;
+  delete option.$elite;
   delete this.$resource;
   delete this.$attrGrow;
   delete this.$package;
+
+  // 合并数据;
+  _.assign(this,option);
+
+  // 删除不必要属性;
+
   
 }
 

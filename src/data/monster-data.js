@@ -28,6 +28,8 @@ const MONSTER_DATA = [
     $maxMp : 0,
     $atk : 5,     
     $def : 0,   
+    $status : [2000002],
+    $skills : [1000001],
     // $status : [2000002],
     // $skills : [1000001]
   }

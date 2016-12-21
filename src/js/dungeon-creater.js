@@ -7,10 +7,10 @@ const DungeonCreater = function(opt) {
   this.$BLOCK_END   = '3';  // 寻路终点
 
   // Create
-  this.row = opt.row || 35;
-  this.col = opt.col || 40;
-  this.lines = opt.lines || 10;
-  this.inflex = opt.inflex || 0.7;
+  this.row = opt.row || 20;
+  this.col = opt.col || 20;
+  this.lines = opt.lines || 15;
+  this.inflex = opt.inflex || 0.5;
 
   this.init = function() {
     var result = [];

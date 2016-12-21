@@ -1,9 +1,9 @@
-import { DIALOG_DATA } from './event-data'
-import { EXP_TABLE } from './hero-data'
-import { ITEM_TABLE } from './item-data'
-import MAP_TABLE from './map-data'
-import SKILL_TABLE from './skill-data'
-import STATE_TABLE from './skill-data'
+import { DIALOG_DATA } from '../data/event-data'
+import { EXP_TABLE } from '../data/hero-data'
+import { ITEM_TABLE } from '../data/item-data'
+import MAP_TABLE from '../data/map-data'
+import SKILL_TABLE from '../data/skill-data'
+import STATE_TABLE from '../data/state-data'
 
 const Data = {
   '7' : DIALOG_DATA,   // '7'
@@ -11,7 +11,7 @@ const Data = {
   '3' : ITEM_TABLE,    // '3'
   '8' : MAP_TABLE,     // '8'
   '1' : SKILL_TABLE,   // '1'
-  '2' :STATE_TABLE,    // '2'
+  '2' : STATE_TABLE,    // '2'
 }
 
 const PublicStaticGet = function(key){
@@ -21,3 +21,5 @@ const PublicStaticGet = function(key){
     id: key
   }));
 }
+
+export default PublicStaticGet;
