@@ -1,7 +1,9 @@
 import PublicStaticGet from './public-static-get'
 
-const CreateMonster = function(option = {}){
+const CreateMonster = function(opt = {}){
 
+  let option = _.cloneDeep(opt);
+  
   // 精英
   if(!option.$elite){
     let rndNum = Math.floor(Math.random() * 100) + 1;

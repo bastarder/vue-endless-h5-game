@@ -14,7 +14,7 @@ const Astar = function Astar(map, start, end) {
     var opt = {
       startBlock : start,
       endBlock   : end,
-      stickList  : [],
+      stickList  : _.filter(_.flattenDeep(this.map.mapData) ,{ block_type: '2'}),
       openList   : [],
       closeList  : [],
       isInList : function(block, type) {
@@ -38,9 +38,9 @@ const Astar = function Astar(map, start, end) {
     let path = [];
     while (line.parent.parent) {
       line = line.parent;
-      // this.map.mapData[line.x][line.y].block_type = '4'
       path.push(line);
     }
+    path.reverse().push(end);
     return path;
   }
   this.step = function() {

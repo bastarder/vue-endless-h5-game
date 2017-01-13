@@ -155,13 +155,13 @@
       'hero.$alive' : function(alive, oldVal){
         if(!alive){
           console.warn('英雄死亡, 战斗失败');
-          this.end();
+          this.end(false);
         }
       },
       'monster.$alive' : function(alive, oldVal){
         if(!alive){
           console.warn('敌人死亡, 战斗成功');
-          this.end();
+          this.end(true);
         }
       }
     },
@@ -188,7 +188,7 @@
         this.SkillEvent.start();
         this.MonsterAI.start();
       },
-      end (){
+      end (win){
         this.SkillEvent.end();
         this.MonsterAI.end();
         if(this.round + 1 >= this.monsters.length){
@@ -196,6 +196,14 @@
         }else{
           this.nextButton = true;
         }
+        
+        if(win){
+          location.href = '#/map-active';
+        }else{
+          this.$store.state.EVENT_MAP_DATA = null;
+          location.href = '#/';
+        }
+       
         // MonsterAI.end();
       },
       next (){

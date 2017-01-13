@@ -8,12 +8,15 @@
             :class="{ 
               'map-block': true, 
               'road': block.block_type == '0' ,
-              'path': block.block_type == '4' ,
+              'path': block.path,
               'hero': block.block_type == '1' ,
               'end' : block.block_type == '3' ,
             }"
-            @click="autoPisition">
-     
+            @click="autoMove(block)"
+            @mouseenter="mouseenter(block)"
+            @mouseleave="mouseleave">
+            <span v-if="block.FEvent">战</span>
+            <span v-if="block.DEvent">话</span>
           </span>
         </div>
       </div>
@@ -52,6 +55,7 @@
 <script>
 import DungeonCreater from '../js/dungeon-creater'
 import Astar from '../js/astar'
+import HeroMoveEvent from '../js/map-hero-move'
 import { MapDialog } from '../js/event-class'
 import { DIALOG_DATA } from '../data/event-data'
 
@@ -59,36 +63,14 @@ export default {
   data () {
     return {
       map : null,
-      start: null,
-      end: null,
+      path : null,
       DialogEvent : {},
     }
   },
   created (){
     this.map = this.$store.state.EVENT_MAP_DATA;
-    // this.map = new DungeonCreater({
-    //     row : 20,
-    //     col : 20,
-    //     lines : 15,    // 分支量;
-    //     inflex : 0.5  // 曲折度;
-    // });
-    
-    // this.start = _.sample(
-    //   _.filter(
-    //     _.flattenDeep(this.map.mapData),
-    //     { block_type: this.map.$BLOCK_ROAD }
-    //   )
-    // );
-
-    // this.end = _.sample(
-    //   _.filter(
-    //     _.flattenDeep(this.map.mapData),
-    //     { block_type: this.map.$BLOCK_ROAD }
-    //   )
-    // );
-
-    // var path = new Astar(this.map, this.start, this.end);
-
+    this.moveEvent = new HeroMoveEvent(this.map, this);
+    setTimeout(() => { this.autoPisition() },100);
   },
   updated (){
     this.autoPisition();
@@ -107,10 +89,25 @@ export default {
       mapElement.css('left', left + 'px');
       mapElement.css('top', top + 'px');
     },
-    testModal (){
-
-      this.DialogEvent = new MapDialog(DIALOG_DATA[0], this); // opt, scope
-
+    autoMove(end){
+      this.moveEvent.autoMove(this.path);
+    },
+    mouseenter(end){
+      if(end.block_type != "0"){
+        this.mouseleave();
+        this.$forceUpdate();
+        return ;
+      }
+      this.path = new Astar(this.map.$data, this.map.hero, end);
+      // _.each(this.path, block => {
+      //   this.map.$data.mapData[block.x][block.y].path = true;
+      //   this.$forceUpdate();
+      // })
+    },
+    mouseleave(){
+      // _.each(this.path, block => {
+      //   delete this.map.$data.mapData[block.x][block.y].path;
+      // })
     },
   }
 }
@@ -122,6 +119,7 @@ export default {
   position: relative;
   height: 428px;
   overflow: hidden;
+  background: black;
 }
 .map-block{
   display: inline-block;
@@ -133,14 +131,12 @@ export default {
 .map-block.road{
   background: white;
 }
-.map-block.path{
-  background: yellow;
+.map-block.path,.map-block:hover{
+  box-shadow: 0px 0px 4px red inset; 
+  cursor: pointer;
 }
 .map-block.hero{
   background: blue;
-}
-.map-block.end{
-  background: red;
 }
 .map-data .map{
   position: absolute;

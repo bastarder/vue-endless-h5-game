@@ -8,12 +8,6 @@ const SKILL_TABLE = [
     defaultTime : 1000,
     currentCoolTime : 1000,
     coolTime : 0,
-    restrict : [
-      "[attacker]{$mp} >= {5}",
-      function(skill, attacker, enemy){
-        return true;
-      }
-    ],
     eventList: [
       {
         weight: 1,

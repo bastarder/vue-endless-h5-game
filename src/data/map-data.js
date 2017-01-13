@@ -1,8 +1,3 @@
-const initEvent = function(data, opt){
-  opt.events = data;
-  return opt;
-}
-
 const MAP_TABLE = [
   {
     id: 8000001,
@@ -10,18 +5,22 @@ const MAP_TABLE = [
     logo: '',
     dsc: '一个几乎毫无危险的地方.',
     mapInitOption: {
-      row : 10,
-      col : 10,
-      lines : 2,    // 分支量;
+      row : 20,
+      col : 20,
+      lines : 10,    // 分支量;
       inflex : 0.5  // 曲折度;
     },
+    monsterList: [
+      5000001, 5000002
+    ],
     eventList: [
-
+      7000001
     ],    // 特殊事件触发点;
-    rule: [          // 生成规则;
-
-    ]
-    
+    rule: {          // 生成规则;
+      "5000001" : 4,
+      "5000002" : 5,
+      "7000001" : 1,
+    }
   },
   {
     id: 8000002,
@@ -33,9 +32,9 @@ const MAP_TABLE = [
     itemList: [       
 
     ],
-    rule: [         
+    rule: {
 
-    ]
+    }
     
   },
 ];

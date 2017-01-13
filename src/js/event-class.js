@@ -1,10 +1,11 @@
+import Unit from '../js/unit-class';
 
 const MapEvent = {
   data: [],
   type: ''
 }
 
-const MapDialog = function(opt, $VueScope){
+const MapDialog = function(opt, $VueScope, moveEvent){
   _.assign(this,_.cloneDeep(MapEvent));
 
   this.type = 'MapDialog';
@@ -23,6 +24,7 @@ const MapDialog = function(opt, $VueScope){
 
   this.end = function(){
     this.$el.modal('hide');
+    moveEvent.start();
   }
 
   this.next = function (){
@@ -67,20 +69,32 @@ const MapDialog = function(opt, $VueScope){
 
   _.assign(this,_.cloneDeep(opt));
 
-  return this;
+  this.start();
+
+  $VueScope.DialogEvent = this;
+
 }
 
 const MapFight = function(opt, $VueScope){
   _.assign(this,_.cloneDeep(MapEvent));
   this.type = 'MapFight';
   this.$VueScope = $VueScope;
+  this.data = {
+    monsters: [ new Unit(opt) ]
+  };
+  
   this.start = function(){
-    // 备份当前地图状态;
+    // 设置战斗数据
+    $VueScope.$store.state['EVENT_FIGHT_MONSTERS'] = this.data.monsters;
+
     // 跳转到 战斗场景;
+    location.href = "#/fight"
+    
     // 设置战斗返回路径;
-    // 
   }
   _.assign(this,_.cloneDeep(opt));
+  
+  this.start();
 }
 
 export {

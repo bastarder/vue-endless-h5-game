@@ -4,11 +4,19 @@ import Unit from './js/unit-class'
 import MAP_TABLE from './data/map-data'
 
 const UPDATE_HERO = "UPDATE_HERO";
+
 import MONSTER_DATA from './data/monster-data';
+import SKILL_TABLE from "./data/skill-data";
+import STATE_TABLE from "./data/state-data";
 
 Vue.use(Vuex)
 
-var hero = new Unit();
+var hero = new Unit(
+  {
+    $skills : _.cloneDeep(SKILL_TABLE),
+    $status :[]
+  }
+);
 var monster = new Unit();
 
 const store = new Vuex.Store({
@@ -18,8 +26,8 @@ const store = new Vuex.Store({
     mapList: _.cloneDeep(MAP_TABLE),
     NOTICE_ITEM: null,
     EVENT_FIGHT_MONSTERS:[
-      new Unit(MONSTER_DATA[0]),
-      new Unit(MONSTER_DATA[1])
+      new Unit(_.cloneDeep(MONSTER_DATA[0])),
+      new Unit(_.cloneDeep(MONSTER_DATA[1]))
     ],
     EVENT_MAP_DATA: null
   },

@@ -15,7 +15,16 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data(){
+    return {}
+  },
+  methods:{
+    test(){
+      console.log(123)
+    }
+  }
+}
 </script>
 
 <style>

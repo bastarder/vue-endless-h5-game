@@ -12,6 +12,7 @@ const MonsterAI = function(hero, monster){
   this.start = function(){
     let delay = 1100;
     this.startTimer = setInterval(() => {
+      console.log('fight')
       let skill = this.monster.EventAI && this.monster.EventAI() || this.normalAi();
       skill && Fight(this.monster, this.hero, skill) && console.info('AI自动释放:' , skill.name);
     },delay)

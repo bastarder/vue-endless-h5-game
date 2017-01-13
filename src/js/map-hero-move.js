@@ -1,0 +1,134 @@
+import CONSTANT from '../data/constant';
+import { MapDialog, MapFight } from '../js/event-class';
+
+const HeroMoveEvent = function(map, $VueScope){
+  let key_up    = 38,
+      key_down  = 40,
+      key_left  = 37,
+      key_right = 39,
+      move_delay = 300,
+      can_move = true,
+      block_type = CONSTANT.MAP_BLOCK_TYPE;
+
+  this.start = function(){
+    $(document).on('keyup', event => {
+      if(!event.keyCode){
+        return ;
+      }
+      this.autoMoveTimer && clearInterval(this.autoMoveTimer);
+      this.move(event.keyCode);
+    })
+  };
+
+  this.stop = function(){
+    $(document).off('keyup');
+    clearInterval(this.autoMoveTimer);
+  };
+
+  this.move = function(direction){
+    if(!can_move){
+      return ;
+    }
+
+    can_move = false;
+
+    setTimeout(()=>{
+      can_move = true;
+    },move_delay)
+    
+    let next_block,
+        x = map.hero.x,
+        y = map.hero.y
+
+    switch(direction){
+      case key_up    :
+        x--;
+        break;
+      case key_down  :
+        x++;
+        break;
+      case key_left  :
+        y--;
+        break;
+      case key_right :
+        y++;
+        break;
+    }
+
+    try{
+      next_block = map.$data.mapData[x][y];
+    }catch(e){
+      /*Pass*/
+    }
+
+    if(!next_block || next_block.block_type != block_type['ROAD']){
+      return false;
+    }
+
+    // 将当前格子设置为 Road;
+    map.hero.block_type = block_type['ROAD'];
+    // 将目标格子标识为 Hero;
+    next_block.block_type = block_type['HERO'];
+    // 提取event;
+    let [FEvent, DEvent] = [next_block.FEvent,next_block.DEvent];
+    // 战斗事件不应该被保留;
+    delete next_block.FEvent;
+    // 设置新的英雄位置;
+    map.hero = next_block;
+
+    // 更新视图;
+    $VueScope.$forceUpdate();
+
+    //判断 初始化 执行事件
+    if(FEvent){
+      this.stop();
+      FEvent = new MapFight(FEvent, $VueScope);
+    }else if(DEvent){
+      this.stop();
+      DEvent = new MapDialog(DEvent, $VueScope, this);
+    }
+
+  }
+
+  this.autoMoveTimer = null;
+
+  this.autoMove = function(path){
+    this.autoMoveTimer && clearInterval(this.autoMoveTimer);
+    let _path = _.cloneDeep(path);
+    this.autoMoveTimer = setInterval(()=>{
+
+      let next = _path.splice(0,1)[0],
+          x = map.hero.x,
+          y = map.hero.y,
+          direction;
+
+      switch(true){
+        case next.x < x:
+          direction = key_up
+          break;
+        case next.x > x:
+          direction = key_down
+          break;
+        case next.y < y:
+          direction = key_left
+          break;
+        case next.y > y:
+          direction = key_right
+          break;
+      }
+      
+      this.move(direction);
+      
+      if(_path.length < 1){
+        clearInterval(this.autoMoveTimer);
+      };
+
+    }, move_delay + 100);
+  }
+
+  this.start();
+
+  return this;
+}
+
+export default HeroMoveEvent;
