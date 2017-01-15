@@ -13,14 +13,13 @@ const SKILL_TABLE = [
         weight: 1,
         event : function(action, attacker){
           // this 指向 所发动的技能本身; { id: 1000001, name: 'XXXX' ....}
-          action.change('enemy_changeHp', 0 - attacker.$atk);
-          action.change('attacker_changeMp', 0 - 5);
+          action.change('enemy_changeHp', 0 - attacker.$atk - 10);
         }
       },
       {
         weight: 1,
         event : function(action){
-          action.change('attacker_changeHp', 10);
+          action.change('attacker_changeHp', 2);
         }
       }
     ]

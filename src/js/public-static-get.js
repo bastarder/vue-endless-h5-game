@@ -21,7 +21,7 @@ const PublicStaticGet = function(key){
   let record = Data[Head];
   return _.cloneDeep(_.find(record, {
     id: key
-  }));
+  })) || key;
 }
 
 export default PublicStaticGet;

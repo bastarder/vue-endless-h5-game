@@ -6,6 +6,7 @@ let Material = [
   {
     id: 3000001,
     name: '野草',
+    pile : true,
     label : [
       '材料'
     ],
@@ -14,6 +15,7 @@ let Material = [
   {
     id: 3000002,
     name: '浆果',
+    pile : true,
     label : [
       '食物','材料'
     ],

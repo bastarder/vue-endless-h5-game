@@ -53,7 +53,7 @@
               <!--{{ (skill.coolTime / 1000).toFixed(1) }} S-->
             </div>
             <cooltime-progress :value="skill.coolTime" :max="skill.currentCoolTime"></cooltime-progress>
-            <!--{{ skill.name }}-->
+            {{ skill.name }}
           </div>
         </template>
       </div>
@@ -86,14 +86,6 @@
         </div>
       </div>
       
-      <!--'background':'url(./src/assets/300000'+ (index+1) +'.png)', -->
-      <!--<div class="drop-list">
-        <span class="item tip">掉  落 列  表</span>
-        
-        <span class="item" v-for="(item,index) in 4" :style="{ 
-          'background-size' : '100%'}"></span>
-      </div>-->
-      
       <div class="skill-list">
         <span class="skill tip">技能列表</span>
         <template v-for="(skill,index) in monster.$skills">
@@ -103,11 +95,26 @@
               <!--{{ (skill.coolTime / 1000).toFixed(1) }} S-->
             </div>
             <cooltime-progress :value="skill.coolTime" :max="skill.currentCoolTime"></cooltime-progress>
-            <!--{{ skill.name }}-->
+            {{ skill.name }}
           </div>
         </template>
       </div>
 
+    </div>
+
+    <div class="col-xs-12" v-show="DropList.length">
+      <div class="drop-list">
+        <span v-for="(item, index) in DropList">
+          <input type="checkbox" v-show="false" :id="'item-' + index" :value="index" v-model="CheckDrop">
+          <label 
+            :class="['item', ~CheckDrop.indexOf(index) ? 'selected' : '']" 
+            :for="'item-' + index">
+            {{item[0] | itemKey('name')}} * {{item[1]}}
+          </label>
+        </span>
+      </div>
+      {{CheckDrop}}
+      <button type="button" class="btn btn-sm btn-success" @click="heroGetItem">获取</button>
     </div>
 
     <div class="col-xs-12">
@@ -119,7 +126,8 @@
       <div>
         <button type="button" class="btn btn-large btn-danger" @click="start" v-if="startButton">开始战斗</button>
         <button type="button" class="btn btn-large btn-danger" @click="next" v-if="nextButton">继续战斗</button>
-        <button type="button" class="btn btn-large btn-danger" @click="end" v-if="endButton">结束战斗</button>
+        <button type="button" class="btn btn-large btn-danger" @click="end(true)" v-if="endButton">结束战斗</button>
+        <button type="button" class="btn btn-large btn-danger" @click="test">测试战果</button>
       </div>
 
     </div>
@@ -143,26 +151,28 @@
         startButton : false,
         nextButton : false,
         endButton : false,
+        DropList : [],
+        CheckDrop : [],
       }
     },
     created() {
       // 实例创建完毕, 获取战斗信息;
       this.hero = this.$store.state.hero;
       this.monsters = this.$store.state.EVENT_FIGHT_MONSTERS;
-      this.next();
+      this.monsters ? this.next() : (location.href = '#/');
     },
     watch : {
-      'hero.$alive' : function(alive, oldVal){
-        if(!alive){
-          console.warn('英雄死亡, 战斗失败');
-          this.end(false);
-        }
+      hero : {
+        handler: function(item){
+          item && !item.$alive && this.overFight(false);
+        },
+        deep: true
       },
-      'monster.$alive' : function(alive, oldVal){
-        if(!alive){
-          console.warn('敌人死亡, 战斗成功');
-          this.end(true);
-        }
+      monster : {
+        handler: function(item){
+          item && !item.$alive && this.overFight(true);
+        },
+        deep: true
       }
     },
     computed : {
@@ -174,12 +184,22 @@
     },
     methods : {
       test (){
-        // console.log(this.hero.$package[0].num)
-        // this.$forceUpdate();
-        this.hero.$package.push({
-          name: 'Test',
-          num : (Math.random() * 1000).toFixed(0)
+        this.DropList = this.monster.dieDrop(this.hero);
+        this.CheckDrop = _.range(this.DropList.length);
+        // this.hero.$package.push({
+        //   name: 'Test',
+        //   num : (Math.random() * 1000).toFixed(0)
+        // })
+      },
+      heroGetItem(){
+        //  this.DropList = this.monster.dieDrop(this.hero);
+        // this.CheckDrop = _.range(this.DropList.length);
+        let list = [];
+        _.each(this.CheckDrop, index => {
+          list.push(this.DropList[Number(index)])
         })
+        this.hero.getItem(list);
+        this.DropList = [];
       },
       start (){
         this.startButton = false;
@@ -188,23 +208,30 @@
         this.SkillEvent.start();
         this.MonsterAI.start();
       },
-      end (win){
+      overFight (win){
         this.SkillEvent.end();
         this.MonsterAI.end();
-        if(this.round + 1 >= this.monsters.length){
-          this.endButton = true;
-        }else{
-          this.nextButton = true;
+
+        this.round + 1 >= this.monsters.length ? this.endButton = true : this.nextButton = true;
+
+        if(!win){
+          this.end();
+          return ;
         }
-        
-        if(win){
-          location.href = '#/map-active';
-        }else{
+
+        // let DropList = FightGetDropList(this.monster); 
+
+      },
+      end(backToMap){
+        this.$store.state.EVENT_FIGHT_MONSTERS = null;
+        if(!backToMap){
+          this.hero.reset();
           this.$store.state.EVENT_MAP_DATA = null;
           location.href = '#/';
+          // localstorage "您已死亡";
+          return ;
         }
-       
-        // MonsterAI.end();
+        location.href = '#/map-active';
       },
       next (){
         this.nextButton = false;
@@ -213,8 +240,9 @@
         this.monster = this.monsters[this.round];
       }
     },
-    mounted (){
-
+    destroyed (){
+      this.SkillEvent && this.SkillEvent.end();
+      this.MonsterAI && this.MonsterAI.end();
     }
   }
 </script>
@@ -309,6 +337,12 @@
    margin-left: 9px;
    border-radius: 4px;
    box-shadow: 0px 0px 2px gray;
+   vertical-align: top;
+   cursor: pointer;
+ }
+
+ .drop-list .item.selected{
+   border: 3px solid green;
  }
 
  .game-fight .skill.tip,.game-fight .item.tip{

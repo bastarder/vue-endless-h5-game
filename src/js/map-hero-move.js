@@ -6,7 +6,7 @@ const HeroMoveEvent = function(map, $VueScope){
       key_down  = 40,
       key_left  = 37,
       key_right = 39,
-      move_delay = 300,
+      move_delay = 100,
       can_move = true,
       block_type = CONSTANT.MAP_BLOCK_TYPE;
 
@@ -101,6 +101,11 @@ const HeroMoveEvent = function(map, $VueScope){
           x = map.hero.x,
           y = map.hero.y,
           direction;
+          
+      if(!next){
+        this.autoMoveTimer && clearInterval(this.autoMoveTimer);
+        return ;
+      }
 
       switch(true){
         case next.x < x:

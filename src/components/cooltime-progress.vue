@@ -14,7 +14,7 @@
 export default {
   props: [
     'value',
-    'max'
+    'max',
   ],
   computed : {
     right (){
@@ -33,7 +33,6 @@ export default {
       }else{
         var rotate = 0;
       }
-      
       return 'rotate(' + rotate + 'deg)';
     }
   }

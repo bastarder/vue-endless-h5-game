@@ -12,9 +12,7 @@
               'hero': block.block_type == '1' ,
               'end' : block.block_type == '3' ,
             }"
-            @click="autoMove(block)"
-            @mouseenter="mouseenter(block)"
-            @mouseleave="mouseleave">
+            @click="autoMove(block)">
             <span v-if="block.FEvent">战</span>
             <span v-if="block.DEvent">话</span>
           </span>
@@ -75,39 +73,26 @@ export default {
   updated (){
     this.autoPisition();
   },
+  destroyed(){
+    this.moveEvent && this.moveEvent.stop();
+  },
   methods : {
     autoPisition (){
-      let [X,Y,Bx,By,row,col] = [628,428,40,40,this.map.$data.row,this.map.$data.col];
-      let mapElement = $('.map-data .map');
-      let hero = this.map.hero;
-      let middleLeft = ((X - Bx * row)/2);
-      let middleTop = ((Y - By * col)/2);
-      let Ky = hero.x - (row - 1)/2;
-      let Kx = hero.y - (col - 1)/2;
-      let left = middleLeft - Kx * Bx;
-      let top = middleTop - Ky * By;
-      mapElement.css('left', left + 'px');
-      mapElement.css('top', top + 'px');
+      let $m = $('.game-map-active'),
+          $b = $($('.map-block')[0]),
+          Bx = $b.width(),
+          By = $b.height(),
+          hero = this.map.hero;
+      let { row, col } = this.map.$data;
+      $('.map-data .map').css({
+        'left' : ((($m.width() - Bx * row)/2) - (hero.y - (col - 1)/2) * Bx) + 'px',
+        'top' : ((($m.height() - By * col)/2) - (hero.x - (row - 1)/2) * By) + 'px'
+      })
     },
-    autoMove(end){
-      this.moveEvent.autoMove(this.path);
-    },
-    mouseenter(end){
-      if(end.block_type != "0"){
-        this.mouseleave();
-        this.$forceUpdate();
-        return ;
-      }
-      this.path = new Astar(this.map.$data, this.map.hero, end);
-      // _.each(this.path, block => {
-      //   this.map.$data.mapData[block.x][block.y].path = true;
-      //   this.$forceUpdate();
-      // })
-    },
-    mouseleave(){
-      // _.each(this.path, block => {
-      //   delete this.map.$data.mapData[block.x][block.y].path;
-      // })
+    autoMove (end){
+      this.moveEvent.autoMove(
+        new Astar(this.map.$data, this.map.hero, end)
+      );
     },
   }
 }

@@ -2,9 +2,10 @@ import { EXP_TABLE } from "../data/hero-data";
 import SKILL_TABLE from "../data/skill-data";
 import STATE_TABLE from "../data/state-data";
 import { ITEM_TABLE } from "../data/item-data";
-import Vue from "vue";
 
-import CreateMonster from './create-monster'
+import CreateMonster from './create-monster';
+import { GetRange, GetRandom } from './public-random-range';
+import PGET from '../js/public-static-get';
 
 class Unit {
   constructor(obj = {}) {
@@ -158,6 +159,61 @@ class Unit {
           break;
       }
     })
+
+  }
+
+  reset(){
+    this.$alive = true;
+    this.$hp = this.$maxHp;
+    this.$mp = this.$mp;
+  }
+
+  // 怪物掉落
+  dieDrop(getter){
+    // $dropList : [
+    //   // 物品ID, 数量范围, 几率
+    //   [3000001, [3, 10], 1],
+    //   [3000002, 5, 0.3],
+    //   [3000003, 1, 0.5],
+    //   ['gold',[1, 80], 1],
+    //   ['exp', 1, 1]
+    // ]
+    let list = [];
+
+    _.each(this.$dropList, item => {
+      let [id, num, odds] = item;
+
+      if(!GetRandom(odds)){
+        return ;
+      }
+
+      num = GetRange(num);
+
+      if(num === 0){
+        return ;
+      }
+
+      list.push(
+        [id, num]
+      )
+    })
+
+    return list;
+  }
+
+  // 获得物品
+  getItem(list){
+    // pile
+    console.log(list);
+  }
+
+  // 装备
+  equip(){
+
+  }
+
+  // 卸下
+  demount(){
 
   }
 }
