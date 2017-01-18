@@ -17,12 +17,10 @@ var hero = new Unit(
     $status :[]
   }
 );
-var monster = new Unit();
 
 const store = new Vuex.Store({
   state: {
     hero,
-    monster,
     mapList: _.cloneDeep(MAP_TABLE),
     NOTICE_ITEM: null,
     EVENT_FIGHT_MONSTERS:[
@@ -33,7 +31,9 @@ const store = new Vuex.Store({
   },
   mutations: {
     [UPDATE_HERO] (state, obj) {
-      state.hero = obj;
+      Vue.set(state.hero, '$package', [])
+      console.log(obj);
+      Vue.set(state.hero, '$package', obj)
     }
   }
 })

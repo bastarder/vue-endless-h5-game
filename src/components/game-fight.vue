@@ -186,10 +186,6 @@
       test (){
         this.DropList = this.monster.dieDrop(this.hero);
         this.CheckDrop = _.range(this.DropList.length);
-        // this.hero.$package.push({
-        //   name: 'Test',
-        //   num : (Math.random() * 1000).toFixed(0)
-        // })
       },
       heroGetItem(){
         //  this.DropList = this.monster.dieDrop(this.hero);

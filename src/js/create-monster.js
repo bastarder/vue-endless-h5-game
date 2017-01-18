@@ -43,6 +43,7 @@ const CreateMonster = function(opt = {}){
   option.$mp = option.$maxMp;
 
   // 对象化 状态,技能;
+  !option.$skills && (option.$skills = [1000001])
   option.$skills = _.map(option.$skills,function(id){
     return PublicStaticGet(id);
   });

@@ -1,12 +1,15 @@
 <template>
-  <div class="component-item" @mouseover="mouseover" @mouseleave="mouseleave" @mousedown="mousedown($event)">
-    <div class="item-name" >{{ item.name }}</div>
-    <div class="badge">{{ item.num }}</div>
-    <ul class="dropdown-menu item-menu">
-      <li v-for="action in 5">
-        <a>Action-{{action}}</a>
-      </li>
-    </ul>
+  <div style="display: inline-block;">
+    <div class="component-item" v-if="item" @mouseover="mouseover" @mouseleave="mouseleave" @mousedown="mousedown($event)">
+      <slot name="item-name"></slot>
+      <slot name="badge"></slot>
+      <ul class="dropdown-menu item-menu">
+        <li v-for="action in 5">
+          <a>Action-{{action}}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="component-item" v-else></div>
   </div>
 </template>
 

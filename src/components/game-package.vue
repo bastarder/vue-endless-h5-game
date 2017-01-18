@@ -1,13 +1,17 @@
 <template>
   <div class="game-package shadow-box">
+    <span>
+      金币:{{this.hero.$resource.gold}}
+      宝石:{{this.hero.$resource.gem}}
+    </span>
     <div class="list">
-
-      <template v-for="(item, index) in hero.$package">
-        <component-item :item="item" :position-index="'$package|' + index"></component-item>
+      <template v-for="(item, index) in hero.$package" >
+        <component-item :item="item" :position-index="'$package|' + index">
+          <span class="item-name" slot="item-name">{{item ? item.name : ''}}</span>
+          <span class="badge" slot="badge">{{item ? item.num : ''}}</span>
+        </component-item>
       </template>
-
     </div>
-
   </div>
 </template>
 
@@ -24,6 +28,14 @@ export default {
     // 实例创建完毕, 获取战斗信息;
     this.hero = this.$store.state.hero;
     this.info = this.hero.$package[0];
+  },
+  watch: {
+      hero : {
+        handler: function(item){
+          this.$forceUpdate();
+        },
+        deep: true
+      }
   },
   methods :{
     // @drop="drop" 

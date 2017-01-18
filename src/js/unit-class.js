@@ -38,7 +38,7 @@ class Unit {
     }
     this.$status = [];
     this.$skills = [];  // 技能列表
-    this.$package = _.cloneDeep(ITEM_TABLE)
+    this.$package = new Array(10);
 
     switch(obj.$type){
       case 'Monster' : 
@@ -204,7 +204,59 @@ class Unit {
   // 获得物品
   getItem(list){
     // pile
+
     console.log(list);
+    let fullPackage = [];
+
+    _.each(list,i => {
+    
+      let item = PGET(i[0]);
+      let num = i[1];
+      switch(item){
+        case "gold":
+          this.$resource.gold += num;
+          return ;
+        case "gem":
+          this.$resource.gem += num;
+          return ;
+        case "exp":
+          this.getExp(num)
+          return ;
+      }
+
+      let packItem = _.find(this.$package,{ id: item.id });
+      let nextIndex = _.findIndex(this.$package, item => !item);
+      
+      if(item.pile){
+        item.num = num;
+        // 可堆叠
+        if(packItem){
+          // 存在
+          packItem.num += num;
+        }else{
+          // 不存在
+          if(~nextIndex){
+            // 有空位
+            this.$package[nextIndex] = item;
+          }else{
+            // 没空位
+            fullPackage.push(i);
+          }
+        }
+      }else{
+        // 不可堆叠
+        if(~nextIndex){
+          // 有空位
+          this.$package[nextIndex] = item;
+        }else{
+          // 没空位
+          fullPackage.push(i);
+        }
+      }
+
+    });
+
+    return fullPackage;
   }
 
   // 装备
