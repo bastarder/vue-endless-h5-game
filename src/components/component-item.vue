@@ -37,7 +37,18 @@ export default {
             "dir2": "left",
             "context": $("#router-view")
         },
-        text: "test"
+        text: (()=>{
+          let str = '<div>'
+          _.each(this.item.equip, (v,k) => {
+            if(typeof v === "string"){
+              str += `<div>${k}:${Number(v)>0? "+" : "-" }${Number(v) * 100}%</div>`
+            }else{
+              str += `<div>${k}:${Number(v)>0? "+" : "-" }${v}</div>`
+            }
+          })
+          str +="</div>"
+          return str;
+        })()
       });
     },
     mouseleave (){

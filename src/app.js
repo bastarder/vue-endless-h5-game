@@ -14,6 +14,7 @@ import GameProgress from './components/game-progress.vue'
 import CooltimeProgress from './components/cooltime-progress.vue'
 import ComponentItem from './components/component-item.vue'
 
+
 Vue.component('App', App)
 Vue.component('game-header', GameHeader)
 Vue.component('game-bottom', GameBottom)

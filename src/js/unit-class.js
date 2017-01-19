@@ -12,33 +12,61 @@ class Unit {
     this.$type = 1;      // 单位类型
     this.$showName = 'unit1' // 展示名称
     this.id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
-    this.$hp = 600;       // 当前生命值
-    this.$mp = 400;       // 当前魔法值
-    this.$maxHp = 600;    // 生命最大值
-    this.$maxMp = 400;    // 魔法最大值
     this.$exp = 1;      // 当前经验
     this.$maxExp = 5;   // 升级经验
     this.$level = 5;    // 等级
     this.$alive = true;
+    this.$status = [];
+    this.$skills = [];  // 技能列表
+    this.$package = new Array(10);
     this.$resource = {
       gold : 999,
       gem : 111,
-    },
-    this.$atk = 10,     // 攻击
-    this.$def = 10,     // 防御
-    this.$str = 10,     // 力量
-    this.$dex = 10,     // 敏捷
-    this.$con = 10,     // 体质
-    this.$int = 10,      // 智力
+    };
+
+
+    // 属性方面
+    this.$hp          = 600;  // 当前生命值
+    this.$mp          = 400;  // 当前魔法值
+    this.$maxHp       = 600;  // 生命最大值
+    this.$maxMp       = 400;  // 魔法最大值
+    this.$atk         = 10;   // 攻击
+    this.$def         = 10;   // 防御
+    this.$str         = 10;   // 力量
+    this.$dex         = 10;   // 敏捷
+    this.$con         = 10;   // 体质
+    this.$int         = 10;   // 智力
+    this.$critical    = 3; // 暴击几率
+    this.$dodge       = 5; // 闪避几率
+    this.$coolTimePer = 0;    // 冷却缩短
+
+    this.$attrUp = { // 左静,右动; 每次结束后应清空动态;
+      $maxHp       : [ [0,0],[0,0] ],
+      $maxMp       : [ [0,0],[0,0] ],
+      $atk         : [ [0,0],[0,0] ],
+      $def         : [ [0,0],[0,0] ],
+      $str         : [ [0,0],[0,0] ],
+      $dex         : [ [0,0],[0,0] ],
+      $con         : [ [0,0],[0,0] ],
+      $int         : [ [0,0],[0,0] ],
+      $critical    : [ [0,0],[0,0] ],
+      $dodge       : [ [0,0],[0,0] ],
+      $coolTimePer : [ [0,0],[0,0] ]
+    }
+
     this.$attrGrow = {
+      maxHp : 10,
+      maxMp : 10,
+      atk : 5,
+      def : 2,
       str : 1,     // 力量
       dex : 2,     // 敏捷
       con : 3,     // 体质
       int : 4     // 智力
     }
-    this.$status = [];
-    this.$skills = [];  // 技能列表
-    this.$package = new Array(10);
+
+    // 装备
+    this.$equipments = [0,0,0,0,0,0,0,0,0,0,0];
 
     switch(obj.$type){
       case 'Monster' : 
@@ -52,6 +80,22 @@ class Unit {
         break;
     }
 
+  }
+  getSnapshoot(key) {
+    let list = [ '$atk','$def', '$str', '$dex', '$con', '$int', '$maxHp', '$maxMp', '$critical', '$dodge', '$coolTimePer'];
+    
+    if(!~list.indexOf(key)){
+      return this[key];
+    }
+
+    let baseV = this[key];
+    let staticUp = this.$attrUp[key][0];
+    let dynamicUp = this.$attrUp[key][1];
+    
+    let fixUp = staticUp[0] + dynamicUp[0];
+    let perUp = staticUp[1] + dynamicUp[1];
+
+    return Math.floor(baseV + baseV * perUp + fixUp);
   }
 
   changeMp(value) {
@@ -223,28 +267,19 @@ class Unit {
           this.getExp(num)
           return ;
       }
-
+      // item : 新增物品 , num : 新曾数量 , packItem : 背包已存在的相同物品 , nextIndex : 空位
       let packItem = _.find(this.$package,{ id: item.id });
       let nextIndex = _.findIndex(this.$package, item => !item);
-      
-      if(item.pile){
-        item.num = num;
-        // 可堆叠
-        if(packItem){
-          // 存在
-          packItem.num += num;
-        }else{
-          // 不存在
-          if(~nextIndex){
-            // 有空位
-            this.$package[nextIndex] = item;
-          }else{
-            // 没空位
-            fullPackage.push(i);
-          }
-        }
+
+      // item.pile && (item.num = num);
+      item.num = num
+
+      // 可堆叠
+      if(packItem && item.pile){
+        // 存在
+        packItem.num += num;
       }else{
-        // 不可堆叠
+        // 不存在
         if(~nextIndex){
           // 有空位
           this.$package[nextIndex] = item;
@@ -254,20 +289,80 @@ class Unit {
         }
       }
 
+
     });
 
     return fullPackage;
   }
 
   // 装备
-  equip(){
+  equip(item, index){
+
+    let upString = item.equip;
+    // 非装备,无法装备;
+    if(!upString){
+      return ;
+    }
+    //0武器 1护肩 2鞋子 3腰带 4上衣 5绑腿 6戒指 7护腕 8项链 9辅助槽 10魔法槽
+    if(this.$equipments[item.equipType]){
+      return false;
+    }
+
+    this.$equipments[item.equipType] = item;
+
+    // 删除包裹中的装备, 如果已有装备, 卸载装备;
+
+    // 更新属性;
+    _.each(upString,(value, key) => {
+      if(key === '$skills' || key === '$status'){
+        _.each(value, id => {
+          if(!_.find(this[key],{id})){
+            let newSS = PGET(id);
+            newSS.keep = true;
+            this[key].push(newSS);
+          }
+        })
+      }else{
+        if(typeof value === "string"){
+          // per
+          this.$attrUp[key][0][1] += Number(value);
+        }else{
+          // fix
+          this.$attrUp[key][0][0] += value;
+        }
+      }
+    })
 
   }
 
   // 卸下
-  demount(){
+  demount(type){
+    let item = this.$equipments[type];
+    this.$equipments[type] = 0;
+    if(!item){
+      return ;
+    }
+    let upString = item.equip;
+
+    _.each(upString,(value, key) => {
+      if(key === '$skills' || key === '$status'){
+        _.each(value, id => {
+          let index = _.findIndex(this[key],{id});
+          ~index && this[key].splice(index,1);
+        })
+      }else{
+        if(typeof value === "string"){
+          // per
+          this.$attrUp[key][0][1] -= Number(value);
+        }else{
+          // fix
+          this.$attrUp[key][0][0] -= value;
+        }
+      }
+    })
 
   }
+
 }
 
 export default Unit;

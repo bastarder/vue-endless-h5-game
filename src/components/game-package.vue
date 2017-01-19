@@ -74,7 +74,7 @@ export default {
                     </span>
                   </div>
                   <div class="dsc">
-                    ${item.dsc}
+                    ${item.equip}
                   </div>
                 </div>`
       });

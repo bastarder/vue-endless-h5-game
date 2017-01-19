@@ -6,7 +6,7 @@ const HeroMoveEvent = function(map, $VueScope){
       key_down  = 40,
       key_left  = 37,
       key_right = 39,
-      move_delay = 100,
+      move_delay = 300,
       can_move = true,
       block_type = CONSTANT.MAP_BLOCK_TYPE;
 

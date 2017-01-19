@@ -113,7 +113,7 @@
           </label>
         </span>
       </div>
-      {{CheckDrop}}
+      <span v-if="this.fullTip">背包已满!</span>
       <button type="button" class="btn btn-sm btn-success" @click="heroGetItem">获取</button>
     </div>
 
@@ -188,14 +188,16 @@
         this.CheckDrop = _.range(this.DropList.length);
       },
       heroGetItem(){
-        //  this.DropList = this.monster.dieDrop(this.hero);
-        // this.CheckDrop = _.range(this.DropList.length);
+        this.fullTip = false;
         let list = [];
         _.each(this.CheckDrop, index => {
           list.push(this.DropList[Number(index)])
         })
-        this.hero.getItem(list);
-        this.DropList = [];
+        this.DropList = this.hero.getItem(list);
+        if(this.DropList.length > 0){
+          this.fullTip = true;
+          this.CheckDrop = _.range(this.DropList.length);
+        }
       },
       start (){
         this.startButton = false;
@@ -215,8 +217,8 @@
           return ;
         }
 
-        // let DropList = FightGetDropList(this.monster); 
-
+        this.DropList = this.monster.dieDrop(this.hero);
+        this.CheckDrop = _.range(this.DropList.length);
       },
       end(backToMap){
         this.$store.state.EVENT_FIGHT_MONSTERS = null;

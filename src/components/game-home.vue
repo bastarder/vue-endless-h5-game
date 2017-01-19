@@ -7,8 +7,8 @@
     <router-link class="link fight" to="/fight">
       <div class="title text-center">战 斗</div>
     </router-link>
-    <router-link class="link shop" to="/fight">
-      <div class="title text-center">商 店</div>
+    <router-link class="link shop" to="/hero-info">
+      <div class="title text-center">个人信息</div>
     </router-link>
     <!--<router-link class="link " to="/fight">铁匠铺</router-link>
     <router-link class="link " to="/fight">炼金术</router-link>-->
