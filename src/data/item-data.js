@@ -35,8 +35,8 @@ let Equipment = [
       '武器'
     ],
     equip : {
-      $atk: 50,
-      $skills : [1000001],
+      $atk: 5,
+      $skills : [1000004],
       $status : [2000001],
       $maxHp : "+0.1",
     },
@@ -52,12 +52,128 @@ let Equipment = [
     equip : {
       $def: 2,
       $atk: 5,
-      $skills : [1000001],
-      $status : [2000001],
-      $maxHp : "+0.2",
-      $maxMp : "+0.2",
+      $skills : [1000002],
+      $maxHp : 5,
+      $maxMp : 5,
     },
-    dsc : '最基础的武器.'
+    dsc : '用破布做成的护肩,只能挡风'
+  },
+  {
+    id: 3000005,
+    name: '破旧的马靴',
+    equipType : 2,
+    label: [
+      '鞋子'
+    ],
+    equip : {
+      $def: 2,
+      $atk: 1,
+      $maxHp : 5,
+      $maxMp : 5
+    },
+    dsc : '像是垃圾堆捡来的'
+  },
+  {
+    id: 3000006,
+    name: '破旧的腰带',
+    equipType : 3,
+    label: [
+      '腰带'
+    ],
+    equip : {
+      $def: 2,
+      $maxHp : 5,
+      $maxMp : 5,
+    },
+    dsc : '随处可见的腰带'
+  },
+  {
+    id: 3000007,
+    name: '破旧的上衣',
+    equipType : 4,
+    label: [
+      '上衣'
+    ],
+    equip : {
+      $def: 2,
+      $maxHp : 5,
+      $maxMp : 5,
+    },
+    dsc : '用破布做成的上衣,只能挡风'
+  },
+  {
+    id: 3000008,
+    name: '破旧的绑腿',
+    equipType : 5,
+    label: [
+      '绑腿'
+    ],
+    equip : {
+      $def: 2,
+      $maxHp : 5,
+      $maxMp : 5,
+    },
+    dsc : '用破布做成的护肩,只能挡风'
+  },
+  {
+    id: 3000009,
+    name: '草戒',
+    equipType : 6,
+    label: [
+      '戒指'
+    ],
+    equip : {
+      $def: 2,
+      $atk: 5,
+      $maxHp : 5,
+      $maxMp : 5,
+    },
+    dsc : '用野草编制的戒指'
+  },
+  {
+    id: 30000010,
+    name: '石头挂坠',
+    equipType : 7,
+    label: [
+      '项链'
+    ],
+    equip : {
+      $def: 2,
+      $atk: 5,
+      $maxHp : 5,
+      $maxMp : 5,
+    },
+    dsc : '或许这也是一种信仰吧!'
+  },
+  {
+    id: 30000011,
+    name: '野草手镯',
+    equipType : 8,
+    label: [
+      '手镯'
+    ],
+    equip : {
+      $def: 2,
+      $atk: 5,
+      $maxHp : 5,
+      $maxMp : 5,
+    },
+    dsc : '用野草编制的手镯'
+  },
+  {
+    id: 30000012,
+    name: '精致的铁剑',
+    equipType : 0,
+    label: [
+      '武器'
+    ],
+    equip : {
+      $def: 2,
+      $atk: 15,
+      $maxHp : 5,
+      $maxMp : 5,
+    },
+    dsc : '用野草编制的手镯'
   },
 ]
 

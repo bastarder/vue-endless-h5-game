@@ -8,13 +8,15 @@ const UPDATE_HERO = "UPDATE_HERO";
 import MONSTER_DATA from './data/monster-data';
 import SKILL_TABLE from "./data/skill-data";
 import STATE_TABLE from "./data/state-data";
+import {ITEM_TABLE} from './data/item-data';
 
 Vue.use(Vuex)
 
 var hero = new Unit(
   {
-    $skills : _.cloneDeep(SKILL_TABLE),
-    $status :[]
+    $skills : [_.cloneDeep(SKILL_TABLE[0])],
+    $status :[],
+    $package : _.cloneDeep(ITEM_TABLE).concat(0)
   }
 );
 
@@ -27,13 +29,12 @@ const store = new Vuex.Store({
       new Unit(_.cloneDeep(MONSTER_DATA[0])),
       new Unit(_.cloneDeep(MONSTER_DATA[1]))
     ],
-    EVENT_MAP_DATA: null
+    EVENT_MAP_DATA: null,
+    UPDATE: 1,
   },
   mutations: {
-    [UPDATE_HERO] (state, obj) {
-      Vue.set(state.hero, '$package', [])
-      console.log(obj);
-      Vue.set(state.hero, '$package', obj)
+    UPDATE(state){
+      Vue.set(state,'UPDATE', Math.random() + Date.now());
     }
   }
 })

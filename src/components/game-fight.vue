@@ -1,6 +1,9 @@
 <template>
   <div class="game-fight row">
     <div class="col-xs-12">
+      <component-hero-info></component-hero-info>
+    </div>
+    <div class="col-xs-12">
       <div class="round">
         <!--'background':'url(./src/assets/fight-round.png)', -->
         <span class="round-logo" :style="{ 
@@ -27,9 +30,9 @@
       </div>
 
       <div class="unit-info">
-        <game-progress :max="this.hero.$maxHp" :value="this.hero.$hp" pclass="progress-bar-danger" showTip="true"></game-progress>
-        <game-progress :max="this.hero.$maxMp" :value="this.hero.$mp" pclass="progress-bar-info" showTip="true"></game-progress>
-        <game-progress :max="this.hero.$maxExp" :value="this.hero.$exp" pclass="progress-bar-info progress-bar-striped" pstyle="height:6px;"></game-progress>
+        <game-progress :max="this.hero.getSnapshoot('$maxHp')" :value="this.hero.getSnapshoot('$hp')" pclass="progress-bar-danger" showTip="true"></game-progress>
+        <game-progress :max="this.hero.getSnapshoot('$maxMp')" :value="this.hero.getSnapshoot('$mp')" pclass="progress-bar-info" showTip="true"></game-progress>
+        <game-progress :max="this.hero.getSnapshoot('$maxExp')" :value="this.hero.getSnapshoot('$exp')" pclass="progress-bar-info progress-bar-striped" pstyle="height:6px;"></game-progress>
         <div class="state-list">
           <template v-for="state in hero.$status">
             <span 
@@ -70,8 +73,8 @@
       </div>
 
       <div class="unit-info">
-        <game-progress :max="monster.$maxHp" :value="monster.$hp" pclass="progress-bar-danger" showTip="true"></game-progress>
-        <game-progress :max="monster.$maxMp" :value="monster.$mp" pclass="progress-bar-info" showTip="true"></game-progress>
+        <game-progress :max="monster.getSnapshoot('$maxHp')" :value="monster.getSnapshoot('$hp')" pclass="progress-bar-danger" showTip="true"></game-progress>
+        <game-progress :max="monster.getSnapshoot('$maxMp')" :value="monster.getSnapshoot('$mp')" pclass="progress-bar-info" showTip="true"></game-progress>
         <div class="state-list">
           <template v-for="state in monster.$status">
             <span 
@@ -162,8 +165,12 @@
       this.monsters ? this.next() : (location.href = '#/');
     },
     watch : {
+      '$store.state.UPDATE' : function(item){
+        this.$forceUpdate();
+      },
       hero : {
         handler: function(item){
+          this.$forceUpdate();
           item && !item.$alive && this.overFight(false);
         },
         deep: true
@@ -204,12 +211,13 @@
         this.SkillEvent = new SkillEvent(this.hero, this.monster);
         this.MonsterAI = new MonsterAI(this.hero, this.monster);
         this.SkillEvent.start();
+        this.hero.startFight();
         this.MonsterAI.start();
       },
       overFight (win){
         this.SkillEvent.end();
         this.MonsterAI.end();
-
+        this.hero.endFight();
         this.round + 1 >= this.monsters.length ? this.endButton = true : this.nextButton = true;
 
         if(!win){
@@ -223,7 +231,6 @@
       end(backToMap){
         this.$store.state.EVENT_FIGHT_MONSTERS = null;
         if(!backToMap){
-          this.hero.reset();
           this.$store.state.EVENT_MAP_DATA = null;
           location.href = '#/';
           // localstorage "您已死亡";
@@ -241,6 +248,7 @@
     destroyed (){
       this.SkillEvent && this.SkillEvent.end();
       this.MonsterAI && this.MonsterAI.end();
+      this.hero.endFight();
     }
   }
 </script>

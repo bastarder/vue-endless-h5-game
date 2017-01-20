@@ -2,7 +2,7 @@ import { EXP_TABLE } from "../data/hero-data";
 import SKILL_TABLE from "../data/skill-data";
 import STATE_TABLE from "../data/state-data";
 import { ITEM_TABLE } from "../data/item-data";
-
+import store from '../store';
 import CreateMonster from './create-monster';
 import { GetRange, GetRandom } from './public-random-range';
 import PGET from '../js/public-static-get';
@@ -18,12 +18,15 @@ class Unit {
     this.$alive = true;
     this.$status = [];
     this.$skills = [];  // 技能列表
+    this.$flashCopy = {
+      $status: null,
+      $skills: null,
+    };
     this.$package = new Array(10);
     this.$resource = {
       gold : 999,
       gem : 111,
     };
-
 
     // 属性方面
     this.$hp          = 600;  // 当前生命值
@@ -66,7 +69,7 @@ class Unit {
     }
 
     // 装备
-    this.$equipments = [0,0,0,0,0,0,0,0,0,0,0];
+    this.$equipments = [0,0,0,0,0,0,0,0,0];
 
     switch(obj.$type){
       case 'Monster' : 
@@ -80,6 +83,33 @@ class Unit {
         break;
     }
 
+  }
+
+  startFight(){
+    console.info('Start Fight! copy state!');
+    _.each(this.$flashCopy, (v,k) => {
+      this.$flashCopy[k] = _.cloneDeep(this[k]);
+    })
+    _.each(this.$status, state => {
+      state.stateEvent && state.stateEvent(this);
+    })
+  }
+  endFight(){
+    // 清除状态事件;
+    _.each(this.$status, state => {
+      state.stateEventTimer && clearInterval(state.stateEventTimer);
+    })
+    // 恢复战前状态;
+    _.each(this.$flashCopy, (v,k) => {
+      v && (this[k] = v);
+    })
+    // 恢复buff加成;
+    _.each(this.$attrUp, v => {
+      v[0][1] = 0;
+      v[1][1] = 0;
+    })
+    // 如果死亡重置生命;
+    !this.$alive && this.reset();
   }
   getSnapshoot(key) {
     let list = [ '$atk','$def', '$str', '$dex', '$con', '$int', '$maxHp', '$maxMp', '$critical', '$dodge', '$coolTimePer'];
@@ -156,15 +186,15 @@ class Unit {
     return force? _.findIndex(this.$status,obj) : _.find(this.$status,obj);
   }
 
-  removeState(obj, force) {
-    if (!force) {
-      obj = _.findIndex(this.$status,obj);
-      if(obj === -1){
+  removeState(opt, isIndex) {
+    if (!isIndex) {
+      opt = _.findIndex(this.$status,{ id:opt.id });
+      if(opt === -1){
         return ;
       }
     };
-    this.$status[obj].stateEventTimer && clearInterval(this.$status[obj].stateEventTimer);
-    this.$status.splice(obj,1);
+    this.$status[opt].stateEventTimer && clearInterval(this.$status[opt].stateEventTimer);
+    this.$status.splice(opt,1);
   }
 
   changeState(changeList) {
@@ -303,14 +333,16 @@ class Unit {
     if(!upString){
       return ;
     }
-    //0武器 1护肩 2鞋子 3腰带 4上衣 5绑腿 6戒指 7护腕 8项链 9辅助槽 10魔法槽
+    //0武器 1护肩 2鞋子 3腰带 4上衣 5绑腿 6戒指 7护腕 8项链
+    console.log(1)
+    // 删除包裹中的装备, 如果已有装备, 卸载装备;
+    this.$package[index] = 0;
+
     if(this.$equipments[item.equipType]){
-      return false;
+      this.demount(item.equipType, index);
     }
 
     this.$equipments[item.equipType] = item;
-
-    // 删除包裹中的装备, 如果已有装备, 卸载装备;
 
     // 更新属性;
     _.each(upString,(value, key) => {
@@ -333,15 +365,33 @@ class Unit {
       }
     })
 
+    store.commit('UPDATE');
   }
 
   // 卸下
-  demount(type){
+  demount(type, index){
     let item = this.$equipments[type];
+
     this.$equipments[type] = 0;
+
     if(!item){
       return ;
     }
+
+    if(index){
+      this.$package[index] = item;
+    }else{
+      index = _.findIndex(this.$package,i => !i);
+      if(~index){
+        this.$package[index] = item;
+      }else{
+        console.warn('背包中没有空位,无法卸下装备');
+        this.$equipments[type] = item;
+        store.commit('UPDATE');
+        return false;
+      }
+    }
+    
     let upString = item.equip;
 
     _.each(upString,(value, key) => {
@@ -360,6 +410,8 @@ class Unit {
         }
       }
     })
+
+    store.commit('UPDATE');
 
   }
 

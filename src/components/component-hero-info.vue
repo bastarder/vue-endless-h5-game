@@ -12,12 +12,6 @@
           {{key}} : {{hero.getSnapshoot(key)}}
         </div>
       </div>
-      <div class="test">
-        <button type="button" class="btn btn-sm btn-info" @click="equip(3000003)">装备铁剑测试</button>
-        <button type="button" class="btn btn-sm btn-info"  @click="demount(0)">卸下铁剑测试</button>
-        <button type="button" class="btn btn-sm btn-info" @click="equip(3000004)">装备护肩测试</button>
-        <button type="button" class="btn btn-sm btn-info"  @click="demount(1)">卸下护肩测试</button>
-      </div>
     </div>
 </template>
 
@@ -28,6 +22,11 @@ export default {
     return {
       hero: {}
     }
+  },
+  watch:{
+    '$store.state.UPDATE' : function(item){
+      this.$forceUpdate();
+    },
   },
   created (){
     this.hero = this.$store.state.hero;
@@ -47,7 +46,5 @@ export default {
 </script>
 
 <style>
-  .component-hero-info .info{
 
-  }
 </style>

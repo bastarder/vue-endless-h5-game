@@ -4,8 +4,9 @@
       <slot name="item-name"></slot>
       <slot name="badge"></slot>
       <ul class="dropdown-menu item-menu">
-        <li v-for="action in 5">
-          <a>Action-{{action}}</a>
+        <li>
+          <a v-if="item.equip && this.position.$package" @click="equip">装备</a>
+          <a v-if="this.position.$equipments" @click="demount">卸下</a>
         </li>
       </ul>
     </div>
@@ -23,9 +24,29 @@ export default {
     return {}
   },
   created (){
-    // console.log(this.positionIndex);
+    let record = this.positionIndex.split("|");
+    this.position = {
+      $package : false,
+      $equipments : false,
+    }
+    this.position[record[0]] = true;
+    this.index = Number(record[1]);
+  },
+  watch:{
+    '$store.state.UPDATE' : function(){
+       this.$forceUpdate();
+     }
   },
   methods :{
+    equip(){
+      this.$store.state.hero.equip(this.item, this.index);
+      this.mouseleave();
+    },
+    demount(){
+      console.log('unload')
+      this.$store.state.hero.demount(this.index);
+      this.mouseleave();
+    },
     mouseover (){
       this.mouseleave();
       this.$store.state.NOTICE_ITEM = new PNotify({
@@ -46,6 +67,7 @@ export default {
               str += `<div>${k}:${Number(v)>0? "+" : "-" }${v}</div>`
             }
           })
+          str +=`<div>${this.item.dsc}</div>`
           str +="</div>"
           return str;
         })()
@@ -64,6 +86,10 @@ export default {
       setTimeout(()=>{
         document.oncontextmenu = right_click
       },50);
+      if(this.position.$equipments){
+        this.demount();
+        return;
+      }
       let target = $(event.target);
       let dropdown = [];
       let times = 0;

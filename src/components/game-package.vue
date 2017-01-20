@@ -30,12 +30,9 @@ export default {
     this.info = this.hero.$package[0];
   },
   watch: {
-      hero : {
-        handler: function(item){
-          this.$forceUpdate();
-        },
-        deep: true
-      }
+     '$store.state.UPDATE' : function(){
+       this.$forceUpdate();
+     }
   },
   methods :{
     // @drop="drop" 

@@ -25,7 +25,7 @@ Vue.component('component-item', ComponentItem)
 
 const app = new Vue({
   store,
-  router
+  router,
 }).$mount('#app')
 
 
