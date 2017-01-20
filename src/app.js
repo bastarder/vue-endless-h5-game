@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import filter from './filter'
 // directive
+import ItemToolTip from './directive/item-tool-tip'
 
 // components
 import App from './components/App.vue'

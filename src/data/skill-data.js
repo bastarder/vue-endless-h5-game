@@ -98,6 +98,24 @@ const SKILL_TABLE = [
         }
       }
     ]
+  },
+  {
+    id: 1000005,
+    name: '致死',
+    logo: '盾',
+    dsc : '造成大量伤害,有很大的几率一击必杀!',
+    label : ['测试2','伤害2'],
+    defaultTime : 10000,
+    currentCoolTime : 10000,
+    coolTime : 0,
+    eventList: [
+      {
+        weight: 1,
+        event : function(action){
+          action.change('enemy_changeHp', -999999);
+        }
+      }
+    ]
   }
 ];
 

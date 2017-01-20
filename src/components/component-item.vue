@@ -1,6 +1,6 @@
 <template>
   <div style="display: inline-block;">
-    <div class="component-item" v-if="item" @mouseover="mouseover" @mouseleave="mouseleave" @mousedown="mousedown($event)">
+    <div v-item-tool-tip="item" class="component-item" v-if="item" @mousedown="mousedown($event)">
       <slot name="item-name"></slot>
       <slot name="badge"></slot>
       <ul class="dropdown-menu item-menu">
@@ -40,42 +40,9 @@ export default {
   methods :{
     equip(){
       this.$store.state.hero.equip(this.item, this.index);
-      this.mouseleave();
     },
     demount(){
-      console.log('unload')
       this.$store.state.hero.demount(this.index);
-      this.mouseleave();
-    },
-    mouseover (){
-      this.mouseleave();
-      this.$store.state.NOTICE_ITEM = new PNotify({
-        title: this.item.name,
-        addclass: "notice-item",
-        shadow: false,
-        stack : {
-            "dir1": "down",
-            "dir2": "left",
-            "context": $("#router-view")
-        },
-        text: (()=>{
-          let str = '<div>'
-          _.each(this.item.equip, (v,k) => {
-            if(typeof v === "string"){
-              str += `<div>${k}:${Number(v)>0? "+" : "-" }${Number(v) * 100}%</div>`
-            }else{
-              str += `<div>${k}:${Number(v)>0? "+" : "-" }${v}</div>`
-            }
-          })
-          str +=`<div>${this.item.dsc}</div>`
-          str +="</div>"
-          return str;
-        })()
-      });
-    },
-    mouseleave (){
-      this.$store.state.NOTICE_ITEM && this.$store.state.NOTICE_ITEM.remove();
-      $('.notice-item').remove();
     },
     mousedown (event){
       if(event.button !== 2){
@@ -149,5 +116,48 @@ export default {
    border-radius: 0px;
    border-color: #eee;
  }
+
+ .item-tool-tip-pover{
+   background: rgba(12, 4, 37, 0.8);
+   border-radius: 4px;
+   padding: 6px;
+   color: white;
+   text-shadow: black 1px 1px;
+   font-size: 10px;
+ }
+
+  .item-tool-tip-pover .name,
+  .item-tool-tip-pover .equip,
+  .item-tool-tip-pover .nor,
+  .item-tool-tip-pover .spe{
+    margin-bottom: 10px;
+  }
+
+  .item-tool-tip-pover .name{
+    font-size: 14px;
+  }
+
+  .item-tool-tip-pover .equip{
+    color:#e7d0d0;
+  }
+
+  .item-tool-tip-pover .attr-name.skills{
+    color: yellow;
+  }
+
+  .item-tool-tip-pover .attr-name.status{
+    color: green;
+  }
+
+  .item-tool-tip-pover .attr-name.down,
+  .item-tool-tip-pover .attr-data.down{
+    color: gray;
+  }
+
+  .item-tool-tip-pover .dsc{
+    color: gray;
+  }
+
+
 
 </style>

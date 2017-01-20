@@ -38,7 +38,7 @@ let Equipment = [
       $atk: 5,
       $skills : [1000004],
       $status : [2000001],
-      $maxHp : "+0.1",
+      $maxHp : "-0.1",
     },
     dsc : '最基础的武器.'
   },
@@ -163,6 +163,7 @@ let Equipment = [
   {
     id: 30000012,
     name: '精致的铁剑',
+    grade: 1,
     equipType : 0,
     label: [
       '武器'
@@ -174,6 +175,31 @@ let Equipment = [
       $maxMp : 5,
     },
     dsc : '用野草编制的手镯'
+  },
+  {
+    id: 30000013,
+    name: '泰坦之刺',
+    grade: 4,
+    equipType : 0,
+    label: [
+      '武器'
+    ],
+    equip : {
+      $def: 900,
+      $atk: 12000,
+      $maxHp : '+2',
+      $maxMp : '+2',
+      $str         : '+0.3',
+      $dex         : 500,
+      $con         : 500,
+      $int         : 500,
+      $critical    : 20,
+      $dodge       : 20,
+      $coolTimePer : 35,
+      $skills : [1000005],
+      $status : [2000002],
+    },
+    dsc : '流传在世间,创世神的武器'
   },
 ]
 
