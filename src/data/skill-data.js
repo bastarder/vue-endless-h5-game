@@ -9,19 +9,10 @@ const SKILL_TABLE = [
     currentCoolTime : 1000,
     coolTime : 0,
     eventList: [
-      {
-        weight: 1,
-        event : function(action, attacker){
-          // this 指向 所发动的技能本身; { id: 1000001, name: 'XXXX' ....}
-          action.change('enemy_changeHp', 0 - attacker.$atk - 10);
-        }
-      },
-      {
-        weight: 1,
-        event : function(action){
-          action.change('attacker_changeHp', 2);
-        }
-      }
+      `[1]
+          enemy@changeHp@0-attacker.$atk-10;
+          attacker@changeHp@2
+      `
     ]
   },
   {
@@ -44,15 +35,7 @@ const SKILL_TABLE = [
       }
     ],
     eventList: [
-      {
-        weight: 1,
-        event : function(action){
-          action.change('attacker_changeState',[{
-            id: 2000001,
-            state: "REMOVE"
-          }])
-        }
-      }
+      `[1]enemy@changeState@[{ id: 2000001, state: "REMOVE" }]`
     ]
   },
   {
@@ -68,16 +51,10 @@ const SKILL_TABLE = [
       "[attacker]{$mp} >= {105}",
     ],
     eventList: [
-      {
-        weight: 1,
-        event : function(action){
-          action.change('attacker_changeMp', 0 - 105);
-          action.change('enemy_changeState',[{
-            id: 2000001,
-            state: "ADD"
-          }])
-        }
-      }
+      `[1]
+          enemy@changeState@[{ id: 2000001, state: "ADD" }];
+          enemy@changeMp@-105
+      `
     ]
   },
   {
@@ -90,13 +67,10 @@ const SKILL_TABLE = [
     currentCoolTime : 10000,
     coolTime : 0,
     eventList: [
-      {
-        weight: 1,
-        event : function(action){
-          action.change('enemy_changeHp', -100);
-          action.change('attacker_changeHp', -50);
-        }
-      }
+      `[1]
+          enemy@changeHp@-100;
+          attacker@changeHp@-50
+      `
     ]
   },
   {
@@ -109,12 +83,30 @@ const SKILL_TABLE = [
     currentCoolTime : 10000,
     coolTime : 0,
     eventList: [
-      {
-        weight: 1,
-        event : function(action){
-          action.change('enemy_changeHp', -999999);
-        }
-      }
+      `[1]enemy@changeHp@-999999`,
+    ]
+  },
+  {
+    id: 1000006,
+    name: '测试精简数据',
+    logo: '毒',
+    dsc : '简简单单的一击',
+    label : ['普攻','伤害'],
+    defaultTime : 1000,
+    currentCoolTime : 1000,
+    coolTime : 0,
+    eventList : [
+      `[1]enemy@changeHp@attacker.$atk`,
+      `[2]attacker@changeHp@2`,
+      `[3]
+          action@{action.state.isCritical === true};
+          attacker@{attacker.$hp > (attacker.$hp * 0.5)}
+       #
+          enemy@changeState@[{ id: 2000001, state: "ADD" }];
+          enemy@changeHp@attacker.$atk
+      `
+      ,
+      `[4]action@{action.state.isCritical = true}`,
     ]
   }
 ];

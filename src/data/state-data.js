@@ -9,7 +9,7 @@ const STATE_TABLE = [
     logo: '毒',
     color: 'black',
     dsc : '你中毒了,每回合将会减少HP!',
-    label : ['测试','状态'],
+    label : ['状态'],
     stateEvent : function(hero) {
       var self = this;
       var duration = 5;
@@ -35,16 +35,41 @@ const STATE_TABLE = [
     dsc : '坚守之盾,免疫50%伤害',
     label : ['测试','状态'],
     eventList: [
-      {
-        weight: 10,
-        event: function(action, attacker ,enemy){
-          if(action.enemy_changeHp){
-            action.change('enemy_changeHp', parseInt(action.enemy_changeHp * 0.5), true);
-          }
-        }
-      }
+      `[10]enemy@changeHp @ action.enemy_changeHp * 0.5 @ true`
     ]
-  }
+  },
+  {
+    id: 2000003,
+    name: '暴击伤害提升(50%)',
+    type: '1',
+    logo: '爆',
+    color: 'red',
+    dsc : '暴击伤害提升(50%)',
+    label : ['状态'],
+    eventList: [
+      `[10]
+           action@{action.state.isCritical === true}
+       #
+           enemy@changeHp@ action.enemy_changeHp * 1.5 @ true
+      `
+    ]
+  },
+  {
+    id: 2000004,
+    name: '反伤(30%)',
+    type: '2',
+    logo: '反',
+    color: 'red',
+    dsc : '反弹30%伤害',
+    label : ['测试','状态'],
+    eventList: [
+      `[10]
+           action@{action.enemy_changeHp}
+       #
+           attacker@changeHp@ action.enemy_changeHp * 0.3
+      `
+    ]
+  },
 ]
 
 export default STATE_TABLE

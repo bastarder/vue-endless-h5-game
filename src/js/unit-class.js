@@ -129,6 +129,7 @@ class Unit {
   }
 
   changeMp(value) {
+    value = parseInt(value);
     this.$mp = Math.min(this.$mp + value, this.$maxMp);
     if(this.$mp < 0){
       this.$mp = 0;
@@ -136,7 +137,7 @@ class Unit {
   }
 
   changeHp(value) {
-
+    value = parseInt(value);
     if(this.$hp <= 0){  // 判断单位是否存活;
       // console.warn('增加HP失败,目标单位已死亡!',this);
       return false;      

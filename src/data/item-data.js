@@ -178,28 +178,34 @@ let Equipment = [
   },
   {
     id: 30000013,
-    name: '泰坦之刺',
+    name: '无尽之刃',
     grade: 4,
     equipType : 0,
     label: [
       '武器'
     ],
     equip : {
-      $def: 900,
-      $atk: 12000,
-      $maxHp : '+2',
-      $maxMp : '+2',
-      $str         : '+0.3',
-      $dex         : 500,
-      $con         : 500,
-      $int         : 500,
+      $atk: 70,
       $critical    : 20,
-      $dodge       : 20,
-      $coolTimePer : 35,
-      $skills : [1000005],
-      $status : [2000002],
+      $status : [2000003],
     },
     dsc : '流传在世间,创世神的武器'
+  },
+  {
+    id: 30000014,
+    name: '反伤护甲',
+    grade: 3,
+    equipType : 4,
+    label: [
+      '上衣'
+    ],
+    equip : {
+      $def: 25,
+      $maxHp : 100,
+      $maxMp : 25,
+      $status : [2000004],
+    },
+    dsc : '哇!这么刺怎么穿上去的!'
   },
 ]
 

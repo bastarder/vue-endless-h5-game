@@ -4,6 +4,7 @@ import SkillAvailable from './skill-available'
 
 const Fight = (attacker, enemy, skill) => {
 
+
   // 判断是否可以行动;
   if(!SkillAvailable(skill, attacker, enemy)){
     return ;
@@ -25,9 +26,12 @@ const Fight = (attacker, enemy, skill) => {
   // 拼接父技能;
   _.each(event, skill => {
     _.each(skill.eventList, item => {
-      item.father = skill;
+      eventList.push({
+        father   : skill,
+        eventStr : item,
+        weight   : Number(item.match(/\[(\d+)\]/)[1])
+      })
     })
-    eventList = eventList.concat(skill.eventList || []);
   });
 
   // 排序;
@@ -36,9 +40,59 @@ const Fight = (attacker, enemy, skill) => {
   // 初始化行动对象;
   var action = new actionClass();
 
+  // 计算初始状态;
+  action.state = {
+    isCritical : false,
+    isMiss : false,
+    isMust : false,
+  }
+
+  let opt = {
+    attacker, enemy, action
+  };
+
   // 计算最终行动对象;
   _.each(eventList, item => {
-    item.event.apply(item.father, [action, attacker, enemy]);
+    let father = item.father;
+    var eventStr,ruleStr;
+
+      var str = item.eventStr.replace(/[\r\n\s]/g,"").replace(/\[(\d+)\]/,"").split('#');
+      if(str.length > 1){
+        ruleStr = str[0];
+        eventStr = str[1];
+      }else{
+        eventStr = str[0];
+      }
+
+      if(ruleStr){
+        ruleStr = ruleStr.split(';');
+        for(let i = 0; i<ruleStr.length; i++){
+          let [,target, func] = ruleStr[i].match(/(\w+)@\{([^]+)\}/)
+          if(!new Function(target,`return ${func};`)(opt[target])){
+            return ;
+          }
+        }
+      }
+
+      let funcStr = "";
+      _.each(eventStr.split(';'),(estr)=>{
+        let e = estr.match(/(\w+)@(\w+)@([^]+)/);
+        if(!e){
+          e = estr.match(/action@\{([^]+)\}/);
+          if(!e){
+            console.warn('不能识别的技能效果码!', item);
+            return 
+          };
+          funcStr += `${e[1]};`;
+        }else{
+          let [, target,func,parm] = e;
+          funcStr += `action.change('${target + '_' + func}',${parm.replace('@',',')});`;
+        }
+      })
+
+      new Function('action','attacker','enemy', funcStr ).apply(father, [action, attacker, enemy]);
+
+    // item.event.apply(item.father, [action, attacker, enemy]);
   })
 
   // 获取双方变更行动对象;
