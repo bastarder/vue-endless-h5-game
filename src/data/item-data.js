@@ -38,7 +38,7 @@ let Equipment = [
       $atk: 5,
       $skills : [1000004],
       $status : [2000001],
-      $maxHp : "-0.1",
+      $maxHp : [-10,1],
     },
     dsc : '最基础的武器.'
   },
@@ -203,7 +203,7 @@ let Equipment = [
       $def: 25,
       $maxHp : 100,
       $maxMp : 25,
-      $status : [2000004],
+      $status : [2000004, 2000002],
     },
     dsc : '哇!这么刺怎么穿上去的!'
   },

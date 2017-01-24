@@ -6,11 +6,11 @@ const MONSTER_DATA = [
     $type : MONSTER,
     $showName : '小野猪',
     id : 5000001,
-    $maxHp : 20,
+    $maxHp : 2000,
     $maxMp : 0,
-    $atk : 2,     
+    $atk : 40,     
     $def : 0,   
-    $status : [2000002],
+    $status : [2000002, 2000004],
     $dropList : [
       // 物品ID, 数量范围, 几率
       [3000001, [1,3], 1],
@@ -26,7 +26,7 @@ const MONSTER_DATA = [
     $type : MONSTER,
     $showName : '小牛',
     id : 5000002,
-    $maxHp : 50,
+    $maxHp : 5000,
     $maxMp : 0,
     $atk : 5,     
     $def : 0,   

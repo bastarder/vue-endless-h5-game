@@ -34,7 +34,7 @@ class Unit {
     this.$maxHp       = 600;  // 生命最大值
     this.$maxMp       = 400;  // 魔法最大值
     this.$atk         = 10;   // 攻击
-    this.$def         = 10;   // 防御
+    this.$def         = 0;   // 防御
     this.$str         = 10;   // 力量
     this.$dex         = 10;   // 敏捷
     this.$con         = 10;   // 体质
@@ -42,20 +42,9 @@ class Unit {
     this.$critical    = 3; // 暴击几率
     this.$dodge       = 5; // 闪避几率
     this.$coolTimePer = 0;    // 冷却缩短
-
-    this.$attrUp = { // 左静,右动; 每次结束后应清空动态;
-      $maxHp       : [ [0,0],[0,0] ],
-      $maxMp       : [ [0,0],[0,0] ],
-      $atk         : [ [0,0],[0,0] ],
-      $def         : [ [0,0],[0,0] ],
-      $str         : [ [0,0],[0,0] ],
-      $dex         : [ [0,0],[0,0] ],
-      $con         : [ [0,0],[0,0] ],
-      $int         : [ [0,0],[0,0] ],
-      $critical    : [ [0,0],[0,0] ],
-      $dodge       : [ [0,0],[0,0] ],
-      $coolTimePer : [ [0,0],[0,0] ]
-    }
+    this.$critiDmg = 1.5;  // 暴击伤害倍数;
+    this.$dmgDown = [0,0]; // 伤害减免;
+    this.$r = {};
 
     this.$attrGrow = {
       maxHp : 10,
@@ -83,6 +72,7 @@ class Unit {
         break;
     }
 
+    this.updateAttribute();
   }
 
   startFight(){
@@ -93,7 +83,9 @@ class Unit {
     _.each(this.$status, state => {
       state.stateEvent && state.stateEvent(this);
     })
+    this.updateAttribute();
   }
+
   endFight(){
     // 清除状态事件;
     _.each(this.$status, state => {
@@ -103,34 +95,71 @@ class Unit {
     _.each(this.$flashCopy, (v,k) => {
       v && (this[k] = v);
     })
-    // 恢复buff加成;
-    _.each(this.$attrUp, v => {
-      v[0][1] = 0;
-      v[1][1] = 0;
-    })
+    this.updateAttribute();
     // 如果死亡重置生命;
     !this.$alive && this.reset();
   }
-  getSnapshoot(key) {
-    let list = [ '$atk','$def', '$str', '$dex', '$con', '$int', '$maxHp', '$maxMp', '$critical', '$dodge', '$coolTimePer'];
-    
-    if(!~list.indexOf(key)){
-      return this[key];
+
+  updateAttribute(){
+    let hp_per = Math.min(this.$hp / (this.$r.$maxHp || this.$maxHp),1);
+    let mp_per = Math.min(this.$mp / (this.$r.$maxMp || this.$maxMp),1);
+    let promote = {
+      // 基础值 基础百分 高级值 高级百分
+      // ((默认 + 基础值) * (1 + 基础百分) + 高级值) * (1 +  高级百分)
+      $maxHp       : [0,0,0,0],
+      $maxMp       : [0,0,0,0],
+      $atk         : [0,0,0,0],
+      $def         : [0,0,0,0],
+      $str         : [0,0,0,0],
+      $dex         : [0,0,0,0],
+      $con         : [0,0,0,0],
+      $int         : [0,0,0,0],
+      $critical    : [0,0,0,0],
+      $dodge       : [0,0,0,0],
+      $coolTimePer : [0,0,0,0],
+      $critiDmg    : [0,0,0,0],
+      $dmgDown : [0,0],
     }
+    //powerUp, equip
+    let group = [];
+    _.each(this.$equipments,item => {
+      if(item && item.equip){
+        group.push(item.equip);
+      }
+    })
+    _.each(this.$status,item => {
+      if(item && item.powerUp){
+        group.push(item.powerUp);
+      }
+    })
+    _.each(group, item => {
+      _.each(item, (v,k) => {
+        if(promote[k]){
+          let index = 0,up = v;
+          if(typeof v === 'object'){
+            index = v[1];
+            up = v[0];
+          }
+          promote[k][index] += up;
+        }
+      })
+    })
 
-    let baseV = this[key];
-    let staticUp = this.$attrUp[key][0];
-    let dynamicUp = this.$attrUp[key][1];
-    
-    let fixUp = staticUp[0] + dynamicUp[0];
-    let perUp = staticUp[1] + dynamicUp[1];
-
-    return Math.floor(baseV + baseV * perUp + fixUp);
+    _.each(promote, (v,k) => {
+      if(k === '$dmgDown'){
+        this.$r[k] = v;
+        return ;
+      }
+      this.$r[k] = Math.floor(((this[k] + v[0]) * (1 + v[1] / 100) + v[2]) * (1 + v[3] / 100));
+    })
+    this.$hp = Math.floor(hp_per * this.$r.$maxHp) || 0;
+    this.$mp = Math.floor(mp_per * this.$r.$maxMp) || 0;
+    // console.log(this.$r);
   }
 
   changeMp(value) {
     value = parseInt(value);
-    this.$mp = Math.min(this.$mp + value, this.$maxMp);
+    this.$mp = Math.min(this.$mp + value, this.$r.$maxMp);
     if(this.$mp < 0){
       this.$mp = 0;
     }
@@ -143,7 +172,7 @@ class Unit {
       return false;      
     }
 
-    this.$hp = Math.min(this.$hp + value, this.$maxHp);  // 更新Hp的值;
+    this.$hp = Math.min(this.$hp + value, this.$r.$maxHp);  // 更新Hp的值;
 
     if(this.$hp <= 0){   // 判断更新后 单位是否存活;
       // console.warn('增加HP失败,目标单位已死亡!',this);
@@ -183,56 +212,56 @@ class Unit {
     console.warn('单位升级,当前经验值:',this.$exp,'当前等级:',this.$level,'下级所需经验:',this.$maxExp);
   }
 
-  getState(obj, force) {
-    return force? _.findIndex(this.$status,obj) : _.find(this.$status,obj);
+  getState(obj, isIndex) {
+    return isIndex ? _.findIndex(this.$status,obj) : _.find(this.$status,obj);
   }
 
-  removeState(opt, isIndex) {
+  removeList(key, opt, isIndex) {
     if (!isIndex) {
       opt = _.findIndex(this.$status,{ id:opt.id });
       if(opt === -1){
         return ;
       }
     };
-    this.$status[opt].stateEventTimer && clearInterval(this.$status[opt].stateEventTimer);
-    this.$status.splice(opt,1);
+    this[key][opt].stateEventTimer && clearInterval(this[key][opt].stateEventTimer);
+    this[key].splice(opt,1);
+    this.updateAttribute();
   }
 
   changeState(changeList) {
     var self = this;
     _.each(changeList,function(value){
       var id = value.id;
-      var index = self.getState({id}, true);
+      var state = self.getState({id});
       switch (value.state) {
         case "ADD":
-          if(index > -1){
+
+          if(state){
             break;
           }
 
-          var newState = _.cloneDeep(_.find(STATE_TABLE,{id}));
-          if(newState){
-            _.each(value.action,function(action){
-              newState[action[0]] = action[1]
-            });
-            newState.stateEvent && newState.stateEvent(self);
-            self.$status.push(newState);
-          }else{
-            console.warn("添加状态失败:",value);
-            break;
-          }
+          let newState = PGET(id);
+
+          _.each(value.action, i => {
+            newState[i[0]] = i[1]
+          });
+
+          newState.stateEvent && newState.stateEvent(self);
+          self.$status.push(newState);
         
           break;
         case "REMOVE":
-          self.removeState({id});
+          self.removeList('$status',{id});
           break;
         case "CHANGE":
-          if(index > -1){
-            _.each(value.action,function(action){
-              self.$status[index][action[0]] = action[1]
+          if(state){
+            _.each(value.action, i => {
+              self.$status[index][i[0]] = i[1]
             });
           }
           break;
       }
+      this.updateAttribute();
     })
 
   }
@@ -277,10 +306,10 @@ class Unit {
   }
 
   // 获得物品
-  getItem(list){
+  getItem(list, force){
     // pile
+    let unit = force ? this : _.cloneDeep(this);
 
-    console.log(list);
     let fullPackage = [];
 
     _.each(list,i => {
@@ -289,40 +318,39 @@ class Unit {
       let num = i[1];
       switch(item){
         case "gold":
-          this.$resource.gold += num;
+          unit.$resource.gold += num;
           return ;
         case "gem":
-          this.$resource.gem += num;
+          unit.$resource.gem += num;
           return ;
         case "exp":
-          this.getExp(num)
+          unit.getExp(num)
           return ;
       }
       // item : 新增物品 , num : 新曾数量 , packItem : 背包已存在的相同物品 , nextIndex : 空位
-      let packItem = _.find(this.$package,{ id: item.id });
-      let nextIndex = _.findIndex(this.$package, item => !item);
+      let packItem = _.find(unit.$package,{ id: item.id });
+      let nextIndex = _.findIndex(unit.$package, item => !item);
 
-      // item.pile && (item.num = num);
-      item.num = num
+      item.pile && (item.num = num);
+      // item.num = num
 
       // 可堆叠
       if(packItem && item.pile){
         // 存在
-        packItem.num += num;
+        packItem.num = (packItem.num || 0) + num;
       }else{
         // 不存在
         if(~nextIndex){
           // 有空位
-          this.$package[nextIndex] = item;
+          unit.$package[nextIndex] = item;
         }else{
           // 没空位
           fullPackage.push(i);
         }
       }
 
-
     });
-
+    store.commit('UPDATE');
     return fullPackage;
   }
 
@@ -351,21 +379,13 @@ class Unit {
         _.each(value, id => {
           if(!_.find(this[key],{id})){
             let newSS = PGET(id);
-            newSS.keep = true;
+            newSS.show = false;
             this[key].push(newSS);
           }
         })
-      }else{
-        if(typeof value === "string"){
-          // per
-          this.$attrUp[key][0][1] += Number(value);
-        }else{
-          // fix
-          this.$attrUp[key][0][0] += value;
-        }
       }
     })
-
+    this.updateAttribute();
     store.commit('UPDATE');
   }
 
@@ -398,22 +418,26 @@ class Unit {
     _.each(upString,(value, key) => {
       if(key === '$skills' || key === '$status'){
         _.each(value, id => {
-          let index = _.findIndex(this[key],{id});
-          ~index && this[key].splice(index,1);
+          this.removeList(key,{id});
         })
-      }else{
-        if(typeof value === "string"){
-          // per
-          this.$attrUp[key][0][1] -= Number(value);
-        }else{
-          // fix
-          this.$attrUp[key][0][0] -= value;
-        }
       }
     })
-
+    this.updateAttribute();
     store.commit('UPDATE');
+    
+  }
 
+  isEnoughInPackage(list){
+    // [
+    //   [200001, 5]
+    // ]
+    return _.every(list, item => {
+      let pitem = _.find(this.$package,{id:item[0]});
+      if(!pitem){
+        return false;
+      }
+      return item[1] <= (pitem.num || 1);
+    })
   }
 
 }

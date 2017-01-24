@@ -30,9 +30,9 @@
       </div>
 
       <div class="unit-info">
-        <game-progress :max="this.hero.getSnapshoot('$maxHp')" :value="this.hero.getSnapshoot('$hp')" pclass="progress-bar-danger" showTip="true"></game-progress>
-        <game-progress :max="this.hero.getSnapshoot('$maxMp')" :value="this.hero.getSnapshoot('$mp')" pclass="progress-bar-info" showTip="true"></game-progress>
-        <game-progress :max="this.hero.getSnapshoot('$maxExp')" :value="this.hero.getSnapshoot('$exp')" pclass="progress-bar-info progress-bar-striped" pstyle="height:6px;"></game-progress>
+        <game-progress :max="this.hero.$r.$maxHp" :value="this.hero.$hp" pclass="progress-bar-danger" showTip="true"></game-progress>
+        <game-progress :max="this.hero.$r.$maxMp" :value="this.hero.$mp" pclass="progress-bar-info" showTip="true"></game-progress>
+        <game-progress :max="this.hero.$maxExp" :value="this.hero.$exp" pclass="progress-bar-info progress-bar-striped" pstyle="height:6px;"></game-progress>
         <div class="state-list">
           <template v-for="state in hero.$status">
             <span 
@@ -73,8 +73,8 @@
       </div>
 
       <div class="unit-info">
-        <game-progress :max="monster.getSnapshoot('$maxHp')" :value="monster.getSnapshoot('$hp')" pclass="progress-bar-danger" showTip="true"></game-progress>
-        <game-progress :max="monster.getSnapshoot('$maxMp')" :value="monster.getSnapshoot('$mp')" pclass="progress-bar-info" showTip="true"></game-progress>
+        <game-progress :max="monster.$r.$maxHp" :value="monster.$hp" pclass="progress-bar-danger" showTip="true"></game-progress>
+        <game-progress :max="monster.$r.$maxMp" :value="monster.$mp" pclass="progress-bar-info" showTip="true"></game-progress>
         <div class="state-list">
           <template v-for="state in monster.$status">
             <span 
@@ -200,7 +200,7 @@
         _.each(this.CheckDrop, index => {
           list.push(this.DropList[Number(index)])
         })
-        this.DropList = this.hero.getItem(list);
+        this.DropList = this.hero.getItem(list, true);
         if(this.DropList.length > 0){
           this.fullTip = true;
           this.CheckDrop = _.range(this.DropList.length);

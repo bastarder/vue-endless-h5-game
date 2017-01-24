@@ -1,5 +1,6 @@
-// type: 1 主动效果
-// type: 2 被动效果
+// type: 1 作为攻击方时被提取;
+// type: 2 作为被攻击方时被提取;
+// type: 3 在判断所受伤害的时候被提取;
 
 const STATE_TABLE = [
   {
@@ -29,14 +30,14 @@ const STATE_TABLE = [
   {
     id: 2000002,
     name: '坚盾',
-    type: '2',
+    type: '3',
     logo: '盾',
     color: 'red',
     dsc : '坚守之盾,免疫50%伤害',
     label : ['测试','状态'],
-    eventList: [
-      `[10]enemy@changeHp @ action.enemy_changeHp * 0.5 @ true`
-    ]
+    powerUp : {
+      $dmgDown : [50, 1],
+    },
   },
   {
     id: 2000003,
@@ -47,10 +48,10 @@ const STATE_TABLE = [
     dsc : '暴击伤害提升(50%)',
     label : ['状态'],
     eventList: [
-      `[10]
+      `[11]
            action@{action.state.isCritical === true}
        #
-           enemy@changeHp@ action.enemy_changeHp * 1.5 @ true
+           action@{action.set('atk_per', 50)}
       `
     ]
   },
@@ -63,10 +64,7 @@ const STATE_TABLE = [
     dsc : '反弹30%伤害',
     label : ['测试','状态'],
     eventList: [
-      `[10]
-           action@{action.enemy_changeHp}
-       #
-           attacker@changeHp@ action.enemy_changeHp * 0.3
+      `[91]attacker@beAttack@ action.enemy_beAttack * 0.3
       `
     ]
   },

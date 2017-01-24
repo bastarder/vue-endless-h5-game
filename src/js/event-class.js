@@ -32,38 +32,68 @@ const MapDialog = function(opt, $VueScope, moveEvent){
       this.end();
       return ;
     }
-    this.record = this.transformEventObj(this.data[this.$i]);
+    this.record = this.transformEventObj(this.$i);
     this.isEnd = (this.$i++ === (this.data.length-1));
   }
 
-  this.transformEventObj = function(obj){
-    let record = _.cloneDeep(obj);
-    if(typeof obj === 'string'){
+  this.transformEventObj = function(index){
+    let record = _.cloneDeep(this.data[index]);
+    if(typeof record === 'string'){
       record = {
         msg: record
       }
     }
     // "['我没有']{1,1}|['我有的!']{2,1}"
-    if(typeof record.buttons === 'string'){
-      let buttons = _.map(record.buttons.split('|') ,function(str){
-        str = str.match(/\[([^]+)\]\{([^]+)\}/)
-        let btn = {};
-        btn.title = str[1];
-        if(str[2]){
-          btn.action = function(){
-            let [i, isEnd] = str[2].split(',');
-            this.$i = Number(i);
-            this.next();
-            if(Number(isEnd)){
-              this.isEnd = true;
-            }
+    let buttons = _.map(record.buttons,function(str){
+      if(typeof str === 'object'){
+        return str;
+      }
+      let strc = str;
+      str = str.match(/\[([^]+)\]\{([^]+)\}/)
+      let btn = {};
+      btn.title = str[1];
+      if(!str[2]){
+        return btn;
+      }
+      if(strc[0] !== '#'){
+        btn.action = function(){
+          let [i, isEnd] = str[2].split(',');
+          this.$i = Number(i);
+          this.next();
+          if(Number(isEnd)){
+            this.isEnd = true;
           }
         }
-        return btn;
-      })
-      record.buttons = buttons;
-    }
-    console.log('record:',record);
+      }else{
+        let i = str[2].split(',');
+        let isEnd = i.unshift();
+        btn.action = function(){
+          let need = this.data[index].need || [];
+          let get = this.data[index].get || [];
+          let unit = this.$VueScope.$store.state.hero;
+          console.log(need,get,unit);
+          let enough = unit.isEnoughInPackage(need);
+          if(!enough){
+            this.$i = i[0]
+          }else{
+            let left = unit.getItem(get);
+            if(left.length){
+              this.$i = i[1]
+            }else{
+              unit.getItem(get, true);
+              this.$i = i[2]
+            }
+          }
+          this.next();
+          if(Number(isEnd)){
+            this.isEnd = true;
+          }
+        }
+      }
+      return btn;
+    })
+    record.buttons = buttons;
+
     return record;
   }
 

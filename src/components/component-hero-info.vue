@@ -8,9 +8,9 @@
         </template>
       </div>
       <div class="msg">
-        <div v-for="key in this.infoKeyList">
-          {{key}} : {{hero.getSnapshoot(key)}}
-        </div>
+        <span v-for="key in this.infoKeyList">
+          【{{key}} : {{hero.$r[key]}}】
+        </span>
       </div>
     </div>
 </template>
@@ -30,7 +30,7 @@ export default {
   },
   created (){
     this.hero = this.$store.state.hero;
-    this.infoKeyList = [ '$atk','$def', '$str', '$dex', '$con', '$int', '$maxHp', '$maxMp', '$critical', '$dodge', '$coolTimePer'];
+    this.infoKeyList = [ '$atk','$def', '$str', '$dex', '$con', '$int', '$maxHp', '$maxMp', '$critical', '$dodge', '$coolTimePer', '$critiDmg', '$dmgDown'];
   },
   methods :{
     equip (id){
