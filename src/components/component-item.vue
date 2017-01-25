@@ -1,8 +1,8 @@
 <template>
   <div style="display: inline-block;">
     <div v-item-tool-tip="item" class="component-item" v-if="item" @mousedown="mousedown($event)">
-      <slot name="item-name"></slot>
-      <slot name="badge"></slot>
+      <span class="item-name" slot="item-name">{{item ? item.name : ''}}</span>
+      <span class="badge" slot="badge">{{item ? item.num : ''}}</span>
       <ul class="dropdown-menu item-menu">
         <li>
           <a v-if="item.equip && this.position.$package" @click="equip">装备</a>
@@ -10,18 +10,24 @@
         </li>
       </ul>
     </div>
-    <div class="component-item" v-else></div>
+    <div class="component-item blank" v-else>
+      {{this.position.$equipments ? this.equipCname[this.index] : '空'}}
+    </div>
   </div>
 </template>
 
 <script>
+import CONSTANT from '../data/constant'
+
 export default {
   props: [
     'item',
     'positionIndex'
   ],
   data () {
-    return {}
+    return {
+      equipCname : CONSTANT.EQUIP_ID
+    }
   },
   created (){
     let record = this.positionIndex.split("|");
@@ -80,27 +86,30 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
  .notice-item{
    top: 8px;
    right: 8px;
  }
 
  .component-item{
+   user-select :none;
+   background : #eeece1;
    display: inline-block;
    vertical-align: top;
    text-align: center;
    width: 44px;
    height: 44px;
-   border: 1px solid #eee;
-   margin: 4px 4px;
-   box-shadow: 1px 1px 6px #eee;
+   line-height: 40px;
+   color: white;
+   border: 2px solid gray;
+   border-radius: 2px;
+   overflow : hidden;
  }
- .component-item:hover{
-   cursor: pointer;
-   box-shadow: 1px 1px 6px gray;
-   border: gray;
+ .component-item.blank{
+   color: #cdbaba;
  }
+
  .component-item .badge{
    vertical-align: top;
    padding: 1px 10px;

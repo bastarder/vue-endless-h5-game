@@ -31,7 +31,17 @@
             {{DialogEvent.record.msg}}
             <div v-if="DialogEvent.record.need || DialogEvent.record.get">
               <template v-for="(item,index) in DialogEvent.record.need">
-                <component-item :item="item" :position-index="'$MapEvent|' + index"></component-item>
+                <component-item :item="item" :position-index="'$MapEvent|' + index">
+                  <span class="item-name" slot="item-name">{{item[0] | itemKey('name')}}</span>
+                  <span class="badge" slot="badge">{{item[1]}}</span>
+                </component-item>
+              </template>
+              =>
+              <template v-for="(item,index) in DialogEvent.record.get">
+                <component-item :item="item" :position-index="'$MapEvent|' + index">
+                  <span class="item-name" slot="item-name">{{item[0] | itemKey('name')}}</span>
+                  <span class="badge" slot="badge">{{item[1]}}</span>
+                </component-item>
               </template>
             </div>
           </div>

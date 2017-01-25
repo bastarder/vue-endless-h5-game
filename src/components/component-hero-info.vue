@@ -2,8 +2,7 @@
     <div class="component-hero-info" v-if="this.hero">
       <div class="info">
         <template v-for="(item,index) in this.hero.$equipments">
-          <component-item :class="['equip-' + index , 'equip']" :item="item" :position-index="'$equipments|' + index">
-            <span class="item-name" slot="item-name">{{item ? item.name : ''}}</span>
+          <component-item :class="['equip-0' , 'equip']" :item="0" :position-index="'$equipments|0'">
           </component-item>
         </template>
       </div>
@@ -45,6 +44,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped lang="less">
+  .component-hero-info{
+    background: black;
+    .info{
+      background: green;
+    }
+  }
 </style>

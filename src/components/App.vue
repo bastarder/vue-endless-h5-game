@@ -9,7 +9,7 @@
       </div>
       <!--<game-bottom></game-bottom>-->
     </div>
-    <game-package></game-package>
+    <!--<game-package></game-package>-->
     
   </div>
 </template>
@@ -28,30 +28,30 @@ export default {
 </script>
 
 <style>
- body{
-  background: #333333;  
-  /* 淡色边框 #d3e0e9 */ 
-  /* 舒服绿色 #5cb85c */
- }
+  body{
+    background: #333333;  
+    /* 淡色边框 #d3e0e9 */ 
+    /* 舒服绿色 #5cb85c */
+  }
+</style>
+
+<style scoped lang="less">
  .container{
-   padding: 6px;
+   padding: 6px 6px 0px 6px;
    margin-top: 20px;
-   width: 1000px;
+   width: 800px;
    background: #A1A693;
+   border-radius: 2px;
  }
  .main{
-   vertical-align: top;
-   display:inline-block;
-   border-top: 0px;
-   border-bottom: 0px;
-   width: 640px;
+   display: inline-block;
+   width: 100%;
+   height: 100%;
  }
  .router-view{
    position: relative;
-   height: 440px;
+   height: 500px;
    background: white;
-   margin-top: 4px;
-   padding: 6px;
+   border-radius: 2px;
  }
-
 </style>

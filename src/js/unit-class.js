@@ -22,7 +22,8 @@ class Unit {
       $status: null,
       $skills: null,
     };
-    this.$package = new Array(10);
+    this.$package = new Array(40);
+    this.$houseList = new Array(40);
     this.$resource = {
       gold : 999,
       gem : 111,

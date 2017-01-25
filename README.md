@@ -2,6 +2,8 @@
 
 > 一个用 Vue.js 开发的地穴冒险类游戏;
 
+![image](https://github.com/bastarder/Endless/blob/master/readme.png)
+
 ## 项目安装&启动
 
 ``` bash

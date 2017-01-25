@@ -1,17 +1,11 @@
 <template>
-  <div class="game-package shadow-box">
+  <div class="game-house">
     <div class="block-name">
-      背包
-    </div>
-    <div class="info-list">
-      <div class="item" v-for="item in this.baseInfo">
-        <span class="title">{{item[0]}}</span>
-        <span class="num">{{hero.$resource[item[1]]}}</span>
-      </div>
+      仓库
     </div>
     <div class="list">
-      <template v-for="(item, index) in hero.$package" >
-        <component-item class="item" :item="item" :position-index="'$package|' + index"></component-item>
+      <template v-for="(item, index) in hero.$houseList" >
+        <component-item class="item" :item="item" :position-index="'$houseList|' + index"></component-item>
       </template>
     </div>
   </div>
@@ -48,9 +42,9 @@ export default {
 </script>
 
 <style scoped lang="less">
- .game-package{
+ .game-house{
    padding: 5px;
-   height: 270px;
+   height: 230px;
    width: 100%;
    .block-name{
      margin-left: 8px;
@@ -60,28 +54,9 @@ export default {
      padding-left: 6px;
      line-height: 26px;
    }
-   .info-list{
-     padding: 10px 8px;
-     font-size: 10px;
-     .item{
-       margin-right: 8px;
-       display: inline-block;
-       .title{
-         background: #5cb85c;
-         border-radius: 2px;
-         padding: 2px 4px;
-         color: white;
-       }
-       .num{
-         background: #337ab7;
-         padding: 2px 4px;
-         border-radius: 0px 2px 2px 0px;
-         color: beige;
-       }
-     }
-   }
 
    .list{
+     margin-top: 6px;
      height: 192px;
      overflow: scroll;
      padding-left: 8px;

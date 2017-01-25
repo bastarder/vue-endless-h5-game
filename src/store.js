@@ -16,7 +16,7 @@ var hero = new Unit(
   {
     $skills : [_.cloneDeep(SKILL_TABLE[0])],
     $status :[],
-    $package : _.cloneDeep(ITEM_TABLE).concat(0)
+    $package : _.cloneDeep(ITEM_TABLE).concat(new Array(26))
   }
 );
 
