@@ -8,6 +8,7 @@ const SkillEvent = function(hero, monster){
     Fight(this.hero, this.monster, skill);
   };
   this.start = function(){
+    this.end();
     $(document).on('keydown',(event) => { 
       let skill;
       switch (event.keyCode){

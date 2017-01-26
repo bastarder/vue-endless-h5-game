@@ -16,6 +16,12 @@ function initTip($el, binding){
     let keyName = CONSTANT.UNIT_ATTR_NAME;
     let itemLevel = CONSTANT.ITEM_LEVEL;
     var item = binding.value;
+    $($el).off('mousemove');
+    $($el).off('mouseout');
+
+    if(!item){
+      return ;
+    }
 
     $($el).on('mousemove',show);
     $($el).on('mouseout',hide);
@@ -76,7 +82,7 @@ function initTip($el, binding){
       el.css({
         display: 'inline-block',
         position: 'absolute',
-        left: (window.event.clientX + 10) + 'px',
+        left: (window.event.clientX + 30) + 'px',
         top: (window.event.clientY + 30) + 'px',
       })
 

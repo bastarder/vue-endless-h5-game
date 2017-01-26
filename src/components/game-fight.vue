@@ -1,9 +1,6 @@
 <template>
   <div class="game-fight row">
     <div class="col-xs-12">
-      <component-hero-info></component-hero-info>
-    </div>
-    <div class="col-xs-12">
       <div class="round">
         <!--'background':'url(./src/assets/fight-round.png)', -->
         <span class="round-logo" :style="{ 

@@ -306,10 +306,17 @@ class Unit {
     return list;
   }
 
+  itemSort(type){
+    this[type] = this[type].sort(
+      (a,b) => ((a.id || Infinity) - (b.id || Infinity))
+    );
+    store.commit('UPDATE');
+  }
   // 获得物品
-  getItem(list, force){
+  getItem(list, force, t){
     // pile
     let unit = force ? this : _.cloneDeep(this);
+    let type = t ? t : '$package';
 
     let fullPackage = [];
 
@@ -329,8 +336,8 @@ class Unit {
           return ;
       }
       // item : 新增物品 , num : 新曾数量 , packItem : 背包已存在的相同物品 , nextIndex : 空位
-      let packItem = _.find(unit.$package,{ id: item.id });
-      let nextIndex = _.findIndex(unit.$package, item => !item);
+      let packItem = _.find(unit[type],{ id: item.id });
+      let nextIndex = _.findIndex(unit[type], item => !item);
 
       item.pile && (item.num = num);
       // item.num = num
@@ -343,7 +350,7 @@ class Unit {
         // 不存在
         if(~nextIndex){
           // 有空位
-          unit.$package[nextIndex] = item;
+          unit[type][nextIndex] = item;
         }else{
           // 没空位
           fullPackage.push(i);
@@ -356,20 +363,20 @@ class Unit {
   }
 
   // 装备
-  equip(item, index){
-
+  equip(item, index, t){
+    let type = t ? t : '$package';
     let upString = item.equip;
     // 非装备,无法装备;
     if(!upString){
       return ;
     }
     //0武器 1护肩 2鞋子 3腰带 4上衣 5绑腿 6戒指 7护腕 8项链
-    console.log(1)
+
     // 删除包裹中的装备, 如果已有装备, 卸载装备;
-    this.$package[index] = 0;
+    this[type][index] = 0;
 
     if(this.$equipments[item.equipType]){
-      this.demount(item.equipType, index);
+      this.demount(item.equipType, index, type);
     }
 
     this.$equipments[item.equipType] = item;
@@ -391,7 +398,8 @@ class Unit {
   }
 
   // 卸下
-  demount(type, index){
+  demount(type, index, t){
+    let odtype = t ? t : '$package';
     let item = this.$equipments[type];
 
     this.$equipments[type] = 0;
@@ -401,11 +409,11 @@ class Unit {
     }
 
     if(index){
-      this.$package[index] = item;
+      this[odtype][index] = item;
     }else{
-      index = _.findIndex(this.$package,i => !i);
+      index = _.findIndex(this[odtype],i => !i);
       if(~index){
-        this.$package[index] = item;
+        this[odtype][index] = item;
       }else{
         console.warn('背包中没有空位,无法卸下装备');
         this.$equipments[type] = item;

@@ -5,6 +5,7 @@ import store from './store'
 import filter from './filter'
 // directive
 import ItemToolTip from './directive/item-tool-tip'
+import DropItem from './directive/drop-item'
 
 // components
 import App from './components/App.vue'

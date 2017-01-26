@@ -21,9 +21,14 @@
     <div class="info">
       <div class="left">
         <div class="label-name">属性</div>
+        <div class="atk-name">攻击力</div>
+        <div class="atk">{{hero.$r.$atk}}</div>
       </div>
       <div class="right">
-
+        <div class="attr" v-for="(key,i) in this.infoKeyList">
+          <span class="name">{{key | heroAttrKey}}</span>
+          <span class="value">{{hero.$r[key]}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -35,6 +40,7 @@
 export default {
   data () {
     return {
+      infoKeyList : [ '$def', '$str', '$dex', '$con', '$int', '$maxHp', '$maxMp', '$critical', '$dodge']
     }
   },
   computed:{
@@ -141,6 +147,39 @@ export default {
       }
       .item{
         margin: 0px 1px 4px 0px;
+      }
+    }
+
+    .info{
+      .left{
+        .atk-name{
+          text-align: center;
+          padding: 6px;
+        }
+        .atk{
+          font-size: 16px;
+          line-height: 34px;
+          text-align: center;
+          color: brown;
+        }
+      }
+      .right{
+        padding-left: 3px;
+        .attr{
+          font-size: 10px;
+          display: inline-block;
+          width: 63px;
+          border-left: 2px solid green;
+          padding: 6px 2px;
+          margin-bottom: 10px;
+          .name{
+            font-weight: 800;
+          }
+          .value{
+            padding-left: 2px;
+            color: brown;
+          }
+        }
       }
     }
   }

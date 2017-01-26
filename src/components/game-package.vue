@@ -8,6 +8,9 @@
         <span class="title">{{item[0]}}</span>
         <span class="num">{{hero.$resource[item[1]]}}</span>
       </div>
+      <div class="base-btn" @click="sort">
+        整理
+      </div>
     </div>
     <div class="list">
       <template v-for="(item, index) in hero.$package" >
@@ -39,15 +42,26 @@ export default {
      }
   },
   methods :{
-
-  },
-  computed : {
-
-  },
+    sort (){
+      this.hero.itemSort('$package');
+      this.hero.itemSort('$houseList');
+    }
+  }
 }
 </script>
 
 <style scoped lang="less">
+ .base-btn{
+   display: inline-block;
+   float: right;
+   background: #5cb85c;
+   color: white;
+   padding: 2px 4px;
+   border-radius: 2px;
+   line-height: 12px;
+   cursor: pointer;
+ }
+
  .game-package{
    padding: 5px;
    height: 270px;

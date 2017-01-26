@@ -7,13 +7,13 @@ const CONSTANT = {
     END   : '3'  // 寻路终点
   },
   EQUIP_ID :[
-    "武器", "护肩", "鞋子", "腰带", "上衣", "绑腿", "戒指", "护腕", "项链",
+    "武器", "护肩", "鞋子", "腰带", "上衣", "绑腿", "戒指", "项链", "手镯",
   ],
   UNIT_ATTR_NAME:{
     $hp          : '当前生命值',
     $mp          : '当前魔法值',
-    $maxHp       : '生命最大值',
-    $maxMp       : '魔法最大值',
+    $maxHp       : '生命',
+    $maxMp       : '魔法',
     $atk         : '攻击力',
     $def         : '防御',
     $str         : '力量',
@@ -25,6 +25,8 @@ const CONSTANT = {
     $coolTimePer : '冷却缩短',
     $skills      : '技能',
     $status      : '状态',
+    $dmgDown     : '伤害减免',
+    $critiDmg    : '暴击伤害',
   },
   ITEM_LEVEL: ['white','springgreen','skyblue','violet','orange']
 }

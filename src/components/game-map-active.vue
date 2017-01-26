@@ -7,14 +7,15 @@
             v-for="(block,y) in line" 
             :class="{ 
               'map-block': true, 
+              'stick' : block.block_type == '2',
               'road': block.block_type == '0' ,
               'path': block.path,
               'hero': block.block_type == '1' ,
               'end' : block.block_type == '3' ,
             }"
             @click="autoMove(block)">
-            <span v-if="block.FEvent">战</span>
-            <span v-if="block.DEvent">话</span>
+            <img class="map-block" v-if="block.FEvent" :src="'./src/assets/event-fight.png'"/>
+            <img class="map-block" v-if="block.DEvent" :src="'./src/assets/event-dialog.png'"/>
           </span>
         </div>
       </div>
@@ -33,14 +34,14 @@
               <template v-for="(item,index) in DialogEvent.record.need">
                 <component-item :item="item" :position-index="'$MapEvent|' + index">
                   <span class="item-name" slot="item-name">{{item[0] | itemKey('name')}}</span>
-                  <span class="badge" slot="badge">{{item[1]}}</span>
+                  <span class="badges" slot="badges">{{item[1]}}</span>
                 </component-item>
               </template>
               =>
               <template v-for="(item,index) in DialogEvent.record.get">
                 <component-item :item="item" :position-index="'$MapEvent|' + index">
                   <span class="item-name" slot="item-name">{{item[0] | itemKey('name')}}</span>
-                  <span class="badge" slot="badge">{{item[1]}}</span>
+                  <span class="badges" slot="badges">{{item[1]}}</span>
                 </component-item>
               </template>
             </div>
@@ -113,7 +114,7 @@ export default {
 <style>
 .map-data{
   position: relative;
-  height: 428px;
+  height: 500px;
   overflow: hidden;
   background: black;
 }
@@ -121,13 +122,16 @@ export default {
   display: inline-block;
   width: 40px;
   height: 40px;
-  background: black;
   vertical-align: top;
+  border-radius: 4px;
+}
+.map-block.stick{
+  background: black;
 }
 .map-block.road{
   background: white;
 }
-.map-block.path,.map-block:hover{
+.map-block.road:hover{
   box-shadow: 0px 0px 4px red inset; 
   cursor: pointer;
 }
