@@ -81,6 +81,12 @@ const MapDialog = function(opt, $VueScope, moveEvent){
               this.$i = i[1]
             }else{
               unit.getItem(get, true);
+              _.each(need,item => {
+                let [id,num] = item;
+                let it = _.find(unit.$package,{id});
+                it.num -= num;
+                !it.num && (it = 0);
+              })
               this.$i = i[2]
             }
           }

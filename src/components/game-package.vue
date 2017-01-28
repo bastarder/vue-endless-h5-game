@@ -65,7 +65,7 @@ export default {
  .game-package{
    padding: 5px;
    height: 270px;
-   width: 100%;
+   width: 520px;
    .block-name{
      margin-left: 8px;
      background: rgba(0,0,0,0.7);

@@ -1,21 +1,23 @@
 <template>
   <div class="game-home-info">
-    <div class="main">
-      <div class="logo">
-        <img :src="'./src/assets/hero-1.png'"/>
-        <div class="level">99</div>
+    <div class="right-info-left">
+      <div class="main">
+        <div class="logo">
+          <img :src="'./src/assets/hero-1.png'"/>
+          <div class="level">99</div>
+        </div>
+        <div class="name">Bastarder</div>
       </div>
-      <div class="name">Bastarder</div>
-    </div>
-    <div class="equip">
-      <div class="left">
-        <div class="label-name">装备</div>
-        <component-item class="weapon" :item="hero.$equipments[0]" :position-index="'$equipments|0'"></component-item>
-      </div>
-      <div class="right">
-        <template v-for="(item, index) in hero.$equipments">
-          <component-item class="item" v-if="index" :item="item" :position-index="'$equipments|' + index"></component-item>
-        </template>
+      <div class="equip">
+        <div class="left">
+          <div class="label-name">装备</div>
+          <component-item class="weapon" :item="hero.$equipments[0]" :position-index="'$equipments|0'"></component-item>
+        </div>
+        <div class="right">
+          <template v-for="(item, index) in hero.$equipments">
+            <component-item class="item" v-if="index" :item="item" :position-index="'$equipments|' + index"></component-item>
+          </template>
+        </div>
       </div>
     </div>
     <div class="info">
@@ -180,6 +182,20 @@ export default {
             color: brown;
           }
         }
+      }
+    }
+  }
+
+  .game-home-info.right-info{
+    height: 168px;
+    width: 520px;
+    .right-info-left,.info{
+      display: inline-block;
+    }
+    .info{
+      vertical-align:top;
+      .attr{
+        padding: 12px 2px;
       }
     }
   }

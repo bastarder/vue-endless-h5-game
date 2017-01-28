@@ -1,6 +1,8 @@
 <template>
   <div class="game-fight row">
+    
     <div class="col-xs-12">
+    <canvas id="fight-wall"></canvas>
       <div class="round">
         <!--'background':'url(./src/assets/fight-round.png)', -->
         <span class="round-logo" :style="{ 
@@ -251,9 +253,14 @@
 </script>
 
 <style>
+ #fight-wall{
+   border: 1px solid #eee;
+ }
+
  .game-fight .state-list{
    height: 24px;
  }
+
  .game-fight .state-list .state{
    cursor: pointer;
    width: 14px;

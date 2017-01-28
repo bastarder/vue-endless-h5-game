@@ -15,7 +15,7 @@ Vue.use(Vuex)
 
 let test1 = PGET(3000001);
 test1.num = 10;
-let test2 = PGET(3000001);
+let test2 = PGET(3000002);
 test2.num = 5;
 
 var hero = new Unit(

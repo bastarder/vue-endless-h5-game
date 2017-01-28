@@ -1,5 +1,15 @@
 <template>
   <div class="game-map-active">
+    <transition enter-active-class="animated slideInUp" leave-active-class="animated slideOutDown">
+      <game-package class="v-package" v-show="this.infoMenu"></game-package>
+    </transition>
+    <transition enter-active-class="animated slideInDown" leave-active-class="animated slideOutUp">
+      <game-home-info class="right-info" v-show="this.infoMenu" transition="bounce"></game-home-info>
+    </transition>
+    <div :class="['show-btn',this.infoMenu ? 'opend' : 'closed']" @click="showInfo">
+      <i v-if="this.infoMenu" class="fa fa-angle-double-left" aria-hidden="true"></i>
+      <i v-else class="fa fa-angle-double-right" aria-hidden="true"></i>
+    </div>
     <div class="map-data">
       <div class="map">
         <div v-for="(line,x) in map.$data.mapData">
@@ -14,6 +24,7 @@
               'end' : block.block_type == '3' ,
             }"
             @click="autoMove(block)">
+            <img class="map-block" v-if="block.block_type == '1'" :src="'./src/assets/hero-1.png'"/>
             <img class="map-block" v-if="block.FEvent" :src="'./src/assets/event-fight.png'"/>
             <img class="map-block" v-if="block.DEvent" :src="'./src/assets/event-dialog.png'"/>
           </span>
@@ -67,10 +78,17 @@ import Astar from '../js/astar'
 import HeroMoveEvent from '../js/map-hero-move'
 import { MapDialog } from '../js/event-class'
 import { DIALOG_DATA } from '../data/event-data'
+import Menu from './game-home-menu.vue'
+import Info from './game-home-info.vue'
 
 export default {
+  components :{
+    'game-home-menu' : Menu,
+    'game-home-info' : Info
+  },
   data () {
     return {
+      infoMenu : false,
       map : null,
       path : null,
       DialogEvent : {},
@@ -88,6 +106,9 @@ export default {
     this.moveEvent && this.moveEvent.stop();
   },
   methods : {
+    showInfo() {
+      this.infoMenu = !this.infoMenu;
+    },
     autoPisition (){
       let $m = $('.game-map-active'),
           $b = $($('.map-block')[0]),
@@ -99,7 +120,6 @@ export default {
         'left' : ((($m.width() - Bx * row)/2) - (hero.y - (col - 1)/2) * Bx) + 'px',
         'top' : ((($m.height() - By * col)/2) - (hero.x - (row - 1)/2) * By) + 'px'
       },300)
-      
     },
     autoMove (end){
       this.moveEvent.autoMove(
@@ -111,7 +131,52 @@ export default {
 
 </script>
 
-<style>
+<style scoped lang="less">
+.game-map-active{
+  position: relative;
+  overflow: hidden;
+}
+
+.game-home-info{
+  position: absolute;
+  z-index: 2;
+}
+
+.game-package{
+  position: absolute;
+  z-index: 2;
+  background: #fff6cb;
+  top: 230px;
+}
+
+.show-btn{
+  background: #fff6cb;
+  position: absolute;
+  z-index: 3;
+  width: 20px;
+  height: 62px;
+  line-height: 62px;
+  text-align: right;
+  top: 168px;
+  border-radius: 0px 2px 2px 0px;
+  padding-right: 4px;
+  transition: width 0.6s;
+  cursor: pointer;
+}
+
+@keyframes move
+{
+  0% { padding-right: 4px;}
+  100% { padding-right: 18px;}
+}
+
+.show-btn.opend{
+  width: 520px;
+  transition: 1s;
+  border-radius :0px;
+  animation: move 0.6s infinite;
+}
+
 .map-data{
   position: relative;
   height: 500px;
@@ -123,7 +188,7 @@ export default {
   width: 40px;
   height: 40px;
   vertical-align: top;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 .map-block.stick{
   background: black;
@@ -136,7 +201,7 @@ export default {
   cursor: pointer;
 }
 .map-block.hero{
-  background: blue;
+  background: white;
 }
 .map-data .map{
   position: absolute;

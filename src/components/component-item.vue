@@ -155,6 +155,7 @@ export default {
    color: white;
    text-shadow: black 1px 1px;
    font-size: 10px;
+   z-index: 99;
  }
 
   .item-tool-tip-pover .name,
