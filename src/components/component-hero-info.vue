@@ -7,7 +7,7 @@
 
 <script>
 import PGET from '../js/public-static-get';
-import canvasRun from '../js/fight-wall';
+import canvasItem from '../js/fight-stage';
 
 export default {
   data () {
@@ -21,7 +21,24 @@ export default {
     },
   },
   mounted (){
-    this.can = canvasRun();
+    var wall = document.getElementById('fight-wall').getContext('2d');
+    
+    // test
+    let item = new canvasItem({
+      infinite: true,
+      id : 2017,
+      animationLength : 20,
+    });
+
+
+    let timer = setInterval(function(){
+      if(item.shouldBeRemove){
+        clearInterval(timer);
+        return ;
+      }
+      item.render(wall);
+    },1000/20)
+    
   },
   created (){
     this.hero = this.$store.state.hero;

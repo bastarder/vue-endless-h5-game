@@ -10,17 +10,15 @@ function init(){
     pageList[i].src = `../src/assets/2017/a_000${index}.png`;
   }
 
-  setTimeout(function(){
-    let i = -1;
-    let timer = setInterval(function(){
-      i++;
-      draw(pageList[i]);
-      if(!pageList[i]){
-        clearInterval(timer);
-        return ;
-      }
-    },1000/20)
-  },100)
+  let i = -1;
+  let timer = setInterval(function(){
+    i++;
+    draw(pageList[i]);
+    if(!pageList[i]){
+      i = 0;
+    }
+  },1000/20)
+
 }
 
 function draw(img) {
@@ -37,7 +35,7 @@ function draw(img) {
   img && wall.drawImage(img,0,0,300,150);
 }
 
-  return init;
+  return init();
 
 }
 

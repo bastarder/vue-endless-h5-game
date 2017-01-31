@@ -18,9 +18,6 @@ npm run build
 
 ```
 
-## 可能发生的问题
-1. 如果出现 `webpack-dev-server` 版本问题, 可以删除 `package.json` 中 `webpack-dev-server` 配置中的 `^`, 然后删除 `node_modules` 重新执行 `npm install`.
- 
 ## 进度
 
 |功能|进度|开发者|备注|
