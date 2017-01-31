@@ -3,7 +3,7 @@
     <div class="right-info-left">
       <div class="main">
         <div class="logo">
-          <img :src="'./src/assets/hero-1.png'"/>
+          <img :src="require('static/hero-1.png')"/>
           <div class="level">99</div>
         </div>
         <div class="name">Bastarder</div>

@@ -2,7 +2,6 @@
   <div class="game-fight row"> 
     <div class="col-xs-12">
       <div class="round">
-        <!--'background':'url(./src/assets/fight-round.png)', -->
         <span class="round-logo" :style="{ 
           'background-size' : '100%',
           'display': 'inline-block',
@@ -20,7 +19,6 @@
     <div class="col-xs-6 hero">
 
       <div class="unit-logo">
-        <!--'background':'url(./src/assets/hero-1.png)', -->
         <span class="label label-success logo" :style="{ 
           'background-size' : '100%'}"></span>
         <span class="label label-success level">{{hero.$level}}</span>
@@ -47,7 +45,6 @@
       <div class="skill-list">
         <span class="skill tip">技能列表</span>
         <template v-for="(skill,index) in hero.$skills">
-          <!--:style="{ background:'url(./src/assets/' + skill.id + '.png)', 'background-size' : '100%' }"-->
           <div :class="['skill']" >
             <div class="coolTime" v-if="skill.coolTime !== 0">
               <!--{{ (skill.coolTime / 1000).toFixed(1) }} S-->
@@ -63,7 +60,6 @@
     <div class="col-xs-6">
 
       <div class="unit-logo">
-        <!--'background':'url(./src/assets/2000001.png)', -->
         <span class="label label-success logo" :style="{ 
           'background-size' : '100%'}"></span>
         <span class="label label-success level">{{monster.$level}}</span>
@@ -89,7 +85,6 @@
       <div class="skill-list">
         <span class="skill tip">技能列表</span>
         <template v-for="(skill,index) in monster.$skills">
-          <!--:style="{ background:'url(./src/assets/' + skill.id + '.png)', 'background-size' : '100%' }"-->
           <div :class="['skill']" >
             <div class="coolTime" v-if="skill.coolTime !== 0">
               <!--{{ (skill.coolTime / 1000).toFixed(1) }} S-->

@@ -5,7 +5,7 @@
       <slot name="badges"></slot>
       <span class="item-name" v-if="item.name">{{item.name}}</span>
       <span class="badges" v-if="item.num">{{item.num}}</span>
-      <img class="badges" v-if="item.equipType > -1" :src="`./src/assets/equip-type-${item.equipType}.png`" />
+      <img class="badges" v-if="item.equipType > -1" :src="require(`static/equip-type-${item.equipType}.png`)" />
       <ul class="dropdown-menu item-menu">
         <li>
           <a v-if="item.equip && this.position.$package">装备</a>

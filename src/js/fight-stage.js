@@ -32,7 +32,7 @@ const canvasItem = function(opt){
   // 处理图片资源;
   this.animations = _.map(new Array(opt.animationLength),(v,i)=>{
     let img = new Image();
-    img.src = `../src/assets/${opt.id}/${i}.png`;
+    img.src = require(`static/${opt.id}/${i}.png`);
     return img;
   })
 

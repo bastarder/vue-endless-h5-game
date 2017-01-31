@@ -29,7 +29,8 @@ export default {
 
 <style>
   body{
-    background: #333333;  
+    /* background-image: url('../assets/hero-1.png'); */
+    background: #333333;
     /* 淡色边框 #d3e0e9 */ 
     /* 舒服绿色 #5cb85c */
   }

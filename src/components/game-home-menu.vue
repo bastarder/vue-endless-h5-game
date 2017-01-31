@@ -20,10 +20,10 @@ export default {
   data () {
     return {
       menu : [
-        ['出征', 'Fight', '/map', './src/assets/menu-fight.png'],
-        ['锻造', 'Equip', '/fight', './src/assets/menu-forge.png'],
-        ['商店', 'Shop', '/hero-info', './src/assets/menu-shop.png'],
-        ['设置', 'Option', '/map', './src/assets/menu-setting.png'],
+        ['出征', 'Fight', '/map', require('static/menu-fight.png')],
+        ['锻造', 'Equip', '/fight', require('static/menu-forge.png')],
+        ['商店', 'Shop', '/hero-info', require('static/menu-shop.png')],
+        ['设置', 'Option', '/map', require('static/menu-setting.png')],
       ]
     }
   }

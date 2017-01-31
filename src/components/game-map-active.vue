@@ -24,9 +24,9 @@
               'end' : block.block_type == '3' ,
             }"
             @click="autoMove(block)">
-            <img class="map-block" v-if="block.block_type == '1'" :src="'./src/assets/hero-1.png'"/>
-            <img class="map-block" v-if="block.FEvent" :src="'./src/assets/event-fight.png'"/>
-            <img class="map-block" v-if="block.DEvent" :src="'./src/assets/event-dialog.png'"/>
+            <img class="map-block" v-if="block.block_type == '1'" :src="require('static/hero-1.png')"/>
+            <img class="map-block" v-if="block.FEvent" :src="require('static/event-fight.png')"/>
+            <img class="map-block" v-if="block.DEvent" :src="require('static/event-dialog.png')"/>
           </span>
         </div>
       </div>

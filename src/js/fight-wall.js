@@ -7,7 +7,7 @@ function init(){
   for(let i = 0; i <= 19; i++){
     pageList.push(new Image());
     let index = (i < 10 ? "0" + i : i);
-    pageList[i].src = `../src/assets/2017/a_000${index}.png`;
+    pageList[i].src = require(`static/2017/a_000${index}.png`);
   }
 
   let i = -1;
