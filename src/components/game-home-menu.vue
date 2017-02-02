@@ -38,6 +38,7 @@ export default {
     height: 220px;
     background: #fff6cb;
     .link{
+      text-decoration: none;
       position: relative;
       vertical-align: top;
       display: inline-block;
@@ -55,7 +56,6 @@ export default {
       .e-title{
         font-size: 10px;
         text-align: right;
-        margin-top: -8px;
       }
       img{
         opacity: 0;

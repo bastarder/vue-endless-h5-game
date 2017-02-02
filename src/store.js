@@ -30,7 +30,6 @@ const store = new Vuex.Store({
   state: {
     hero,
     mapList: _.cloneDeep(MAP_TABLE),
-    NOTICE_ITEM: null,
     EVENT_FIGHT_MONSTERS:[
       new Unit(_.cloneDeep(MONSTER_DATA[0])),
       new Unit(_.cloneDeep(MONSTER_DATA[1]))

@@ -9,7 +9,7 @@ const SkillEvent = function(hero, monster){
   };
   this.start = function(){
     this.end();
-    $(document).on('keydown',(event) => { 
+    this.keyDownFunc = event => { 
       let skill;
       switch (event.keyCode){
         case 81: 
@@ -26,7 +26,8 @@ const SkillEvent = function(hero, monster){
           break;
       }
       skill && this.Fight(skill);
-    }); 
+    };
+    document.addEventListener('keydown', this.keyDownFunc); 
    }
   this.end = function(){
     _.each(this.hero.$skills, skill => {
@@ -35,7 +36,7 @@ const SkillEvent = function(hero, monster){
     _.each(this.monster.$skills, skill => {
       skill.coolTime = 0;
     })
-    $(document).off('keydown');
+    document.removeEventListener('keydown',this.keyDownFunc);
   }
 }
 

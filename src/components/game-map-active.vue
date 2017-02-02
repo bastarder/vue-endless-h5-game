@@ -110,16 +110,15 @@ export default {
       this.infoMenu = !this.infoMenu;
     },
     autoPisition (){
-      let $m = $('.game-map-active'),
-          $b = $($('.map-block')[0]),
-          Bx = $b.width(),
-          By = $b.height(),
+      let $m = document.querySelector('.game-map-active'),
+          $b = document.querySelector('.map-block'),
+          Bx = $b.offsetWidth,
+          By = $b.offsetHeight,
           hero = this.map.hero;
       let { row, col } = this.map.$data;
-      $('.map-data .map').animate({
-        'left' : ((($m.width() - Bx * row)/2) - (hero.y - (col - 1)/2) * Bx) + 'px',
-        'top' : ((($m.height() - By * col)/2) - (hero.x - (row - 1)/2) * By) + 'px'
-      },300)
+      let sty = document.querySelector('.map-data .map').style;
+      sty.left = ((($m.offsetWidth - Bx * row)/2) - (hero.y - (col - 1)/2) * Bx) + 'px';
+      sty.top = ((($m.offsetHeight - By * col)/2) - (hero.x - (row - 1)/2) * By) + 'px';
     },
     autoMove (end){
       this.moveEvent.autoMove(
@@ -208,5 +207,6 @@ export default {
   width: 800px;
   height: 800px;
   box-shadow: 0px 0px 10px black;
+  transition: 0.2s;
 }
 </style>

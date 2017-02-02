@@ -179,7 +179,7 @@
     },
     updated (){
       // 重置tooltips, 欲封装组件, 暂留方法;
-      $('[data-toggle="tooltip"]').popover();
+      // $('[data-toggle="tooltip"]').popover();
     },
     methods : {
       test (){

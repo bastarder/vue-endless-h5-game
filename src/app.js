@@ -1,11 +1,16 @@
 // public css
 require("./css/animate.css");
+require("./css/main.css");
+
+// public js
+import public_function from './js/public-function.js';
 
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from './router'
 import store from './store'
 import filter from './filter'
+
 // directive
 import ItemToolTip from './directive/item-tool-tip'
 import DropItem from './directive/drop-item'

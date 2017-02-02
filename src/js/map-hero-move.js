@@ -11,17 +11,18 @@ const HeroMoveEvent = function(map, $VueScope){
       block_type = CONSTANT.MAP_BLOCK_TYPE;
 
   this.start = function(){
-    $(document).on('keyup', event => {
+    this.keyUpFunc = event => {
       if(!event.keyCode){
         return ;
       }
       this.autoMoveTimer && clearInterval(this.autoMoveTimer);
       this.move(event.keyCode);
-    })
+    };
+    document.addEventListener('keyup', this.keyUpFunc);
   };
 
   this.stop = function(){
-    $(document).off('keyup');
+    document.removeEventListener('keyup', this.keyUpFunc)
     clearInterval(this.autoMoveTimer);
   };
 

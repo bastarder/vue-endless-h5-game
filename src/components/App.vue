@@ -36,13 +36,18 @@ export default {
   }
 </style>
 
-<style scoped lang="less">
+<style lang="less">
+ *{
+   -webkit-box-sizing: border-box;
+ }
  .container{
    padding: 6px 6px 0px 6px;
    margin-top: 20px;
    width: 800px;
    background: #A1A693;
    border-radius: 2px;
+   margin-right: auto;
+   margin-left: auto;
  }
  .main{
    display: inline-block;

@@ -24,6 +24,7 @@
     "style-loader": "^0.13.1",
     "vue-loader": "^9.4.0",
     "webpack": "2.1.0-beta.22",
-    "webpack-dev-server": "2.1.0-beta.9"
+    "webpack-dev-server": "2.1.0-beta.9",
+    "lodash": "4.17.4"
   }
 }

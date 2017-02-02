@@ -1,0 +1,66 @@
+.m-t-10{
+  margin-top: 10px;
+}
+
+.m-b-10{
+  margin-bottom: 10px;
+}
+
+.m-b-4{
+  margin-bottom: 4px;
+}
+
+/*
+.m-l-10{
+  margin-bottom: 10px;
+}
+
+.m-r-10{
+  margin-bottom: 10px;
+}*/
+
+.text-c{
+  text-align: center;
+}
+
+.text-l{
+  text-align: left;
+}
+
+.text-r{
+  text-align: right;
+}
+
+.radius-4{
+  border-radius: 4px;
+}
+
+.radius-2{
+  border-radius: 2px;
+}
+
+.back-color{
+  background: #fff6cb;
+}
+
+.font-min{
+  font-size: 12px;
+}
+
+.p-abs{
+  position: absolute;
+}
+
+.p-rel{
+  position: relative;
+}
+
+.d-ib{
+  display: inline-block;
+}
+
+
+
+
+
+

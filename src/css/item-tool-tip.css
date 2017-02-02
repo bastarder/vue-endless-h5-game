@@ -1,0 +1,17 @@
+.item-tool-tip-pover .equip{
+  color:#e7d0d0;
+}
+
+.item-tool-tip-pover .attr-name.skills{
+  color: yellow;
+}
+
+.item-tool-tip-pover .attr-name.status{
+  color: green;
+}
+
+.item-tool-tip-pover .attr-name.down,
+.item-tool-tip-pover .attr-data.down,
+.item-tool-tip-pover .dsc{
+  color: gray;
+}
