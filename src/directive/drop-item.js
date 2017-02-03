@@ -18,7 +18,7 @@ Vue.directive('drop-item', function (el, binding){
     },
     dragstart (event){
       event.dataTransfer.setData("item-drop-data", position);
-      event.dataTransfer.setDragImage(event.target, 20, 20);
+      event.dataTransfer.setDragImage(event.target.className !== "component-item item" ? event.target.parentNode : event.target, 20, 20);
       let itemPover = document.querySelector('.item-tool-tip-pover');
       itemPover && itemPover.parentNode.removeChild(itemPover);
     },

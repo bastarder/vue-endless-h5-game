@@ -83,10 +83,10 @@ const HeroMoveEvent = function(map, $VueScope){
     //判断 初始化 执行事件
     if(FEvent){
       this.stop();
-      FEvent = new MapFight(FEvent, $VueScope);
+      FEvent = MapFight(FEvent);
     }else if(DEvent){
       this.stop();
-      DEvent = new MapDialog(DEvent, $VueScope, this);
+      DEvent = MapDialog(DEvent, () => this.start());
     }
 
   }

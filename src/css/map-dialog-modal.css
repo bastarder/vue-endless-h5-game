@@ -1,0 +1,60 @@
+.Map-Dialog-modal{
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+  border: 1px solid #eee;
+  padding: 10px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  line-height: 20px;
+}
+
+.Map-Dialog-modal .close{
+  display: inline-block;
+  transform: rotate(45deg);
+  font-size: 26px;
+  height: 20px;
+  float: right;
+  cursor: pointer;
+}
+
+.Map-Dialog-modal .close:hover{
+  color: gray;
+}
+
+.Map-Dialog-modal .msg{
+  padding: 4px 20px 4px 6px;
+  background: #fcf8e3;
+}
+
+.Map-Dialog-modal .change{
+  background: #f2dede;
+  padding: 4px 6px;
+}
+
+.Map-Dialog-modal .change .num{
+  color: #337ab7;
+}
+
+.Map-Dialog-modal .change .name{
+  color: #aa6708;
+}
+
+.Map-Dialog-modal .event{
+  position: absolute;
+  top: 164px;
+  width: 278px;
+}
+
+.Map-Dialog-modal .action{
+  border: none;
+  background: #d9edf7;
+  padding: 6px 8px;
+  cursor: pointer;
+  margin-left: 4px;
+  float: right;
+}
+
+.Map-Dialog-modal .action:hover{
+  box-shadow: 0px 0px 2px;
+}

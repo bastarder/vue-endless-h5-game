@@ -1,16 +1,10 @@
 <template>
   <div class="container">
-    <!--<game-header></game-header>-->
     <div class="main">
       <div class="router-view" id="router-view">
-        <!--<transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">-->
-          <router-view></router-view>
-        <!--</transition>-->
+        <router-view></router-view>
       </div>
-      <!--<game-bottom></game-bottom>-->
     </div>
-    <!--<game-package></game-package>-->
-    
   </div>
 </template>
 

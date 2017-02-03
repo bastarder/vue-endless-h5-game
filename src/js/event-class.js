@@ -1,43 +1,113 @@
 import Unit from '../js/unit-class';
+import PGET from '../js/public-static-get';
+import store from '../store';
+import Vue from 'vue';
 
-const MapEvent = {
-  data: [],
-  type: ''
-}
+const MapDialogElementClassName = '.Map-Dialog-modal';
+const ShadowViewClassName = '.shadow-view';
 
-const MapDialog = function(opt, $VueScope, moveEvent){
-  _.assign(this,_.cloneDeep(MapEvent));
-
-  this.type = 'MapDialog';
-  this.$i = 0;
-  this.$VueScope = $VueScope;
-  this.$el = $('.modal');
-
-  this.callAction = function(action){
-    action.call(this);
-  };
-
-  this.start = function(){
-    this.next();
-    this.$el.modal();
-  },
-
-  this.end = function(){
-    this.$el.modal('hide');
-    moveEvent.start();
+const MapDialog = function(event, callback){
+  
+  let modal = document.createElement('div');
+  let shadowView = document.createElement('div');
+  let view = document.querySelector('#router-view');
+  let opt = {
+    height    : 300,
+    width     : 200,
+    animated  : 'animated zoomIn',
+    backForce : 0.2,
   }
 
-  this.next = function (){
-    if(this.isEnd){
-      this.end();
-      return ;
+  shadowView.className = ShadowViewClassName.slice(1);
+
+  // 背景层 创建;
+  Object.assign(shadowView.style, {
+    position   : 'absolute',
+    background : `rgba(0,0,0,${opt.backForce})`,
+    width      : `100%`,
+    height     : `100%`,
+    left       : `0px`,
+    top        : `0px`, 
+    zIndex     : '5'
+  })
+
+  // 模态框 创建;
+  Object.assign(modal.style, {
+    position  : 'absolute',
+    width     : `${opt.height}px`,
+    height    : `${opt.width}px`,
+    left      : `${(view.offsetWidth - opt.width)/2}px`,
+    top       : `${(view.offsetHeight - opt.height)/2}px`,
+    zIndex    : '6'
+  })
+
+  Object.assign(modal, {
+    className : [ opt.animated, MapDialogElementClassName.slice(1) ].join(' '),
+    innerHTML : `
+      <div class="close" @click="this.close">+</div>
+      <div class="msg m-b-4 radius-2">
+        {{this.record.msg}}
+      </div>
+      <div class="change m-b-4 radius-2" v-if="this.record.need && this.record.get">
+        <span>你愿意使用</span>
+        <template v-for="item in this.record.need">
+          <span class="name">{{item[0] | itemKey('name')}}</span>*<span class="num">{{item[1]}}</span>
+        </template>
+        <span>来交换</span>
+        <template v-for="item in this.record.get">
+          <span class="name">{{item[0] | itemKey('name')}}</span>*<span class="num">{{item[1]}}</span>
+        </template>
+        <span>吗?</span>
+      </div>
+      <div class="event">
+        <button class="action radius-2" v-for="e in this.record.buttons" @click="action(e.action)">
+          {{e.title}}
+        </button>
+        <button v-if="this.isEnd" class="action radius-2" @click="close">结束对话</button>
+      </div>
+    `
+  })
+
+  view.appendChild(modal);
+  view.appendChild(shadowView);
+
+  new Vue({
+    store,
+    created(){
+      this.event = event;
+      this.$i = 0;
+      this.isEnd = false;
+      this.next();
+    },
+    methods: {
+      next(){
+        if(this.$isEnd){
+          this.close();
+          return ;
+        }
+        this.record = transformEventObj(this.event.data[this.$i]);
+        this.isEnd = (this.$i++ === (this.event.data.length-1));
+        this.$forceUpdate();
+      },
+      action(e){
+        e.call(this);
+      },
+      close(){
+        closeModal();
+      }
     }
-    this.record = this.transformEventObj(this.$i);
-    this.isEnd = (this.$i++ === (this.data.length-1));
+  }).$mount(MapDialogElementClassName)
+
+  function closeModal(){
+    let modal = document.querySelector(MapDialogElementClassName),
+        shadow = document.querySelector(ShadowViewClassName);
+    modal && modal.parentNode.removeChild(modal);
+    shadow && shadow.parentNode.removeChild(shadow);
+    callback && callback();
   }
 
-  this.transformEventObj = function(index){
-    let record = _.cloneDeep(this.data[index]);
+  function transformEventObj(opt){
+    let record = _.cloneDeep(opt);
     if(typeof record === 'string'){
       record = {
         msg: record
@@ -68,10 +138,9 @@ const MapDialog = function(opt, $VueScope, moveEvent){
         let i = str[2].split(',');
         let isEnd = i.unshift();
         btn.action = function(){
-          let need = this.data[index].need || [];
-          let get = this.data[index].get || [];
-          let unit = this.$VueScope.$store.state.hero;
-          console.log(need,get,unit);
+          let need = opt.need || [];
+          let get = opt.get || [];
+          let unit = this.$store.state.hero;
           let enough = unit.isEnoughInPackage(need);
           if(!enough){
             this.$i = i[0]
@@ -103,34 +172,23 @@ const MapDialog = function(opt, $VueScope, moveEvent){
     return record;
   }
 
-  _.assign(this,_.cloneDeep(opt));
-
-  this.start();
-
-  $VueScope.DialogEvent = this;
-
 }
 
-const MapFight = function(opt, $VueScope){
-  _.assign(this,_.cloneDeep(MapEvent));
-  this.type = 'MapFight';
-  this.$VueScope = $VueScope;
-  this.data = {
+// setTimeout(function(){
+//   MapDialog(PGET(7000001))
+// },100)
+
+const MapFight = function(opt){
+
+  let data = {
     monsters: [ new Unit(opt) ]
   };
   
-  this.start = function(){
-    // 设置战斗数据
-    $VueScope.$store.state['EVENT_FIGHT_MONSTERS'] = this.data.monsters;
+  store.state['EVENT_FIGHT_MONSTERS'] = data.monsters;
 
-    // 跳转到 战斗场景;
-    location.href = "#/fight"
-    
-    // 设置战斗返回路径;
-  }
-  _.assign(this,_.cloneDeep(opt));
+  // 跳转到 战斗场景;
+  location.href = "#/fight"
   
-  this.start();
 }
 
 export {

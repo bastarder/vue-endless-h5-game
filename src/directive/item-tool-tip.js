@@ -8,7 +8,6 @@ Vue.directive('item-tool-tip', function(el, binding){
   let keyName = CONSTANT.UNIT_ATTR_NAME,
       itemLevel = CONSTANT.ITEM_LEVEL,
       tipClassName = '.item-tool-tip-pover',
-      getTipElement = () => document.querySelector(tipClassName),
       item = binding.value;
       
   let event = {
@@ -74,7 +73,7 @@ Vue.directive('item-tool-tip', function(el, binding){
 
     },
     mouseout : function(){
-      let old = getTipElement();
+      let old = document.querySelector(tipClassName);
       // 移除已经存在的tip;
       if(old){
         old.parentNode.removeChild(old);
