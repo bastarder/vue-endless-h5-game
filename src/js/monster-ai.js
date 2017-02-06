@@ -31,6 +31,8 @@ const MonsterAI = function(hero, monster){
     return false;
   }
 
+  this.start();
+
 }
 
 export default MonsterAI;

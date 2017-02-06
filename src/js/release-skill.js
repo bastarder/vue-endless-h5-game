@@ -38,6 +38,9 @@ const SkillEvent = function(hero, monster){
     })
     document.removeEventListener('keydown',this.keyDownFunc);
   }
+
+  this.start();
+  
 }
 
 export default SkillEvent;

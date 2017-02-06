@@ -1,3 +1,29 @@
+.btn{
+  height: 26px;
+  padding: 2px 4px;
+  background: #6b15a1;
+  color: white;
+  border: 1px solid #6b15a1;
+  border-radius: 2px;
+  transition: background 0.6s;
+  cursor: pointer;
+  outline: none;
+}
+.btn:hover{
+  background: none;
+  color: #6b15a1;
+  transition: background 0.6s;
+}
+.btn:active{
+  background: #6b15a1;
+  color: white;
+}
+
+/*.btn-info{
+  border-color: #1bc981;
+  color: #1bc981;
+}*/
+
 .m-t-10{
   margin-top: 10px;
 }
@@ -59,7 +85,29 @@
   display: inline-block;
 }
 
+.d-b{
+  display: block;
+}
 
+ .color-red{
+   color: #d44950;
+ }
+
+ .color-green{
+   color: #1bc98e;
+ }
+
+ .color-yellow{
+   color: #e4d836;
+ }
+
+ .color-purple{
+   color: #9f86ff;
+ }
+
+ .color-darkblue{
+   color: #1997c6;
+ }
 
 
 

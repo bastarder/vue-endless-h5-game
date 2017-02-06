@@ -23,6 +23,8 @@ import GameBottom from './components/game-bottom.vue'
 import GamePackage from './components/game-package.vue'
 import GameHouse from './components/game-house.vue'
 import GameProgress from './components/game-progress.vue'
+import GameSkillItem from './components/game-skill-item.vue'
+import GameStateItem from './components/game-state-item.vue'
 import CooltimeProgress from './components/cooltime-progress.vue'
 import ComponentItem from './components/component-item.vue'
 
@@ -33,6 +35,8 @@ Vue.component('game-package', GamePackage)
 Vue.component('game-house', GameHouse)
 Vue.component('game-progress', GameProgress)
 Vue.component('cooltime-progress', CooltimeProgress)
+Vue.component('game-skill-item', GameSkillItem)
+Vue.component('game-state-item', GameStateItem)
 Vue.component('component-item', ComponentItem)
 
 const app = new Vue({

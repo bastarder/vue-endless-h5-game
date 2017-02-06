@@ -1,12 +1,5 @@
 <template>
-  <div class="coolTime-progress">
-    <div class="left-block">
-      <div class="left" :style="{ transform: left}"></div>
-    </div>
-    <div class="right-block">
-      <div class="right" :style="{ transform: right}"></div>
-    </div>
-  </div>
+
 </template>
 
 <script>
@@ -40,7 +33,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="less">
   .coolTime-progress {
     width: 80px;
     height: 80px;  

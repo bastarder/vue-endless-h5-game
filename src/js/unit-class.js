@@ -9,8 +9,8 @@ import PGET from '../js/public-static-get';
 
 function Unit(obj = {}){
   this.id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
-  this.$type = 1;      // 单位类型
-  this.$showName = 'unit1' // 展示名称
+  this.$type = 'Hero';      // 单位类型
+  this.$showName = 'bastarder' // 展示名称
   this.$exp = 1;      // 当前经验
   this.$maxExp = 5;   // 升级经验
   this.$level = 5;    // 等级
@@ -285,7 +285,7 @@ function changeState(changeList) {
         }
         break;
     }
-    this.updateAttribute();
+    self.updateAttribute();
   })
 
 }

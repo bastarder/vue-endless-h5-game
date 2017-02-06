@@ -1,3 +1,5 @@
+import store from '../store';
+
 const SkillAvailable = function(skill, attacker, enemy){
 
   /**

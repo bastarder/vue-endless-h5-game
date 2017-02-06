@@ -21,7 +21,7 @@ const STATE_TABLE = [
         current +=1;
         if(current > 5){
           clearInterval(self.stateEventTimer);
-          hero.removeState(self);
+          hero.removeList('$status',self);
         }
       }, per * 1000);
       this.actived = true;

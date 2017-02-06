@@ -184,7 +184,7 @@ const MapFight = function(opt){
     monsters: [ new Unit(opt) ]
   };
   
-  store.state['EVENT_FIGHT_MONSTERS'] = data.monsters;
+  store.state.FightScopeParm.monsters = data.monsters;
 
   // 跳转到 战斗场景;
   location.href = "#/fight"

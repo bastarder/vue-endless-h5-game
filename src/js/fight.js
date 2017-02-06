@@ -2,12 +2,14 @@ import coolTimeEvent from './cool-time-event'
 import actionClass from './fight-action-class'
 import SkillAvailable from './skill-available'
 import { GetRange, GetRandom } from './public-random-range';
+import store from '../store';
 
 const Fight = (attacker, enemy, skill) => {
 
 
   // 判断是否可以行动;
   if(!SkillAvailable(skill, attacker, enemy)){
+    store.commit('FightEventLogPush',`未满足施法条件!`);
     return ;
   }
 
@@ -118,12 +120,40 @@ const Fight = (attacker, enemy, skill) => {
 
     new Function('action','attacker','enemy', funcStr ).apply(father, [action, attacker, enemy]);
 
-    // item.event.apply(item.father, [action, attacker, enemy]);
   })
+
+  let attackerLogName = attacker.$type === 'Hero' ? '你' : attacker.$showName;
+  let enemyLogName = enemy.$type === 'Hero' ? '你' : enemy.$showName;
+  let skillLogName = `<span class="color-yellow">${skill.name}</span>`;
+  
+  attackerLogName = `<span class="color-purple">${attackerLogName}</span>`;
+  enemyLogName = `<span class="color-purple">${enemyLogName}</span>`;
+  
+
+  let msg = `${attackerLogName} 释放了 ${skillLogName}`;
+
+  if(!(action.state.isMiss && !action.state.isMust)){
+    if(action.attacker_changeHp){
+      let word = action.attacker_changeHp > 0 ? '恢复': '减少';
+      let v = `<span class="color-red">${Math.abs(action.attacker_changeHp)}</span>`
+      msg +=`,${attackerLogName}${word}了${v}点HP`;
+    }
+
+    if(action.enemy_changeHp){
+      let v = `<span class="color-red">${-action.enemy_changeHp}</span>`
+      msg +=`,对${enemyLogName}造成${v}点伤害`;
+    }
+
+    if(action.state.isCritical){
+      msg = `<span class="color-red">[暴击]</span>` + msg;
+    }
+  }
+
+  store.commit('FightEventLogPush',msg);
 
   // 判断闪避
   if(action.state.isMiss && !action.state.isMust){
-    console.log('敌人闪避!');
+    store.commit('FightEventLogPush',`<span class="color-yellow">[Miss]</span>${enemyLogName} 闪避了 ${attackerLogName} 的攻击!`);
     return ;
   }
 

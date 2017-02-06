@@ -33,9 +33,10 @@ export default {
 <style lang="less">
  *{
    -webkit-box-sizing: border-box;
+   user-select: none;
  }
  .container{
-   padding: 6px 6px 0px 6px;
+  //  padding: 6px 6px 0px 6px;
    margin-top: 20px;
    width: 800px;
    background: #A1A693;
