@@ -5,7 +5,7 @@ import PGET from '../js/public-static-get';
 const Map = function(o){
   let blockType = CONSTANT.MAP_BLOCK_TYPE;
   let opt = _.cloneDeep(o);
-
+  this.$opt = opt;
   // 生成基础地图;
   this.$data = opt.mapData || new DungeonCreater(opt.mapInitOption || {});
   let mapData = this.$data.mapData;

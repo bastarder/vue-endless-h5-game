@@ -2,6 +2,7 @@ import coolTimeEvent from './cool-time-event'
 import actionClass from './fight-action-class'
 import SkillAvailable from './skill-available'
 import { GetRange, GetRandom } from './public-random-range';
+import GameAudio from './audio'
 import store from '../store';
 
 const Fight = (attacker, enemy, skill) => {
@@ -156,6 +157,10 @@ const Fight = (attacker, enemy, skill) => {
     store.commit('FightEventLogPush',`<span class="color-yellow">[Miss]</span>${enemyLogName} 闪避了 ${attackerLogName} 的攻击!`);
     return ;
   }
+
+  new GameAudio({
+    key : 'fight-attack'
+  });
 
   // 获取双方变更行动对象;
   var actionList = {

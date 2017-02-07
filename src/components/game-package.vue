@@ -4,16 +4,16 @@
       背包
     </div>
     <div class="info-list">
-      <div class="item" v-for="item in this.baseInfo">
+      <div class="item" v-for="item in baseInfo">
         <span class="title">{{item[0]}}</span>
         <span class="num">{{hero.$resource[item[1]]}}</span>
       </div>
-      <div class="base-btn" @click="sort">
+      <div class="btn f-r" @click="sort">
         整理
       </div>
     </div>
     <div class="list">
-      <template v-for="(item, index) in hero.$package" >
+      <template v-for="(item, index) in hero.$package">
         <component-item class="item" :item="item" :position-index="'$package|' + index"></component-item>
       </template>
     </div>

@@ -31,10 +31,6 @@ export default {
 </style>
 
 <style lang="less">
- *{
-   -webkit-box-sizing: border-box;
-   user-select: none;
- }
  .container{
   //  padding: 6px 6px 0px 6px;
    margin-top: 20px;
@@ -43,6 +39,7 @@ export default {
    border-radius: 2px;
    margin-right: auto;
    margin-left: auto;
+   height: 500px;
  }
  .main{
    display: inline-block;

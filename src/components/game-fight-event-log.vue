@@ -45,7 +45,7 @@ export default {
     color: rgb(207, 210, 218);
     height: 296px;
     margin-bottom: 4px;
-    overflow: hidden;
+    overflow-y: scroll;
     padding:10px;
     .log{
       letter-spacing: 1px;

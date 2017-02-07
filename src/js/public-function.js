@@ -15,5 +15,6 @@ window._ = {
   random : require('lodash/random'),
   every : require('lodash/every'),
   assign : Object.assign,
+  shuffle : require('lodash/shuffle'),
 }
 

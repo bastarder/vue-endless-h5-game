@@ -14,11 +14,18 @@
 <script>
 import Menu from './game-home-menu.vue'
 import Info from './game-home-info.vue'
+import GameAudio from '../js/audio'
 
 export default {
   components :{
     'game-home-menu' : Menu,
     'game-home-info' : Info
+  },
+  created(){
+    new GameAudio({
+      key : 'backgroundMusic',
+      loop : true,
+    });
   }
 }
 
@@ -28,10 +35,10 @@ export default {
   .game-home{
     word-spacing:-4px;
     display: table;
-    background: #fff6cb;
+    background: #252830;
     .left{
       display: inline-block;
-      width: 264px;
+      width: 276px;
       overflow: hidden;
       vertical-align: top;
     }
@@ -40,7 +47,7 @@ export default {
       display: inline-block;
       vertical-align: top;
       width: 524px;
-      border-left: 4px solid green;
+      // border-left: 4px solid green;
     }
   }
 </style>

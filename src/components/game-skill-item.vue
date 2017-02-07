@@ -44,7 +44,7 @@ export default {
     width: 44px;
     height: 44px;
     line-height: 44px;
-    background: #1bc98e;
+    background: black;
     text-align: center;
     color: white;
     border-radius: 2px;
@@ -67,7 +67,7 @@ export default {
     left: -18px;
     opacity: 0.3;
     .left,.right{
-      background: black;
+      background: #9f86ff;
       border-radius: 50%;
       transform: rotate(0deg);
     }

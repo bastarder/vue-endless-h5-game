@@ -1,23 +1,46 @@
+  *{
+    -webkit-box-sizing: border-box;
+    user-select: none;
+  }
+
+  *::-webkit-scrollbar{
+    display: none;
+  }
+
+  @font-face {
+    font-family: 'mainfont';
+    src: url('../assets/font/mainfont.otf');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  body{
+    font-family: mainfont;
+  }
+
+
 .btn{
-  height: 26px;
+  display: inline-block;
+  text-align: center;
   padding: 2px 4px;
-  background: #6b15a1;
-  color: white;
-  border: 1px solid #6b15a1;
+  background: none;
+  color: #1997c6;
+  border: 1px solid #1997c6;
   border-radius: 2px;
-  transition: background 0.6s;
   cursor: pointer;
+  text-decoration: none;
   outline: none;
+  transition:all 0.3s ease-in-out;
 }
 .btn:hover{
-  background: none;
-  color: #6b15a1;
-  transition: background 0.6s;
+  background: #1997c6;
+  color: white;
+  transition:all 0.3s ease-in-out;
 }
-.btn:active{
+/*.btn:active{
   background: #6b15a1;
   color: white;
-}
+}*/
 
 /*.btn-info{
   border-color: #1bc981;
@@ -57,6 +80,10 @@
   text-align: right;
 }
 
+.f-r{
+  float: right;
+}
+
 .radius-4{
   border-radius: 4px;
 }
@@ -89,25 +116,25 @@
   display: block;
 }
 
- .color-red{
-   color: #d44950;
- }
+.color-red{
+  color: #d44950;
+}
 
- .color-green{
-   color: #1bc98e;
- }
+.color-green{
+  color: #1bc98e;
+}
 
- .color-yellow{
-   color: #e4d836;
- }
+.color-yellow{
+  color: #e4d836;
+}
 
- .color-purple{
-   color: #9f86ff;
- }
+.color-purple{
+  color: #9f86ff;
+}
 
- .color-darkblue{
-   color: #1997c6;
- }
+.color-darkblue{
+  color: #1997c6;
+}
 
 
 

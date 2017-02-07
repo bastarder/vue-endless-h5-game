@@ -55,6 +55,9 @@
       <div class="state-list">
         <game-state-item class="state" mini="true" v-for="state in monster.$status" :state="state"></game-state-item>
       </div>
+      <div class="die-tip color-red bounceIn animated" v-if="!monster.$alive">
+        死亡
+      </div>
     </div>
 
     <div>
@@ -244,11 +247,25 @@
  .game-fight{
     background: #252830;
     height: 100%;
+    .die-tip{
+      display: inline-block;
+      position: absolute;
+      width: 200px;
+      height: 162px;
+      line-height: 130px;
+      font-size: 60px;
+      text-align: center;
+      background: rgba(0,0,0,.6);
+      padding: 20px;
+      top: 10px;
+    }
     .info{
       .name{
         border-radius: 2px;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         color: white;
+        background: #3a3732;
+        padding: 8px 8px;
         .nickname{
           font-size: 12px;
           color: red;
@@ -313,9 +330,7 @@
        height: 100%;
        cursor: pointer;
        font-size: 12px;
-       .name{
-         
-       }
+
        .triangle-left{
          display: inline-block;
          position: absolute;

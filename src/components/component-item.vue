@@ -8,7 +8,9 @@
       <img class="badges" v-if="item.equipType > -1" :src="require(`static/equip-type-${item.equipType}.png`)" />
     </div>
     <div v-else class="blank">
-      {{this.position.$equipments ? this.equipCname[this.index] : '+'}}
+      <span class="item-name">
+        {{this.position.$equipments ? this.equipCname[this.index]: ''}}
+      </span>
     </div>
   </div>
 </template>
@@ -90,23 +92,25 @@ export default {
 
  .component-item{
    position: relative;
-   user-select :none;
-   background : #eeece1;
+   background : black;
    display: inline-block;
    vertical-align: top;
    width: 44px;
    height: 44px;
    color: white;
-   border: 1px solid gray;
+  //  border: 1px solid gray;
    border-radius: 2px;
    overflow : hidden;
    cursor: pointer;
    .blank{
      cursor: pointer;
-     color: #cdbaba;
      text-align: center;
      line-height: 40px;
+     .item-name{
+        color: #cfd2da;
+      }
    }
+
  }
 
 
@@ -119,10 +123,9 @@ export default {
     left: -1px;
     top: 27px;
     border-radius: 0px 2px 0px;
-    border: 1px solid gray;
+    // border: 1px solid gray;
     padding: 0px 2px;
-    color: gray;
-    background: antiquewhite;
+    color: #1997c6;
     font-size: 10px;
     font-weight: 200;
  }
@@ -130,13 +133,14 @@ export default {
  .component-item .item-name{
    display: inline-block;
    transform: scale(0.75);
+   letter-spacing: 2px;
    font-size: 10px;
-   font-weight: 700;
    color: brown;
    cursor: pointer;
    text-align: center;
    width: 100%;
  }
+
  .dropdown-menu.item-menu{
    border-radius: 0px;
    border-color: #eee;

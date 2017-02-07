@@ -6,64 +6,36 @@
     <transition enter-active-class="animated slideInDown" leave-active-class="animated slideOutUp">
       <game-home-info class="right-info" v-show="this.infoMenu" transition="bounce"></game-home-info>
     </transition>
+    <transition enter-active-class="animated slideInLeft slow" leave-active-class="animated slideOutLeft slow">
+      <div class="tip" v-if="tip">
+        <span class="map-name">{{map.$opt.name}}</span>
+        <div>
+          <span class="map-block FEvent">战斗</span>
+          <span class="map-block DEvent">事件</span>
+          <span class="map-block hero">英雄</span>
+        </div>
+      </div>
+    </transition>
+    <router-link class="btn backhome" to="/">回家</router-link>
     <div :class="['show-btn',this.infoMenu ? 'opend' : 'closed']" @click="showInfo">
-      <i v-if="this.infoMenu" class="fa fa-angle-double-left" aria-hidden="true"></i>
-      <i v-else class="fa fa-angle-double-right" aria-hidden="true"></i>
+      <span v-if="this.infoMenu">&lt;</span>
+      <span v-else>&gt;</span>
     </div>
     <div class="map-data">
       <div class="map">
         <div v-for="(line,x) in map.$data.mapData">
-          <span 
-            v-for="(block,y) in line" 
-            :class="{ 
-              'map-block': true, 
-              'stick' : block.block_type == '2',
-              'road': block.block_type == '0' ,
-              'path': block.path,
-              'hero': block.block_type == '1' ,
-              'end' : block.block_type == '3' ,
-            }"
-            @click="autoMove(block)">
-            <img class="map-block" v-if="block.block_type == '1'" :src="require('static/hero-1.png')"/>
-            <img class="map-block" v-if="block.FEvent" :src="require('static/event-fight.png')"/>
-            <img class="map-block" v-if="block.DEvent" :src="require('static/event-dialog.png')"/>
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog" v-if="DialogEvent.record">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Hi Bastarder!</h4>
-          </div>
-          <div class="modal-body">
-            {{DialogEvent.record.msg}}
-            <div v-if="DialogEvent.record.need || DialogEvent.record.get">
-              <template v-for="(item,index) in DialogEvent.record.need">
-                <component-item :item="item" :position-index="'$MapEvent|' + index">
-                  <span class="item-name" slot="item-name">{{item[0] | itemKey('name')}}</span>
-                  <span class="badges" slot="badges">{{item[1]}}</span>
-                </component-item>
-              </template>
-              =>
-              <template v-for="(item,index) in DialogEvent.record.get">
-                <component-item :item="item" :position-index="'$MapEvent|' + index">
-                  <span class="item-name" slot="item-name">{{item[0] | itemKey('name')}}</span>
-                  <span class="badges" slot="badges">{{item[1]}}</span>
-                </component-item>
-              </template>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-default" v-for="btn in DialogEvent.record.buttons" @click="DialogEvent.callAction(btn.action)">
-              {{btn.title}}
-            </button>
-            <button class="btn btn-default" v-if="!DialogEvent.record.buttons" @click="DialogEvent.callAction(DialogEvent.next)">
-              {{ DialogEvent.isEnd ? '结束对话' : '下一步' }}
-            </button>
+          <div :class="['map-block-bg', block.block_type != '0' || block.FEvent || block.DEvent || block.block_type == '1'? 'gray' : '']" v-for="(block,y) in line" >
+            <span 
+              :class="blockClass(block)"
+              @click="autoMove(block)"
+              :x="x"
+              :y="y">
+              <!--
+              <img class="map-block hero" v-if="block.block_type == '1'" :src="require('static/hero-1.png')"/>
+              <img class="map-block FEvent" v-if="block.FEvent" :src="require('static/event-fight.png')"/>
+              <img class="map-block DEvent" v-if="block.DEvent" :src="require('static/event-dialog.png')"/>
+              -->
+            </span>
           </div>
         </div>
       </div>
@@ -80,6 +52,7 @@ import { MapDialog } from '../js/event-class'
 import { DIALOG_DATA } from '../data/event-data'
 import Menu from './game-home-menu.vue'
 import Info from './game-home-info.vue'
+import MapInit from '../js/map-init';
 
 export default {
   components :{
@@ -91,13 +64,17 @@ export default {
       infoMenu : false,
       map : null,
       path : null,
-      DialogEvent : {},
+      tip : false,
     }
   },
   created (){
-    this.map = this.$store.state.EVENT_MAP_DATA;
+    // this.map = this.$store.state.EVENT_MAP_DATA;
+    this.map = new MapInit(this.$store.state.mapList[0])
+    console.log(this.map);
     this.moveEvent = new HeroMoveEvent(this.map, this);
     setTimeout(() => { this.autoPisition() },100);
+    setTimeout(() => { this.tip = true },500);
+    setTimeout(() => { this.tip = null },5000);
   },
   updated (){
     this.autoPisition();
@@ -108,6 +85,49 @@ export default {
   methods : {
     showInfo() {
       this.infoMenu = !this.infoMenu;
+    },
+    blockClass(block) {
+      let typeList = ['road', 'hero', 'stick', 'end'];
+      let classList = ['map-block'];
+      let stick = '2';
+
+      classList.push(typeList[Number(block.block_type)] || '');
+
+      block.FEvent && classList.push('FEvent');
+
+      block.DEvent && classList.push('DEvent');
+
+      // 计算圆角;
+      // r-1 r-2 r-3 r-4
+      let data = this.map.$data.mapData;
+      let t = [[-1,-1],[-1,1],[1,-1],[1,1]];
+      for(let i = 0; i< 4; i++){
+        let {x,y} = block;
+        x = Number(x);
+        y = Number(y);
+        let d1 = {x: x + t[i][0],y};
+        let d2 = {x,y: y + t[i][1]};
+        if(data[d1.x] && (data[d1.x][d1.y] !== undefined) && data[d2.x] && data[d2.x][d2.y] !== undefined){
+          d1 = data[d1.x][d1.y];
+          d2 = data[d2.x][d2.y];
+          if(block.block_type == stick){
+            let d3 = {x:x + t[i][0],y: y + t[i][1]};
+            if(!data[d3.x] || data[d3.x][d3.y] == undefined){
+              continue;
+            }
+            d3 = data[d3.x][d3.y]
+            if(d1.block_type != stick && d2.block_type != stick && d3.block_type != stick){
+              classList.push(`r-${i+1}`);
+            }
+          }else{
+            if(d1.block_type == stick && d2.block_type == stick){
+              classList.push(`r-${i+1}`);
+            }
+          }
+        }
+      }
+
+      return classList;
     },
     autoPisition (){
       let $m = document.querySelector('.game-map-active'),
@@ -131,6 +151,18 @@ export default {
 </script>
 
 <style scoped lang="less">
+.backhome{
+  position: absolute;
+  z-index: 9;
+  left: 746px;
+  top: 446px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  line-height: 45px;
+  font-size: 16px;
+  border-width: 2px;
+}
 .game-map-active{
   position: relative;
   overflow: hidden;
@@ -138,75 +170,132 @@ export default {
 
 .game-home-info{
   position: absolute;
+  background: #252830;
   z-index: 2;
 }
 
 .game-package{
   position: absolute;
   z-index: 2;
-  background: #fff6cb;
+  background: #252830;
   top: 230px;
 }
 
 .show-btn{
-  background: #fff6cb;
+  background: #9f86ff;
   position: absolute;
-  z-index: 3;
+  z-index: 2;
   width: 20px;
-  height: 62px;
-  line-height: 62px;
+  height: 48px;
+  line-height: 48px;
   text-align: right;
-  top: 168px;
+  top: 182px;
   border-radius: 0px 2px 2px 0px;
   padding-right: 4px;
   transition: width 0.6s;
   cursor: pointer;
+  color: white;
 }
 
-@keyframes move
-{
-  0% { padding-right: 4px;}
-  100% { padding-right: 18px;}
+.map-block-bg{
+  display: inline-block;
+  background: #1e2127;
 }
+.map-block-bg.gray{
+  background: #5c5f67;
+}
+.tip{
+  display: inline-block;
+  color: white;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  width: 150px;
+  height: 70px;
+  padding: 6px;
+  border-bottom-right-radius: 4px;
+  background: rgba(0,0,0,0.4);
+  .map-block{
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 30px;
+    margin-top: 6px;
+  }
+}
+
+// @keyframes move
+// {
+//   0% { padding-right: 4px;}
+//   100% { padding-right: 18px;}
+// }
 
 .show-btn.opend{
-  width: 520px;
+  width: 50px;
   transition: 1s;
   border-radius :0px;
-  animation: move 0.6s infinite;
+  // animation: move 0.6s infinite;
 }
 
 .map-data{
   position: relative;
   height: 500px;
   overflow: hidden;
-  background: black;
+  background: #1e2127;
 }
 .map-block{
   display: inline-block;
   width: 40px;
   height: 40px;
   vertical-align: top;
-  border-radius: 2px;
 }
 .map-block.stick{
-  background: black;
+  background: #1e2127;
 }
 .map-block.road{
-  background: white;
+  background: #5c5f67;
 }
 .map-block.road:hover{
-  box-shadow: 0px 0px 4px red inset; 
+  box-shadow: 0px 0px 4px #e4d836 inset; 
   cursor: pointer;
 }
+.map-block.FEvent{
+  border-radius: 4px;
+  background: #d44950;
+}
+.map-block.DEvent{
+  border-radius: 4px;
+  background: #1bc98e;
+}
 .map-block.hero{
-  background: white;
+  border-radius: 4px;
+  background: #9f86ff;
 }
 .map-data .map{
+  z-index: 1;
   position: absolute;
   width: 800px;
   height: 800px;
-  box-shadow: 0px 0px 10px black;
   transition: 0.2s;
+  background: #5c5f67;
 }
+
+.r-1{
+  border-top-left-radius: 6px;
+}
+
+.r-2{
+  border-top-right-radius: 6px;
+}
+
+.r-3{
+  border-bottom-left-radius: 6px;
+}
+
+.r-4{
+  border-bottom-right-radius: 6px;
+}
+
 </style>

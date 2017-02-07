@@ -1,7 +1,8 @@
 <template>
   <div class="progress">
     <div v-if="!hideNum" class="progress-num" :style="{ 'line-height':this.height + 'px' }">
-      {{ value + ' / ' + max}} 
+      <span v-if="max">{{ value + ' / ' + max}}</span>
+      <span v-else>∞</span>
     </div>
     <div class="progress-per" :style="{'width': _per, 'height': this.height + 'px'}"></div>
   </div>

@@ -23,11 +23,11 @@
     <div class="info">
       <div class="left">
         <div class="label-name">属性</div>
-        <div class="atk-name">攻击力</div>
-        <div class="atk">{{hero.$r.$atk}}</div>
+        <div class="atk-name color-red">攻击力</div>
+        <div class="atk color-red">{{hero.$r.$atk}}</div>
       </div>
       <div class="right">
-        <div class="attr" v-for="(key,i) in this.infoKeyList">
+        <div :class="['attr', i > 5 ? 'last' : '']" v-for="(key,i) in this.infoKeyList">
           <span class="name">{{key | heroAttrKey}}</span>
           <span class="value">{{hero.$r[key]}}</span>
         </div>
@@ -65,11 +65,11 @@ export default {
 
 <style scoped lang="less">
   .game-home-info{
+    color: rgb(207, 210, 218);
     word-spacing:-4px;
     display: table;
-    width: 264px;
+    width: 276px;
     height: 280px;
-    background: #fff6cb;
     padding: 6px;
     .left{
       display: inline-block;
@@ -157,12 +157,12 @@ export default {
         .atk-name{
           text-align: center;
           padding: 6px;
+          margin-bottom: 16px;
         }
         .atk{
           font-size: 16px;
           line-height: 34px;
           text-align: center;
-          color: brown;
         }
       }
       .right{
@@ -171,16 +171,21 @@ export default {
           font-size: 10px;
           display: inline-block;
           width: 63px;
-          border-left: 2px solid green;
+          // border-left: 2px solid green;
           padding: 6px 2px;
-          margin-bottom: 10px;
+          margin-bottom: 4px;
           .name{
+            padding-left: 4px;
             font-weight: 800;
           }
           .value{
-            padding-left: 2px;
-            color: brown;
+            display: block;
+            padding-left: 4px;
+            color: #9f86ff;
           }
+        }
+        .attr.last{
+          margin-bottom: 0px;
         }
       }
     }

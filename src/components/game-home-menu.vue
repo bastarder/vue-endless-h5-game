@@ -1,7 +1,7 @@
 <template>
   <div class="game-home-menu">
-    <template v-for="item in this.menu">
-      <router-link class="link" :to="item[2]">
+    <template v-for="item in menu">
+      <router-link class="link" :to="item[2]" :style="{'width': Math.floor(1 / menu.length * 100) + '%'}">
         <div class="title text-center">
           <span>{{item[0][0]}}</span>{{item[0][1]}}
         </div>
@@ -34,19 +34,17 @@ export default {
   .game-home-menu{
     word-spacing:-4px;
     display: table;
-    width: 264px;
+    width: 100%;
     height: 220px;
-    background: #fff6cb;
     .link{
       text-decoration: none;
       position: relative;
       vertical-align: top;
       display: inline-block;
-      width: 66px;
       height: 100%;
-      background: #fff6cb;
-      color: black;
+      color: rgb(207, 210, 218);
       padding-right: 6px;
+      overflow: hidden;
       .title{
         text-align: right;
         span:first-child{
@@ -69,7 +67,7 @@ export default {
     }
     .link:hover{
       text-decoration: none;
-      background: #ffb11c;
+      background: #1bc98e;
       color: white;
       transition: 0.3s;
       img{
