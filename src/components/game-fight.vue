@@ -1,64 +1,24 @@
 <template>
   <div class="game-fight"> 
 
-    <div class="hero rubberBand animated">
-      <div class="info">
-        <div class="name">{{hero.$showName}}</div>
-        <game-progress :max="hero.$r.$maxHp" :value="hero.$hp" class="hp"></game-progress>
-        <game-progress :max="hero.$r.$maxMp" :value="hero.$mp" class="mp"></game-progress>
-        <game-progress :max="hero.$maxExp" :value="hero.$exp" class="exp striped" h="6" hideNum="true"></game-progress>
-      </div>
-      <div class="skill-list">
-        <game-skill-item class="skill" v-for="skill in hero.$skills" :skill="skill"></game-skill-item>
-      </div>
-      <div class="state-list">
-        <game-state-item class="state" mini="true" v-for="state in hero.$status" :state="state"></game-state-item>
-      </div>
-    </div><!--
+    <game-fight-unit-info 
+      :unit="hero" 
+      class="hero rubberBand animated">
+    </game-fight-unit-info><!--
     
-    
-    --><div class="fight-center">
+  --><div class="fight-center">
       <game-fight-event-log></game-fight-event-log>
-      <div class="drop-list">
-        <ul v-if="drop.data.length">
-          <li v-for="(item, index) in drop.data" :class="['item', ~drop.selected.indexOf(index) ? 'selected' : '', (index+1) % 3 === 0 ? 'last' : '']" >
-            <input type="checkbox" v-show="false" :id="'item-' + index" :value="index" v-model="drop.selected">
-            <label 
-              :for="'item-' + index">
-              <span class="name">{{item[0] | itemKey('name')}}</span> 
-              <span class="d-ib" style="transform: rotate(45deg)">+</span> 
-              <span class="num">{{item[1]}}</span>
-              <span class="triangle-left bounceIn animated" v-if="~drop.selected.indexOf(index)"></span>
-              <span class="triangle-right bounceIn animated" v-if="~drop.selected.indexOf(index)"></span>
-            </label>
-          </li>
-        </ul>
-        <div class="drop-tip color-red bounceIn animated" v-if="drop.tip">你的背包似乎不能容纳更多的东西了!</div>
-        <button v-if="drop.data.length" type="button" class="btn drop-btn" @click="heroGetItem">获取所选物品</button>
-      </div>
+      <game-fight-drop-list 
+        :dropData="dropData" 
+        :getter="hero" 
+        @setDropData="setDropData">
+      </game-fight-drop-list>
     </div><!--
     
-    
-    --><div class="monster rubberBand animated">
-      <div class="info">
-        <div class="name">
-          <span class="nickname">{{monster.$nickname}}</span>
-          {{monster.$showName}}
-        </div>
-        <game-progress :max="monster.$r.$maxHp" :value="monster.$hp" class="hp"></game-progress>
-        <game-progress :max="monster.$r.$maxMp" :value="monster.$mp" class="mp"></game-progress>
-        <game-progress class="exp striped" h="6" hideNum="true"></game-progress>
-      </div>
-      <div class="skill-list">
-        <game-skill-item class="skill" v-for="skill in monster.$skills" :skill="skill"></game-skill-item>
-      </div>
-      <div class="state-list">
-        <game-state-item class="state" mini="true" v-for="state in monster.$status" :state="state"></game-state-item>
-      </div>
-      <div class="die-tip color-red bounceIn animated" v-if="!monster.$alive">
-        死亡
-      </div>
-    </div>
+ --><game-fight-unit-info 
+      :unit="monster" 
+      class="monster rubberBand animated">
+    </game-fight-unit-info>
 
     <div>
       <button type="button" class="btn btn-large btn-danger" @click="StartFight" v-if="this.btn.start">开始战斗</button>
@@ -73,11 +33,15 @@
 <script>
   import SkillEvent from '../js/release-skill'
   import MonsterAI from '../js/monster-ai'
-  import GameFightEventLog from '../components/game-fight-event-log.vue'
+  import GameFightEventLog from './game-fight-event-log.vue'
+  import GameFightUnitInfo from './game-fight-unit-info.vue'
+  import GameFightDropList from './game-fight-drop-list.vue'
 
   export default {
     components : {
-      'game-fight-event-log': GameFightEventLog
+      'game-fight-event-log': GameFightEventLog,
+      'game-fight-unit-info': GameFightUnitInfo,
+      'game-fight-drop-list': GameFightDropList,
     },
     data () {
       return {
@@ -89,11 +53,7 @@
           next  : false, // 下一个怪物
           end   : false // 结束战斗
         }, 
-        drop : {
-          data : [],
-          selected : [],
-          tip : false,
-        },
+        dropData : [],
         round : -1,
       }
     },
@@ -113,27 +73,12 @@
         // 联动全局刷新;
         this.$forceUpdate();
       },
-      hero : {
-        handler: function(item){
-          // 判断英雄死亡;
-          item && !item.$alive && this.overFight(false);
-        },
-        deep: true
+      'hero.$alive' : function(v){
+        !v && this.overFight(false);
       },
-      monster : {
-        handler: function(item){
-          // 判断怪物死亡;
-          item && !item.$alive && this.overFight(true);
-        },
-        deep: true
+      'monster.$alive' : function(v){
+        !v && this.overFight(true);
       }
-    },
-    computed : {
-      
-    },
-    updated (){
-      // 重置tooltips, 欲封装组件, 暂留方法
-      // $('[data-toggle="tooltip"]').popover()
     },
     methods : {
       StartFight (){
@@ -195,8 +140,7 @@
           this.$set(this.btn,'next',true)
         }
 
-        this.$set(this.drop,'data', this.monster.dieDrop());
-        this.$set(this.drop,'selected', _.range(this.drop.data.length));
+        this.setDropData(this.monster.dieDrop());
       },
       end(win){
         // 清空战斗参数;
@@ -210,30 +154,12 @@
           this.$router.push('/map-active');
         }
       },
-      heroGetItem(){
-        let { drop, $set } = this;
-        
-        $set(drop,'tip', false);
-
-        // 拾取物品
-        drop.data = this.hero.getItem(
-          _.map(drop.selected, i => drop.data[Number(i)]), true
-        );
-
-        // 如果有剩余物品,则提示背包已满
-        if(drop.data.length > 0){
-          $set(drop, 'tip', true);
-          setTimeout(function(){
-            $set(drop, 'tip', false);
-          },2000);
-          $set(drop, 'selected' ,_.range(drop.data.length));
-        }
+      setDropData (data){
+        this.$set(this,'dropData', data);
       },
       test (){
-        this.$set(this.drop,'data', this.monster.dieDrop());
-        this.$set(this.drop,'selected', _.range(this.drop.data.length));
-      },
-
+        this.setDropData(this.monster.dieDrop());
+      }
     },
     destroyed (){
       this.SkillEvent && this.SkillEvent.end();
@@ -247,131 +173,11 @@
  .game-fight{
     background: #252830;
     height: 100%;
-    .die-tip{
-      display: inline-block;
-      position: absolute;
-      width: 200px;
-      height: 162px;
-      line-height: 130px;
-      font-size: 60px;
-      text-align: center;
-      background: rgba(0,0,0,.6);
-      padding: 20px;
-      top: 10px;
-    }
-    .info{
-      .name{
-        border-radius: 2px;
-        margin-bottom: 4px;
-        color: white;
-        background: #3a3732;
-        padding: 8px 8px;
-        .nickname{
-          font-size: 12px;
-          color: red;
-        }
-      }
-    }
-    .progress{
-      margin-bottom: 4px;
-    }
-    .skill{
-      margin-right: 8px;
-    }
-    .skill:last-child{
-      margin-right: 0;
-    }
-    .state{
-      margin-right: 4px;
-    }
-    .hero,.monster{
-      display: inline-block;
-      vertical-align: top;
-      width: 220px;
-      padding: 10px;
-      background: rgb(30, 33, 39);
-    }
     .fight-center{
       display: inline-block;
       width: 360px;
       padding: 0px 4px;
       vertical-align: top;
     }
-
  }
-
- .drop-list {
-   padding: 6px;
-   position: relative;
-   height: 200px;
-   background: #1e2127;
-   overflow-y: scroll;
-   ul{
-     padding: 0;
-     list-style: none;
-     margin: 0px;
-   }
-   .item{
-     display: inline-block;
-     border: 1px solid rgb(67, 72, 87);
-     border-radius: 2px;
-     width: 110px;
-     height: 44px;
-     color: rgb(207, 210, 218);
-     line-height: 40px;
-     padding: 0px 2px 0px 8px;
-     margin-right: 4px;
-     margin-bottom: 4px;
-
-     label{
-       position: relative;
-       display: inline-block;
-       width: 100%;
-       height: 100%;
-       cursor: pointer;
-       font-size: 12px;
-
-       .triangle-left{
-         display: inline-block;
-         position: absolute;
-         border-bottom: 16px solid transparent;
-         border-left: 16px solid #1bc98e;
-         top: -3px;
-         left: -9px;
-       }
-       .triangle-right{
-         display: inline-block;
-         position: absolute;
-         border-bottom: 16px solid #1bc98e;
-         border-left: 16px solid transparent;
-         top: 25px;
-         left: 85px;
-        }
-
-     }
-     transition: background 0.3s;
-   }
-   .item.selected{
-     background: #434857;
-     color: white;
-     transition: 0.3s;
-   }
-   .item.last{
-     margin-right: 0px;
-   }
-   .drop-tip{
-     display: inline-block;
-     position: absolute;
-     width: 100%;
-     text-align: center;
-     background: rgba(0,0,0,.6);
-     padding: 20px;
-     top: 74px;
-   }
-   .drop-btn{
-     margin-top: 8px;
-     width: 100%;
-   }
- }
-
 </style>

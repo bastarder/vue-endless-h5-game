@@ -30,7 +30,7 @@ const SKILL_TABLE = [
       }
     ],
     eventList: [
-      `[11]enemy@changeState@[{ id: 2000001, state: "REMOVE" }]`
+      `[11]attacker@changeState@[{ id: 2000001, state: "REMOVE" }]`
     ]
   },
   {
