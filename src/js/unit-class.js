@@ -4,30 +4,18 @@ import STATE_TABLE from "../data/state-data";
 import { ITEM_TABLE } from "../data/item-data";
 import store from '../store';
 import CreateMonster from './create-monster';
+import CreateHero from './create-hero';
 import { GetRange, GetRandom } from './public-random-range';
 import PGET from '../js/public-static-get';
 
 function Unit(obj = {}){
   this.id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
   this.$type = 'Hero';      // 单位类型
-  this.$showName = 'bastarder' // 展示名称
-  this.$exp = 1;      // 当前经验
-  this.$maxExp = 5;   // 升级经验
-  this.$level = 5;    // 等级
+  this.$showName = 'unit' // 展示名称
+  this.$level = 0;    // 等级
   this.$alive = true;
   this.$status = [];
   this.$skills = [];  // 技能列表
-  this.$package = new Array(40);
-  this.$houseList = new Array(40);
-  this.$equipments = [0,0,0,0,0,0,0,0,0];
-  this.$resource = {
-    gold : 999,
-    gem : 111,
-  };
-  this.$flashCopy = {
-    $status: null,
-    $skills: null,
-  };
 
   // 属性方面
   this.$hp          = 600;  // 当前生命值
@@ -43,30 +31,16 @@ function Unit(obj = {}){
   this.$critical    = 3; // 暴击几率
   this.$dodge       = 5; // 闪避几率
   this.$coolTimePer = 0;    // 冷却缩短
-  this.$critiDmg = 1.5;  // 暴击伤害倍数;
-  this.$dmgDown = [0,0]; // 伤害减免;
-  this.$r = {};
-
-  this.$attrGrow = {
-    maxHp : 10,
-    maxMp : 10,
-    atk : 5,
-    def : 2,
-    str : 1,     // 力量
-    dex : 2,     // 敏捷
-    con : 3,     // 体质
-    int : 4     // 智力
-  }
+  this.$critiDmg    = 1.5;  // 暴击伤害倍数;
+  this.$dmgDown     = [0,0]; // 伤害减免;
+  this.$r           = {};
 
   switch(obj.$type){
     case 'Monster' : 
       CreateMonster.call(this, obj);
       break;
     case 'Hero' : 
-      // CreateHero.call(this, obj);
-      break;
-    default : 
-      _.assign(this, obj);
+      CreateHero.call(this, obj);
       break;
   }
 
@@ -85,7 +59,7 @@ Unit.prototype = {
   changeMp,
   changeHp,
   getExp,
-  getState,
+  getList,
   removeList,
   changeState,
   reset,
@@ -100,33 +74,36 @@ Unit.prototype = {
 /* --------------- */
 
 function startFight(){
-  console.info('Start Fight! copy state!');
-  _.each(this.$flashCopy, (v,k) => {
-    this.$flashCopy[k] = _.cloneDeep(this[k]);
-  })
-  _.each(this.$status, state => {
+
+  for(let key in this.$flashCopy){
+    this.$flashCopy[key] = _.cloneDeep(this[key]);
+  }
+
+  for(let state of this.$status){
     state.stateEvent && state.stateEvent(this);
-  })
+  }
+
   this.updateAttribute();
 }
 
 function endFight(){
-  // 清除状态事件;
-  _.each(this.$status, state => {
+
+  for(let state of this.$status){
     state.stateEventTimer && clearInterval(state.stateEventTimer);
-  })
-  // 恢复战前状态;
-  _.each(this.$flashCopy, (v,k) => {
-    v && (this[k] = v);
-  })
-  this.updateAttribute();
-  // 如果死亡重置生命;
+  }
+
+  Object.assign(this, this.$flashCopy);
+
   !this.$alive && this.reset();
+
+  this.updateAttribute();
 }
 
 function updateAttribute(){
-  let hp_per = Math.min(this.$hp / (this.$r.$maxHp || this.$maxHp),1);
-  let mp_per = Math.min(this.$mp / (this.$r.$maxMp || this.$maxMp),1);
+
+  let hp_per = Math.min(this.$hp / (this.$r.$maxHp || this.$maxHp), 1);
+  let mp_per = Math.min(this.$mp / (this.$r.$maxMp || this.$maxMp), 1);
+
   let promote = {
     // 基础值 基础百分 高级值 高级百分
     // ((默认 + 基础值) * (1 + 基础百分) + 高级值) * (1 +  高级百分)
@@ -144,159 +121,232 @@ function updateAttribute(){
     $critiDmg    : [0,0,0,0],
     $dmgDown : [0,0],
   }
-  //powerUp, equip
-  let group = [];
-  _.each(this.$equipments,item => {
-    if(item && item.equip){
-      group.push(item.equip);
-    }
-  })
-  _.each(this.$status,item => {
-    if(item && item.powerUp){
-      group.push(item.powerUp);
-    }
-  })
-  _.each(group, item => {
-    _.each(item, (v,k) => {
-      if(promote[k]){
-        let index = 0,up = v;
-        if(typeof v === 'object'){
-          index = v[1];
-          up = v[0];
-        }
-        promote[k][index] += up;
-      }
-    })
-  })
 
-  _.each(promote, (v,k) => {
-    if(k === '$dmgDown'){
-      this.$r[k] = v;
-      return ;
+  let data = (this.$equipments || []).concat(this.$status || []);
+
+  for(let item of data){
+    
+    if(!item){
+      continue;
     }
-    this.$r[k] = Math.floor(((this[k] + v[0]) * (1 + v[1] / 100) + v[2]) * (1 + v[3] / 100));
-  })
+
+    let opt = item.equip || item.powerUp;
+
+    for(let key in opt){
+
+      let v = opt[key];
+
+      if(!promote[key]){
+        continue;
+      }
+
+      let index = 0,up = v;
+
+      if(v instanceof Array){
+        index = v[1];
+        up = v[0];
+      }
+
+      promote[key][index] += up;
+    }
+
+  };
+
+  for(let key in promote){
+    let v = promote[key];
+    if(key === '$dmgDown'){
+      this.$r[key] = v;
+      continue ;
+    }
+    this.$r[key] = Math.floor(((this[key] + v[0]) * (1 + v[1] / 100) + v[2]) * (1 + v[3] / 100));
+  }
+
   this.$hp = Math.floor(hp_per * this.$r.$maxHp) || 0;
   this.$mp = Math.floor(mp_per * this.$r.$maxMp) || 0;
-  // console.log(this.$r);
+
 }
 
 function changeMp(value) {
-  value = parseInt(value);
-  this.$mp = Math.min(this.$mp + value, this.$r.$maxMp);
-  if(this.$mp < 0){
-    this.$mp = 0;
-  }
-}
 
-function changeHp(value) {
-  value = parseInt(value);
-  if(this.$hp <= 0){  // 判断单位是否存活;
-    // console.warn('增加HP失败,目标单位已死亡!',this);
-    return false;      
-  }
+  let v = parseInt(v);
 
-  this.$hp = Math.min(this.$hp + value, this.$r.$maxHp);  // 更新Hp的值;
-
-  if(this.$hp <= 0){   // 判断更新后 单位是否存活;
-    // console.warn('增加HP失败,目标单位已死亡!',this);
-    this.$hp = 0;
-    this.$alive = false;
+  if(!v){
     return false;
   }
 
-  // console.warn('增加HP成功,当前HP:',this.$hp);
+  let mp = Math.min(this.$mp + v, this.$r.$maxMp);
+
+  this.$mp = mp < 0 ? 0 : mp;
+
+  return true;
+}
+
+function changeHp(value) {
+
+  let v = parseInt(value);
+
+  if(!v || this.$hp <= 0){
+    return false;      
+  }
+
+  let hp = Math.min(this.$hp + value, this.$r.$maxHp);  // 更新Hp的值;
+  
+  if(hp <= 0){ 
+    this.$hp = 0;
+    this.$alive = false;
+  }else{
+    this.$hp = hp;
+  }
+
   return true;
 }
 
 function getExp(value) {
-  // EXP_TABLE 经验列表 来源: "./game-data";
+  
+  let ExpTable = EXP_TABLE,
+      v = parseInt(value);
 
-  if(this.$level >= EXP_TABLE.length){
-    console.warn('单位已经达到等级上限,经验值将被累积!');
-    this.$exp += value;
-    return true;
+  if(!v || !this.$maxExp){
+    return false;
   }
 
-  var exp = this.$exp + value;
+  let exp = this.$exp + v;
 
-  if(exp > this.$maxExp){
-    this.$exp = exp - this.$maxExp;
-    this.$level += 1;
-    this.$maxExp = EXP_TABLE[this.$level - 1] || NaN;
-    // 升级增加属性;
+  if(exp >= this.$maxExp){
+
+    this.$exp = parseInt(exp % this.$maxExp);
+
+    this.$level += parseInt(exp / this.$maxExp);
+
+    this.$maxExp = ExpTable[this.$level - 1] || 0;
+
     for(var key in this.$attrGrow){
+
       this[key] += this.$attrGrow[key];
+
     }
-    console.warn('单位升级,属性增加!', this.$attrGrow);
+
+    this.updateAttribute();
+
   }else{
+
     this.$exp = exp;
+
   }
 
-  console.warn('单位升级,当前经验值:',this.$exp,'当前等级:',this.$level,'下级所需经验:',this.$maxExp);
+  return true;
+
 }
 
-function getState(obj, isIndex) {
-  return isIndex ? _.findIndex(this.$status,obj) : _.find(this.$status,obj);
+function getList(key, opt, isIndex){
+  let list = this[key];
+
+  if(!list){
+    return false;
+  }
+
+  let condition;
+
+  if(typeof opt === 'number'){
+    condition = i => i.id === opt;
+  }
+
+  if(typeof opt === 'object'){
+    condition = i => i.id === opt.id;
+  }
+
+  if(typeof opt === 'function'){
+    condition = opt;
+  }
+
+  if(!condition){
+    return false;
+  }
+
+  return isIndex ? list.findIndex(condition) : list.find(condition);
 }
 
-function removeList(key, opt, isIndex) {
-  if (!isIndex) {
-    opt = _.findIndex(this.$status,{ id:opt.id });
-    if(opt === -1){
-      return ;
-    }
-  };
-  this[key][opt].stateEventTimer && clearInterval(this[key][opt].stateEventTimer);
-  this[key].splice(opt,1);
+function removeList(key, opt) {
+  let index,
+      list = this[key];
+
+  if(typeof opt === 'object'){
+    index = list.findIndex(i => i.id === opt.id);
+  }else{
+    index = opt;
+  }
+
+  if(!~index || !list){
+    return false;
+  }
+
+  if(key === '$status'){
+    list[index].stateEventTimer && clearInterval(list[index].stateEventTimer);
+  }
+
+  let remove = list.splice(index,1);
+
   this.updateAttribute();
+
+  return remove;
 }
 
 function changeState(changeList) {
-  var self = this;
-  _.each(changeList,function(value){
-    var id = value.id;
-    var state = self.getState({id});
-    switch (value.state) {
-      case "ADD":
+
+  if(!changeList || !changeList.length){
+    return ;
+  }
+
+  changeList.forEach(item => {
+    let id = item.id;
+    let state = this.getList('$status', {id});
+    switch (item.state){
+      case 'ADD':
 
         if(state){
           break;
         }
 
-        let newState = PGET(id);
+        state = Object.assign( PGET(id), item.action || {} );
 
-        _.each(value.action, i => {
-          newState[i[0]] = i[1]
-        });
+        state.stateEvent && state.stateEvent(this);
 
-        newState.stateEvent && newState.stateEvent(self);
-        self.$status.push(newState);
-      
+        this.$status.push(state);
+
         break;
-      case "REMOVE":
-        self.removeList('$status',{id});
+      case 'REMOVE':
+
+        this.removeList('$status', {id});
+
         break;
-      case "CHANGE":
+      case 'CHANGE':
+
         if(state){
-          _.each(value.action, i => {
-            self.$status[index][i[0]] = i[1]
-          });
+
+          state = Object.assign( state, item.action );
+
         }
+
         break;
     }
-    self.updateAttribute();
   })
+
+  this.updateAttribute();
 
 }
 
 function reset(){
+
   this.$alive = true;
+
   this.$hp = this.$maxHp;
+
   this.$mp = this.$mp;
+
 }
 
-function dieDrop(getter){
+function dieDrop(){
+  // 数据范例
   // $dropList : [
   //   // 物品ID, 数量范围, 几率
   //   [3000001, [3, 10], 1],
@@ -305,168 +355,194 @@ function dieDrop(getter){
   //   ['gold',[1, 80], 1],
   //   ['exp', 1, 1]
   // ]
-  let list = [];
+  let data = this.$dropList || [],
+      consequence = [];
 
-  _.each(this.$dropList, item => {
-    let [id, num, odds] = item;
+  data.forEach(item => {
 
-    if(!GetRandom(odds)){
+    let num = GetRange(item[1]),
+        odds = GetRandom(item[2]);
+    
+    if(!num || !odds || !item[0] || !item[1] || !item[2]){
       return ;
     }
 
-    num = GetRange(num);
+    consequence.push([
+      item[0], num
+    ])
 
-    if(num === 0){
-      return ;
-    }
+  });
 
-    list.push(
-      [id, num]
-    )
-  })
-
-  return list;
+  return consequence;
 }
 
 function itemSort(type){
-  this[type] = this[type].sort(
-    (a,b) => ((a.id || Infinity) - (b.id || Infinity))
+  let list = this[type];
+
+  if(!list || !list.length){
+    return false;
+  }
+
+  list.sort(
+    (a, b) => ((a.id || Infinity) - (b.id || Infinity))
   );
+
   store.commit('UPDATE');
+
+  return true;
 }
 
-function getItem(list, force, t){
-  // pile
-  let unit = force ? this : _.cloneDeep(this);
-  let type = t ? t : '$package';
+function getItem(data, force, type = '$package'){
 
-  let fullPackage = [];
-
-  _.each(list,i => {
+  let container = force ? this[type] : _.cloneDeep(this[type]),
+      surplus = [];
   
-    let item = PGET(i[0]);
-    let num = i[1];
+  if(!container || !data || !data.length){
+    console.warn('[unit.getItem Error]:', data, force, t, this);
+    return surplus;
+  }
+
+  data.forEach(i => {
+    let item,
+        num = i[1];
+
+    if(typeof i[0] === 'object'){
+      item = i[0];
+    }else{
+      item = PGET(i[0]);
+    }
+
     switch(item){
       case "gold":
-        unit.$resource.gold += num;
-        return ;
-      case "gem":
-        unit.$resource.gem += num;
-        return ;
-      case "exp":
-        unit.getExp(num)
-        return ;
+        force && (this.$resource.gold += num);
+        return;
+      case 'gem':
+        force && (this.$resource.gem += num);
+        return;
+      case 'exp':
+        force && (this.getExp(num));
+        return;
     }
-    // item : 新增物品 , num : 新曾数量 , packItem : 背包已存在的相同物品 , nextIndex : 空位
-    let packItem = _.find(unit[type],{ id: item.id });
-    let nextIndex = _.findIndex(unit[type], item => !item);
+
+    let itemInPackage = this.getList(type, { id: item.id }),
+        nextBlankPlace = container.findIndex(item => !item);
 
     item.pile && (item.num = num);
-    // item.num = num
 
     // 可堆叠
-    if(packItem && item.pile){
+    if(itemInPackage && item.pile){
       // 存在
-      packItem.num = (packItem.num || 0) + num;
+      itemInPackage.num = (itemInPackage.num || 0) + num;
     }else{
       // 不存在
-      if(~nextIndex){
+      if(~nextBlankPlace){
         // 有空位
-        unit[type][nextIndex] = item;
+        container[nextBlankPlace] = item;
       }else{
         // 没空位
-        fullPackage.push(i);
+        surplus.push(i);
       }
     }
 
-  });
+  })
+
   store.commit('UPDATE');
-  return fullPackage;
+
+  return surplus;
 }
 
-function equip(item, index, t){
-  let type = t ? t : '$package';
-  let upString = item.equip;
-  // 非装备,无法装备;
-  if(!upString){
-    return ;
-  }
+function equip(item, index, type = '$package'){
   //0武器 1护肩 2鞋子 3腰带 4上衣 5绑腿 6戒指 7护腕 8项链
+  let container = this[type],
+      $equipments = this.$equipments,
+      equip = item.equip;
+  
+  if(!equip || !container || !$equipments){
+    return false;
+  }
 
   // 删除包裹中的装备, 如果已有装备, 卸载装备;
-  this[type][index] = 0;
+  container[index] = undefined;
 
-  if(this.$equipments[item.equipType]){
+  if($equipments[item.equipType]){
     this.demount(item.equipType, index, type);
   }
 
-  this.$equipments[item.equipType] = item;
+  $equipments[item.equipType] = item;
 
-  // 更新属性;
-  _.each(upString,(value, key) => {
-    if(key === '$skills' || key === '$status'){
-      _.each(value, id => {
-        if(!_.find(this[key],{id})){
-          let newSS = PGET(id);
-          newSS.show = false;
-          this[key].push(newSS);
-        }
-      })
-    }
+  // 更新附加状态;
+  let status = equip.$status || [];
+
+  status.forEach(id => {
+    this.changeState({
+      id,
+      state : 'ADD',
+      action : { notShow: true }
+    })
   })
+
   this.updateAttribute();
+
   store.commit('UPDATE');
+
+  return true;
 }
 
-function demount(type, index, t){
-  let odtype = t ? t : '$package';
-  let item = this.$equipments[type];
+function demount(equipType, index, type = '$package'){
+  let container = this[type],
+      equipItem = this.$equipments[equipType],
+      $equipments = this.$equipments;
 
-  this.$equipments[type] = 0;
+  $equipments[equipType] = 0;
 
-  if(!item){
+  if(!equipItem){
     return ;
   }
 
-  if(index){
-    this[odtype][index] = item;
+  index = index || container.findIndex(i => !i);
+
+  if(~index){
+    container[index] = equipItem;
   }else{
-    index = _.findIndex(this[odtype],i => !i);
-    if(~index){
-      this[odtype][index] = item;
-    }else{
-      console.warn('背包中没有空位,无法卸下装备');
-      this.$equipments[type] = item;
-      store.commit('UPDATE');
-      return false;
+    $equipments[equipType] = equipItem;
+    return false;
+  }
+
+  for(let key in (equipItem.equip || {})){
+    if(~['$skills', '$status'].indexOf(key)){
+      equipItem.equip[key].forEach( id => this.removeList(key, {id}) );
     }
   }
-  
-  let upString = item.equip;
 
-  _.each(upString,(value, key) => {
-    if(key === '$skills' || key === '$status'){
-      _.each(value, id => {
-        this.removeList(key,{id});
-      })
-    }
-  })
   this.updateAttribute();
+
   store.commit('UPDATE');
   
 }
 
-function isEnoughInPackage(list){
+function isEnoughInPackage(list, type = '$package'){
   // [
   //   [200001, 5]
   // ]
-  return _.every(list, item => {
-    let pitem = _.find(this.$package,{id:item[0]});
-    if(!pitem){
+  let container = this[type];
+
+  if(!container || !list || !list.length ){
+    return false;
+  }
+
+  for(let opt of list){
+    let item;
+
+    item = this.getList(type, opt[0]);
+    
+    if(!item || (item.num || 1) < opt[1]){
       return false;
     }
-    return item[1] <= (pitem.num || 1);
-  })
+
+  }
+
+  return true;
+
 }
 
 export default Unit;
