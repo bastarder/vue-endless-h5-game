@@ -3,7 +3,17 @@ import CONSTANT from '../data/constant'
 import PGET from '../js/public-static-get'
 import store from '../store';
 
-Vue.directive('drop-item', function (el, binding){
+function ts(str, hero){
+  let position = str.split('|');
+  return {
+    position : position[0],
+    index : Number(position[1]),
+    item : hero[position[0]] && hero[position[0]][position[1]]
+  }
+}
+
+
+export default function (el, binding){
 
   let { hero, position } = binding.value;
   
@@ -89,13 +99,4 @@ Vue.directive('drop-item', function (el, binding){
     el[keyNameInElement] = value;
   }
 
-})
-
-function ts(str, hero){
-  let position = str.split('|');
-  return {
-    position : position[0],
-    index : Number(position[1]),
-    item : hero[position[0]] && hero[position[0]][position[1]]
-  }
-}
+};

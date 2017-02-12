@@ -68,8 +68,8 @@ export default {
     }
   },
   created (){
-    this.map = new MapInit(this.$store.state.mapList[0])
-    // this.map = this.$store.state.EVENT_MAP_DATA;
+    this.map = new MapInit(this.$store.state.MapStore.mapList[0])
+    // this.map = this.$store.state.MapStore.map;
     this.moveEvent = new HeroMoveEvent(this.map, this);
     this.$nextTick(this.autoPisition);
     setTimeout(() => {

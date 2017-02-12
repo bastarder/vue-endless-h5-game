@@ -9,12 +9,8 @@ import public_function from './js/public-function.js';
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from './router'
-import store from './store'
 import filter from './filter'
-
-// directive
-import ItemToolTip from './directive/item-tool-tip'
-import DropItem from './directive/drop-item'
+import store from './store'
 
 // components
 import App from './components/App.vue'
@@ -36,8 +32,5 @@ Vue.component('component-item', ComponentItem)
 const app = new Vue({
   store,
   router,
+  template: `<App/>`
 }).$mount('#app')
-
-
-
-

@@ -29,7 +29,7 @@ export default {
   },
   computed :{
     mapList : function(){
-      return this.$store.state.mapList;
+      return this.$store.state.MapStore.mapList;
     }
   },
   created (){
@@ -37,7 +37,7 @@ export default {
   },
   methods : {
     goTo (map){
-      this.$store.state.EVENT_MAP_DATA = new MapInit(map);
+      this.$store.state.MapStore.map = new MapInit(map);
       location.href = '#/map-active';
     }
   }

@@ -9,16 +9,7 @@
 </template>
 
 <script>
-export default {
-  data(){
-    return {}
-  },
-  methods:{
-    test(){
-      console.log(123)
-    }
-  }
-}
+export default {}
 </script>
 
 <style>
@@ -35,7 +26,6 @@ export default {
   //  padding: 6px 6px 0px 6px;
    margin-top: 20px;
    width: 800px;
-   background: #A1A693;
    border-radius: 2px;
    margin-right: auto;
    margin-left: auto;

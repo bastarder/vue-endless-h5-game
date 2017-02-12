@@ -140,7 +140,7 @@ const MapDialog = function(event, callback){
         btn.action = function(){
           let need = opt.need || [];
           let get = opt.get || [];
-          let unit = this.$store.state.hero;
+          let unit = this.$store.state.HeroStore.hero;
           let enough = unit.isEnoughInPackage(need);
           if(!enough){
             this.$i = i[0]
@@ -184,7 +184,7 @@ const MapFight = function(opt){
     monsters: [ new Unit(opt) ]
   };
   
-  store.state.FightScopeParm.monsters = data.monsters;
+  store.state.FightStore.monsters = data.monsters;
 
   // 跳转到 战斗场景;
   location.href = "#/fight"

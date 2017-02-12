@@ -47,7 +47,7 @@ export default {
   },
   computed:{
     hero: function(){
-      return this.$store.state.hero;
+      return this.$store.state.HeroStore.hero;
     }
   },
   watch:{

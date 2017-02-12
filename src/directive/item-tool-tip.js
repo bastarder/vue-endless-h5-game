@@ -4,7 +4,7 @@ import PGET from '../js/public-static-get'
 
 require('../css/item-tool-tip.css');
 
-Vue.directive('item-tool-tip', function(el, binding){
+export default function(el, binding){
   let keyName = CONSTANT.UNIT_ATTR_NAME,
       itemLevel = CONSTANT.ITEM_LEVEL,
       tipClassName = '.item-tool-tip-pover',
@@ -95,4 +95,4 @@ Vue.directive('item-tool-tip', function(el, binding){
 
   }
 
-})
+}

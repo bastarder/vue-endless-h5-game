@@ -17,8 +17,14 @@
 
 <script>
 import CONSTANT from '../data/constant'
+import ItemToolTip from '../directive/item-tool-tip'
+import DropItem from '../directive/drop-item'
 
 export default {
+  directives :{
+    'item-tool-tip' : ItemToolTip,
+    'drop-item' : DropItem
+  },
   props: [
     'item',
     'positionIndex'
@@ -39,7 +45,7 @@ export default {
     this.index = Number(record[1]);
     this.dropData = {
       position : this.positionIndex,
-      hero : this.$store.state.hero,
+      hero : this.$store.state.HeroStore.hero,
     }
   },
   watch:{

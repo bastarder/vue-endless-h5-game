@@ -27,7 +27,7 @@ export default {
     }
   },
   computed : mapState({
-    'logs' : state => state.FightScopeParm.eventLogs
+    'logs' : state => state.FightStore.eventLogs
   }),
   methods : {
     clear (){

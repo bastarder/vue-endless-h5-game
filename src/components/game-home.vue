@@ -15,13 +15,15 @@
 import Menu from './game-home-menu.vue'
 import Info from './game-home-info.vue'
 import GameAudio from '../js/audio'
-
 export default {
   components :{
     'game-home-menu' : Menu,
     'game-home-info' : Info
   },
   created(){
+    if(!this.$store.state.HeroStore.hero){
+      this.$router.push('/login');
+    }
     new GameAudio({
       key : 'backgroundMusic',
       loop : true,

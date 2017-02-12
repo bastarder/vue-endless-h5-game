@@ -59,10 +59,10 @@
     },
     created() {
       // 获取英雄;
-      this.hero = this.$store.state.hero;
+      this.hero = this.$store.state.HeroStore.hero;
 
       // 获得怪物列表;
-      this.monsters = this.$store.state.FightScopeParm.monsters;
+      this.monsters = this.$store.state.FightStore.monsters;
 
       // 如果无怪物列表,则判定为强制跳转,回到主页面
       // 如果有怪物列表,则设置怪物列表的第一个怪物为下一战斗怪物
@@ -148,7 +148,7 @@
 
         // 如果英雄死亡,则 清空地图信息 返回主界面;
         if(!win){
-          this.$store.state.EVENT_MAP_DATA = null;
+          this.$store.state.MapStore.map = null;
           this.$router.push('/');
         }else{
           this.$router.push('/map-active');
