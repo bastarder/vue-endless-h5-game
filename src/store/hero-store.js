@@ -19,7 +19,7 @@ var hero = new Unit(
   {
     $showName : 'Bastarder',
     $type    : 'Hero',
-    $skills  : [_.cloneDeep(SKILL_TABLE[0]),_.cloneDeep(SKILL_TABLE[1]),_.cloneDeep(SKILL_TABLE[2]),_.cloneDeep(SKILL_TABLE[3])],
+    $skills  : [PGET(1000001),PGET(1000002),PGET(1000003),PGET(1000004)],
     $status  : [],
     $package : _.cloneDeep(ITEM_TABLE).slice(2).concat([test1,test2]).concat(new Array(26))
   }

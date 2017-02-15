@@ -1,11 +1,17 @@
 import Vue from 'vue';
 
 const state = {
-  test : 123
+  volumeEffectMusic : 0.5,
+  volumeBackgroundMusic : 0.5,
+  skillAvailableFightTip : true,
+  skillHotKey : [81, 87, 69, 82],
+  itemHotKey : [49, 50, 51, 52],
 }
 
 const mutations = {
-
+  ConfigUpdate (state){
+    return 123;
+  }
 }
 
 export default {

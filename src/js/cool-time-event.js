@@ -1,15 +1,19 @@
 const coolTimeEvent = function(currentCoolTime){
-  var self = this;
-  self.coolTimeTimer && clearInterval(self.coolTimeTimer);
-  self.coolTime = currentCoolTime || self.defaultTime;
-  self.currentCoolTime = currentCoolTime || self.defaultTime;
-  self.coolTimeTimer = setInterval(function(){
-    self.coolTime -= 10;
-    if(self.coolTime < 0){
-      self.coolTime = 0;
-      clearInterval(self.coolTimeTimer);
+
+  this.coolTimeTimer && clearInterval(this.coolTimeTimer);
+
+  this.coolTime = currentCoolTime || this.defaultTime;
+
+  this.currentCoolTime = currentCoolTime || this.defaultTime;
+
+  this.coolTimeTimer = setInterval( () => {
+    this.coolTime -= 10;
+    if(this.coolTime < 0){
+      this.coolTime = 0;
+      clearInterval(this.coolTimeTimer);
     }
-  },9);
+  }, 9);
+  
 }
 
 export default coolTimeEvent;

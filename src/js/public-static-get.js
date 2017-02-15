@@ -19,9 +19,16 @@ const Data = {
 const PublicStaticGet = function(key){
   let Head = key.toString()[0];
   let record = Data[Head];
-  return _.cloneDeep(_.find(record, {
+  let result = _.cloneDeep(_.find(record, {
     id: key
   })) || key;
+
+  if(result.defaultTime){
+    result.coolTime = 0;
+    result.currentCoolTime = result.defaultTime;
+  }
+
+  return result;
 }
 
 export default PublicStaticGet;

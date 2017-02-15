@@ -21,10 +21,10 @@
     </game-fight-unit-info>
 
     <div>
-      <button type="button" class="btn btn-large btn-danger" @click="StartFight" v-if="this.btn.start">开始战斗</button>
-      <button type="button" class="btn btn-large btn-danger" @click="NextMonster" v-if="this.btn.next">继续战斗</button>
-      <button type="button" class="btn btn-large btn-danger" @click="end(true)" v-if="this.btn.end">结束战斗</button>
-      <button type="button" class="btn btn-large btn-danger" @click="test">测试战果</button>
+      <a type="button" class="btn" @click="StartFight" v-if="this.btn.start">开始战斗</a>
+      <a type="button" class="btn" @click="NextMonster" v-if="this.btn.next">继续战斗</a>
+      <a type="button" class="btn" @click="end(true)" v-if="this.btn.end">结束战斗</a>
+      <a type="button" class="btn" @click="test">测试战果</a>
     </div>
 
   </div>

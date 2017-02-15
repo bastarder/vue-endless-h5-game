@@ -12,10 +12,12 @@
         default : 0
       },
       min : {
-        default : 0
+        default : 0,
+        type: Number
       },
       max : {
-        default : 100
+        default : 100,
+        type: Number
       }
     },
     created (){
@@ -35,9 +37,7 @@
       },
       updateValue : function(){
         this.$emit('input', 
-          Math.ceil(
-            this.left / this.range * (this.max - this.min) + this.min
-          )
+          Number((this.left / this.range * (this.max - this.min) + this.min).toFixed(1))
         );
       },
       setPosition : function(mouseUp){

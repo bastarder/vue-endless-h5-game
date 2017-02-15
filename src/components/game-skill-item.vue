@@ -1,7 +1,8 @@
 <template>
   <div class="skill-item">
-    {{skill.name.slice(0,1)}}
-    <div class="coolTime-progress" v-show="skill && !nocooltime">
+    <div class="skill" v-if="!position">{{skill.name.slice(0,1)}}</div>
+    <component-item class="item" :item="skill" :position-index="position" v-else></component-item>
+    <div class="coolTime-progress" v-if="skill && skill.defaultTime" v-show="skill && !nocooltime">
       <div class="left-block">
         <div class="left" :style="{ transform: left}"></div>
       </div>
@@ -16,10 +17,11 @@
 export default {
   props: [
     'skill',
-    'nocooltime'
+    'nocooltime',
+    'position',
   ],
   created (){
-
+    
   },
   computed : {
     right (){
@@ -41,17 +43,15 @@ export default {
     position: relative;
     overflow: hidden;
     display: inline-block;
-    width: 44px;
-    height: 44px;
-    line-height: 44px;
-    background: black;
-    text-align: center;
-    color: white;
-    border-radius: 2px;
-    .name{
-      font-size: 12px;
+    .skill{
+      display: inline-block;
+      width: 44px;
+      height: 44px;
+      line-height: 44px;
+      background: black;
       text-align: center;
-      transform: scale(0.75);
+      color: white;
+      border-radius: 2px;
     }
   }
 

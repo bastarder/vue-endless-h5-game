@@ -12,6 +12,9 @@
     <div class="skill-list">
       <game-skill-item class="skill" v-for="skill in unit.$skills" :skill="skill"></game-skill-item>
     </div>
+    <div class="item-list" v-if="unit.$package">
+      <game-skill-item class="skill" v-for="(item, index) in unit.$package" v-if="index < 4" :skill="item" :position="'$package|' + index"></game-skill-item>
+    </div>
     <div class="state-list">
       <game-state-item class="state" mini="true" v-for="state in unit.$status" :state="state"></game-state-item>
     </div>
@@ -34,7 +37,13 @@ export default {
   },
   props:[
     'unit'
-  ]
+  ],
+  watch : {
+    '$store.state.UPDATE' : function(item){
+      // 联动全局刷新;
+      this.$forceUpdate();
+    },
+  },
 }
 </script>
 

@@ -8,6 +8,7 @@ const SkillAvailable = function(skill, attacker, enemy){
 
   // 冷却;
   if(skill.coolTime > 0){
+    store.commit('FightEventLogPush',`技能冷却中!`);
     return false;
   }
 
@@ -85,7 +86,6 @@ const SkillAvailable = function(skill, attacker, enemy){
     //   "[skill]{coolTime} > {0}",
     //   "[attacker]{$skills} has {}",
     //   "[attacker]{$status} nothas {}",
-
   }).length;
 
   return skill.restrict.length === _length;

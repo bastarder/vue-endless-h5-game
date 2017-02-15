@@ -5,8 +5,6 @@ const SKILL_TABLE = [
     dsc : '简简单单的一击',
     label : ['普攻','伤害'],
     defaultTime : 1000,
-    currentCoolTime : 1000,
-    coolTime : 0,
     eventList: [
       `[11]enemy@beAttack@attacker.$r.$atk`
     ]
@@ -39,8 +37,6 @@ const SKILL_TABLE = [
     dsc : '是敌人进入中毒状态!',
     label : ['测试2'],
     defaultTime : 5000,
-    currentCoolTime : 5000,
-    coolTime : 0,
     restrict : [
       "[attacker]{$mp} >= {105}",
     ],
@@ -58,8 +54,6 @@ const SKILL_TABLE = [
     dsc : '造成自身攻击*2的伤害,但是会自身受到自身攻击*0.3的伤害',
     label : ['测试2','伤害2'],
     defaultTime : 10000,
-    currentCoolTime : 10000,
-    coolTime : 0,
     eventList: [
       `[11]
           enemy@beAttack@ attacker.$r.$atk * 2;
@@ -74,8 +68,6 @@ const SKILL_TABLE = [
     dsc : '造成大量伤害,有很大的几率一击必杀!',
     label : ['测试2','伤害2'],
     defaultTime : 10000,
-    currentCoolTime : 10000,
-    coolTime : 0,
     eventList: [
       `[11]
         action@{Math.random() > 0.98}

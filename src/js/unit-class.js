@@ -68,7 +68,8 @@ Unit.prototype = {
   getItem,
   equip,
   demount,
-  isEnoughInPackage
+  isEnoughInPackage,
+  use,
 }
 
 /* --------------- */
@@ -542,6 +543,23 @@ function isEnoughInPackage(list, type = '$package'){
   }
 
   return true;
+
+}
+
+function use(option){
+  let container = this[option.position || '$package'],
+      item = container[option.index];
+
+  if(!item){
+    return false;
+  }
+  
+  if(item.num){
+    item.num--;
+    if(item.num < 1){
+      container[option.index] = undefined;
+    }
+  }
 
 }
 
