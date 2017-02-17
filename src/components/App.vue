@@ -1,6 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container" :style="{'padding-top': `${padding}px`,'margin-top':`${margin}px`,'transform': `scale(${scale})`}">
     <div class="main">
+  <!--<div class="container">
+    <div class="main">-->
       <div class="router-view" id="router-view">
         <router-view></router-view>
       </div>
@@ -9,7 +11,36 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data(){
+    return {
+      scale: 1,
+      padding: 0,
+    }
+  },
+  created(){
+    window.onresize = ()=>{
+      this.setPosition();
+    }
+    this.setPosition();
+  },
+  methods:{
+    setPosition : function(){
+      let height = window.innerHeight - 10;
+      let height_original = 500;
+      this.scale = height / height_original; 
+
+      if(this.scale - 1 > 0){
+        this.padding = (this.scale - 1) * height_original / this.scale / 2;
+        this.margin = 0;
+      }else{
+        this.padding = 0;
+        this.margin = (this.scale - 1) * height_original / 2 ;
+      }
+      
+    }
+  }
+}
 </script>
 
 <style>
@@ -21,14 +52,11 @@ export default {}
   }
 </style>
 
-<style lang="less">
+<style scoped lang="less">
  .container{
-  //  padding: 6px 6px 0px 6px;
-   margin-top: 20px;
+   margin: auto;
    width: 800px;
    border-radius: 2px;
-   margin-right: auto;
-   margin-left: auto;
    height: 500px;
  }
  .main{
