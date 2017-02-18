@@ -1,6 +1,7 @@
 const DIALOG_DATA = [
   { 
     id : 7000001,
+    type: 'MapDialog',
     data: [
       {
         msg: '你好, 我需要以下材料,给我,我就给你你想要的~',

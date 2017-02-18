@@ -1,9 +1,12 @@
+import store from '../store';
+
 let dist = {
   'backgroundMusic': require('static/audio/bgm.wav'),
   'fight-attack' : require('static/audio/fight-attack.wav'),
 }
 
 let AudioList = [];
+window.AudioList = AudioList;
 
 let GameAudio = function (opt){
   this.$AudioList = AudioList;

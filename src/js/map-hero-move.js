@@ -70,23 +70,28 @@ const HeroMoveEvent = function(map, $VueScope){
     map.hero.block_type = block_type['ROAD'];
     // 将目标格子标识为 Hero;
     next_block.block_type = block_type['HERO'];
-    // 提取event;
-    let [FEvent, DEvent] = [next_block.FEvent,next_block.DEvent];
-    // 战斗事件不应该被保留;
-    delete next_block.FEvent;
-    // 设置新的英雄位置;
-    map.hero = next_block;
 
     // 更新视图;
     $VueScope.$forceUpdate();
 
+    let {event_type, event} = next_block.event || {};
+
+    // 战斗事件不应该被保留;
+    if(event_type === 'Monster'){
+      delete next_block.event;
+    }
+    
+    // 设置新的英雄位置;
+    map.hero = next_block;
+
     //判断 初始化 执行事件
-    if(FEvent){
-      this.stop();
-      FEvent = MapFight(FEvent);
-    }else if(DEvent){
-      this.stop();
-      DEvent = MapDialog(DEvent, () => this.start());
+    switch(event_type){
+      case 'Monster':
+        MapFight(event)
+        break;
+      case 'MapDialog':
+        MapDialog(event, () => this.start())
+        break;
     }
 
   }

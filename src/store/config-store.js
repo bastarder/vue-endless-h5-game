@@ -9,8 +9,15 @@ const state = {
 }
 
 const mutations = {
-  ConfigUpdate (state){
-    return 123;
+  ConfigUpdate (state, option){
+
+    // 修改音量
+    for(let el of window.AudioList){
+      el.volume = option.volumeBackgroundMusic;
+    }
+
+    Object.assign(state, option);
+
   }
 }
 

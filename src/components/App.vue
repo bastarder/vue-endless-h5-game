@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :style="{'padding-top': `${padding}px`,'margin-top':`${margin}px`,'transform': `scale(${scale})`}">
+  <div class="container" :style="{'margin-top':`${margin}px`,'transform': `scale(${scale})`}">
     <div class="main">
   <!--<div class="container">
     <div class="main">-->
@@ -15,7 +15,7 @@ export default {
   data(){
     return {
       scale: 1,
-      padding: 0,
+      margin: 0,
     }
   },
   created(){
@@ -29,15 +29,7 @@ export default {
       let height = window.innerHeight - 10;
       let height_original = 500;
       this.scale = height / height_original; 
-
-      if(this.scale - 1 > 0){
-        this.padding = (this.scale - 1) * height_original / this.scale / 2;
-        this.margin = 0;
-      }else{
-        this.padding = 0;
-        this.margin = (this.scale - 1) * height_original / 2 ;
-      }
-      
+      this.margin = (this.scale - 1) * height_original / 2
     }
   }
 }

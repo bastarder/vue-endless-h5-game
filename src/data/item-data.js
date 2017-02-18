@@ -7,6 +7,20 @@ let Material = [
     id: 3000001,
     name: '野草',
     pile : true,
+    price : 10,
+    use : {
+      defaultTime : 1000,
+      restrict : [
+        function(){
+          return this.$hp > 500;
+        }
+      ],
+      effect :[
+        function(){
+          this.changeHp(30);
+        }
+      ]
+    },
     label : [
       '材料'
     ],
@@ -16,11 +30,15 @@ let Material = [
     id: 3000002,
     name: '浆果',
     pile : true,
+    use : function(){
+      return {
+        defautTime : 1000,
+        restrict : [],
+        effect :[]
+      }
+    },
     label : [
       '食物','材料'
-    ],
-    use : [
-      '[$hp]{10}',
     ],
     dsc : '能卖钱,能吃,数量很多'
   },

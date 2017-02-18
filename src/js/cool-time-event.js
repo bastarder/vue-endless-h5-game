@@ -7,12 +7,12 @@ const coolTimeEvent = function(currentCoolTime){
   this.currentCoolTime = currentCoolTime || this.defaultTime;
 
   this.coolTimeTimer = setInterval( () => {
-    this.coolTime -= 10;
+    this.coolTime -= 30;
     if(this.coolTime < 0){
       this.coolTime = 0;
       clearInterval(this.coolTimeTimer);
     }
-  }, 9);
+  }, 30);
   
 }
 

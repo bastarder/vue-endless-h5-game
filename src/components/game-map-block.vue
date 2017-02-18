@@ -24,7 +24,7 @@
             },
             type = this.block.block_type,
             bt = CONSTANT.MAP_BLOCK_TYPE;
-        if(type != bt.ROAD || type == bt.HERO || this.block.FEvent || this.block.DEvent){
+        if(type != bt.ROAD || type == bt.HERO || this.block.event){
           opt.background = gray;
         }
         return opt;
@@ -37,9 +37,7 @@
 
         classList.push(typeList[Number(block.block_type)] || '');
 
-        block.FEvent && classList.push('FEvent');
-
-        block.DEvent && classList.push('DEvent');
+        block.event && classList.push(block.event.event_type);
 
         // 计算圆角;
         // r-1 r-2 r-3 r-4
@@ -81,22 +79,27 @@
     box-shadow: 0px 0px 4px #e4d836 inset; 
     cursor: pointer;
   }
-  .FEvent,.DEvent,.hero{
+
+  .MapDialog,.Monster,.hero{
     border-radius: 4px;
   }
 
   .stick{
     background: #1e2127;
   }
+
   .road{
     background: #5c5f67;
   }
-  .FEvent{
+
+  .Monster{
     background: #d44950;
   }
-  .DEvent{
+
+  .MapDialog{
     background: #1bc98e;
   }
+  
   .hero{
     background: #9f86ff;
   }

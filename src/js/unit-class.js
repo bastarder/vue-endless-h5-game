@@ -7,6 +7,9 @@ import CreateMonster from './create-monster';
 import CreateHero from './create-hero';
 import { GetRange, GetRandom } from './public-random-range';
 import PGET from '../js/public-static-get';
+import coolTimeEvent from './cool-time-event';
+import Vue from 'vue';
+
 
 function Unit(obj = {}){
   this.id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
@@ -550,15 +553,53 @@ function use(option){
   let container = this[option.position || '$package'],
       item = container[option.index];
 
-  if(!item){
+  // 暂时不支持战斗时更换装备,所以只判断消耗品;
+  if(!item || !item.use){
     return false;
   }
-  
+
+  let use = item.use;
+
+  if(typeof item.use === 'function'){
+    use = use.call(this);
+  }
+
+  if(use.defaultTime){
+    if(!item.hasOwnProperty('coolTime')){
+      Vue.set(item,'defaultTime', use.defaultTime);
+      Vue.set(item,'coolTime', 0);
+      Vue.set(item,'currentCoolTime', use.defaultTime);
+    }
+  }else{
+    Vue.set(item,'coolTime', 0);
+  }
+
+  if(item.coolTime > 0){
+    console.log('冷却中');
+    return false;
+  }
+
+  if(use.restrict){
+    for(let i = 0;i<use.restrict.length; i++){
+      if(!use.restrict[i].call(this)){
+        console.log('条件未满足!');
+        return false;
+      }
+    }
+  }
+
   if(item.num){
-    item.num--;
+    item.num --;
+    for(let i = 0;i<use.effect.length; i++){
+      use.effect[i].call(this);
+    }
     if(item.num < 1){
       container[option.index] = undefined;
+    }else{
+      coolTimeEvent.call(item);
     }
+  }else{
+    console.log('物品数量不足!');
   }
 
 }
