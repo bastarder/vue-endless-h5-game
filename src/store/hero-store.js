@@ -21,7 +21,7 @@ var hero = new Unit(
     $type    : 'Hero',
     $skills  : [PGET(1000001),PGET(1000002),PGET(1000003),PGET(1000004)],
     $status  : [],
-    $package : _.cloneDeep(ITEM_TABLE).slice(2).concat([test1,test2]).concat(new Array(26))
+    $package : [test1,test2].concat(_.cloneDeep(ITEM_TABLE).slice(2)).concat(new Array(26))
   }
 );
 
@@ -29,7 +29,6 @@ const state = {
   hero : hero,
 }
 
-// mutations
 const mutations = {
   // FightEvent;
   FightEventLogPush(state, log){

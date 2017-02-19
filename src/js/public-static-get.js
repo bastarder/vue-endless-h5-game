@@ -5,15 +5,19 @@ import MAP_TABLE from '../data/map-data'
 import SKILL_TABLE from '../data/skill-data'
 import STATE_TABLE from '../data/state-data'
 import MONSTER_DATA from '../data/monster-data'
+import BLUEPRINT_TABLE from '../data/blueprint-data'
 
-const Data = {
-  '7' : DIALOG_DATA,   // '7'
+const Data = {  
   '0' : EXP_TABLE,
-  '3' : ITEM_TABLE,    // '3'
-  '8' : MAP_TABLE,     // '8'
-  '1' : SKILL_TABLE,   // '1'
-  '2' : STATE_TABLE,    // '2'
-  '5' : MONSTER_DATA
+  '1' : SKILL_TABLE,  
+  '2' : STATE_TABLE,    
+  '3' : ITEM_TABLE,  
+  '4' : BLUEPRINT_TABLE,  
+  '5' : MONSTER_DATA, 
+  // '6' : MISSION_TABLE, 
+  '7' : DIALOG_DATA, 
+  '8' : MAP_TABLE,     
+  // '9' : ACHIEVEMENT_TABLE, 
 }
 
 const PublicStaticGet = function(key){

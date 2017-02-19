@@ -3,19 +3,43 @@ import CONSTANT from '../data/constant'
 import PGET from '../js/public-static-get'
 import store from '../store';
 
-function ts(str, hero){
-  let position = str.split('|');
-  return {
-    position : position[0],
-    index : Number(position[1]),
-    item : hero[position[0]] && hero[position[0]][position[1]]
-  }
-}
-
-
 export default function (el, binding){
 
   let { hero, position } = binding.value;
+
+  let moveClass = function(str){
+
+    let opt = str.split('|')
+
+    this.position = opt[0];
+
+    this.index = Number(opt[1]);
+
+    this.item = (() => {
+      if(this.position === '$intensify'){
+        return store.state.SmithyStore.intensifyItem;
+      }else{
+        return hero[this.position][this.index];
+      }
+    })();
+
+    this.set = function(obj){
+      if(this.position === '$intensify'){
+        store.commit('ChangeIntensifyItem', obj);
+      }else{
+        hero[this.position][this.index] = obj;
+      }
+    }
+
+    this.cls = function(){
+      if(this.position === '$intensify'){
+        store.commit('ChangeIntensifyItem', undefined);
+      }else{
+        hero[this.position][this.index] = undefined;
+      }
+    }
+
+  }
   
   let event = {
     dragend (event){
@@ -35,8 +59,8 @@ export default function (el, binding){
     drop (event){
       event.preventDefault();
 
-      let from = ts(event.dataTransfer.getData("item-drop-data"), hero),
-          to = ts(position, hero);   
+      let from = new moveClass(event.dataTransfer.getData("item-drop-data")),
+          to = new moveClass(position);   
       
       // 如果放置点跟 出发点相同 则不做操作;
       if(from.position === to.position && from.index === to.index){
@@ -64,8 +88,8 @@ export default function (el, binding){
 
       // 叠加;
       if(from.item && to.item && (from.item.id === to.item.id) && from.item.pile && to.item.pile){
-        hero[to.position][to.index].num += hero[from.position][from.index].num;
-        hero[from.position][from.index] = 0;
+        to.item.num += from.item.num;
+        from.cls();
         // 考虑到可能会加入物品切分功能 所以暂时不用下面的功能;
         // hero.getItem([[from.item.id,from.item.num]], true, to.position);
         store.commit('UPDATE');
@@ -73,9 +97,9 @@ export default function (el, binding){
       }
 
       // 交换;
-      let T = hero[from.position][from.index];
-      hero[from.position][from.index] = hero[to.position][to.index];
-      hero[to.position][to.index] = T;
+      let T = from.item;
+      from.set(to.item);
+      to.set(T);
       hero.updateAttribute();
       store.commit('UPDATE');
       console.info('[Move Item] From',from,'To',to);
@@ -84,7 +108,7 @@ export default function (el, binding){
   }
 
   // 如果是格子是空的则禁用拖动;
-  if(ts(position, hero).item){
+  if(new moveClass(position).item){
     el.setAttribute('draggable','true');
   }else{
     el.removeAttribute('draggable');

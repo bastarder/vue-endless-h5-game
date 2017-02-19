@@ -83,7 +83,7 @@ function startFight(){
     this.$flashCopy[key] = _.cloneDeep(this[key]);
   }
 
-  for(let state of this.$status){
+  for(let state of (this.$status || [])){
     state.stateEvent && state.stateEvent(this);
   }
 
@@ -92,7 +92,7 @@ function startFight(){
 
 function endFight(){
 
-  for(let state of this.$status){
+  for(let state of (this.$status || [])){
     state.stateEventTimer && clearInterval(state.stateEventTimer);
   }
 
@@ -558,48 +558,42 @@ function use(option){
     return false;
   }
 
-  let use = item.use;
-
-  if(typeof item.use === 'function'){
-    use = use.call(this);
-  }
+  let use = typeof item.use === 'function' ? item.use.call(this) : item.use;
 
   if(use.defaultTime){
     if(!item.hasOwnProperty('coolTime')){
-      Vue.set(item,'defaultTime', use.defaultTime);
-      Vue.set(item,'coolTime', 0);
-      Vue.set(item,'currentCoolTime', use.defaultTime);
+      Vue.set(item, 'defaultTime', use.defaultTime);
+      Vue.set(item, 'coolTime', 0);
+      Vue.set(item, 'currentCoolTime', use.defaultTime);
     }
   }else{
-    Vue.set(item,'coolTime', 0);
+    Vue.set(item, 'coolTime', 0);
   }
 
   if(item.coolTime > 0){
-    console.log('冷却中');
+    console.log('冷却中!');
     return false;
   }
 
-  if(use.restrict){
-    for(let i = 0;i<use.restrict.length; i++){
-      if(!use.restrict[i].call(this)){
-        console.log('条件未满足!');
-        return false;
-      }
+  if(!item.num){
+    console.log('物品数量不足!');
+    return false;
+  }
+
+  for(let restrict of (use.restrict || [])){
+    if(!restrict.call(this)){
+      return false;
     }
   }
 
-  if(item.num){
-    item.num --;
-    for(let i = 0;i<use.effect.length; i++){
-      use.effect[i].call(this);
-    }
-    if(item.num < 1){
-      container[option.index] = undefined;
-    }else{
-      coolTimeEvent.call(item);
-    }
+  for(let effect of (use.effect || [])){
+    effect.call(this);
+  }
+
+  if(--item.num < 1){
+    container[option.index] = undefined;
   }else{
-    console.log('物品数量不足!');
+    coolTimeEvent.call(item);
   }
 
 }

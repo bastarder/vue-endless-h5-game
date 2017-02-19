@@ -10,7 +10,7 @@ let Material = [
     price : 10,
     use : {
       defaultTime : 1000,
-      restrict : [
+      restrict :[
         function(){
           return this.$hp > 500;
         }

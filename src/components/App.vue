@@ -1,8 +1,8 @@
 <template>
-  <div class="container" :style="{'margin-top':`${margin}px`,'transform': `scale(${scale})`}">
-    <div class="main">
-  <!--<div class="container">
+  <!--<div class="container" :style="{'margin-top':`${margin}px`,'transform': `scale(${scale})`}">
     <div class="main">-->
+  <div class="container">
+    <div class="main">
       <div class="router-view" id="router-view">
         <router-view></router-view>
       </div>

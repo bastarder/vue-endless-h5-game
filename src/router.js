@@ -7,6 +7,7 @@ import GameMap from './components/game-map.vue'
 import GameMapActive from './components/game-map-active.vue'
 import GameLogin from './components/game-login.vue'
 import GameConfig from './components/game-config.vue'
+import GameSmithy from './components/game-smithy.vue'
 
 Vue.use(VueRouter)
 
@@ -14,8 +15,7 @@ const routes = [
   {
     path: '/login',
     component: GameLogin
-  },
-  { 
+  },{ 
     path: '/', 
     component: GameHome
   },{ 
@@ -30,6 +30,9 @@ const routes = [
   },{
     path: '/config',
     component: GameConfig
+  },{
+    path: '/smithy',
+    component: GameSmithy
   }
 ]
 

@@ -5,6 +5,7 @@ import FightStore from './store/fight-store';
 import HeroStore from './store/hero-store';
 import MapStore from './store/map-store';
 import ConfigStore from './store/config-store';
+import SmithyStore from './store/smithy-store';
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ const store = new Vuex.Store({
     HeroStore,
     MapStore,
     ConfigStore,
+    SmithyStore,
   },
   state: {
     UPDATE: 1,
