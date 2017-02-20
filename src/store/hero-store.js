@@ -30,19 +30,7 @@ const state = {
 }
 
 const mutations = {
-  // FightEvent;
-  FightEventLogPush(state, log){
-    if(!log){
-      return ;
-    }
-    let now = new Date().toString().slice(16, 16 + 8);
-    state.eventLogs.push(
-      `<span class="color-darkblue">[${now}]</span> ${log}.`
-    );
-  },
-  FightEventLogClear(state){
-    Vue.set(state, 'eventLogs', []);
-  }
+
 }
 
 export default {

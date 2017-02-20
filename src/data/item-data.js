@@ -47,6 +47,7 @@ let Material = [
 let Equipment = [
   {
     id: 3000003,
+    level: 1,
     name: '铁剑',
     equipType : 0,
     label: [
@@ -63,6 +64,7 @@ let Equipment = [
   {
     id: 3000004,
     name: '破旧的护肩',
+    level: 1,
     equipType : 1,
     label: [
       '护肩'
@@ -79,6 +81,7 @@ let Equipment = [
   {
     id: 3000005,
     name: '破旧的马靴',
+    level: 1,
     equipType : 2,
     label: [
       '鞋子'
@@ -94,6 +97,7 @@ let Equipment = [
   {
     id: 3000006,
     name: '破旧的腰带',
+    level: 1,
     equipType : 3,
     label: [
       '腰带'
@@ -108,6 +112,7 @@ let Equipment = [
   {
     id: 3000007,
     name: '破旧的上衣',
+    level: 1,
     equipType : 4,
     label: [
       '上衣'
@@ -122,6 +127,7 @@ let Equipment = [
   {
     id: 3000008,
     name: '破旧的绑腿',
+    level: 1,
     equipType : 5,
     label: [
       '绑腿'
@@ -136,6 +142,7 @@ let Equipment = [
   {
     id: 3000009,
     name: '草戒',
+    level: 1,
     equipType : 6,
     label: [
       '戒指'
@@ -152,6 +159,7 @@ let Equipment = [
     id: 30000010,
     name: '石头挂坠',
     equipType : 7,
+    level: 1,
     label: [
       '项链'
     ],
@@ -167,6 +175,7 @@ let Equipment = [
     id: 30000011,
     name: '野草手镯',
     equipType : 8,
+    level: 1,
     label: [
       '手镯'
     ],
@@ -181,6 +190,7 @@ let Equipment = [
   {
     id: 30000012,
     name: '精致的铁剑',
+    level: 1,
     grade: 1,
     equipType : 0,
     label: [
@@ -198,6 +208,7 @@ let Equipment = [
     id: 30000013,
     name: '无尽之刃',
     grade: 4,
+    level: 20,
     equipType : 0,
     label: [
       '武器'
@@ -213,6 +224,7 @@ let Equipment = [
     id: 30000014,
     name: '反伤护甲',
     grade: 3,
+    level: 20,
     equipType : 4,
     label: [
       '上衣'
