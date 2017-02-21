@@ -27,14 +27,21 @@ export default function(el, binding){
       Object.assign(tip, {
         className : tipClassName.slice(1),
         innerHTML : `
-          <div class="name m-b-10 font-min" :style="this.itemColor">{{this.item.name}}</div>
+          <div class="name m-b-10 font-min" :style="itemColor">
+            {{this.item.name}}
+            <span v-if="item.intensify" class="color-yellow"> + {{item.intensify}}</span>
+          </div>
           <div class="equip m-b-10">
             <div v-for="v in this.attr" class="m-b-4">
               <span :class="['attr-name', v[3], v[2] ? 'down' : '']">{{v[0]}}</span>
               <span :class="['attr-data', v[3], v[2] ? 'down' : '']">{{v[1]}}</span>
             </div>
           </div>
-          <div class="dsc">{{this.item.dsc}}</div>
+          <div class="intPowerUp color-purple m-b-10" v-if="item.intPowerUp">
+            <span v-if="item.intPowerUp.$atk">强化攻击力 + {{item.intPowerUp.$atk}}</span>
+            <span v-if="item.intPowerUp.$dmgDown">无视伤害 + {{item.intPowerUp.$dmgDown[0] * 100 + '%'}}</span>
+          </div>
+          <div class="dsc">{{item.dsc}}</div>
         `
       })
 

@@ -21,6 +21,10 @@ var hero = new Unit(
     $type    : 'Hero',
     $skills  : [PGET(1000001),PGET(1000002),PGET(1000003),PGET(1000004)],
     $status  : [],
+    $resource : {
+      gold: 99999,
+      gem : 899999
+    },
     $package : [test1,test2].concat(_.cloneDeep(ITEM_TABLE).slice(2)).concat(new Array(26))
   }
 );

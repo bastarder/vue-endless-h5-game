@@ -73,6 +73,7 @@ Unit.prototype = {
   demount,
   isEnoughInPackage,
   use,
+  cost,
 }
 
 /* --------------- */
@@ -542,11 +543,9 @@ function isEnoughInPackage(list, type = '$package'){
     if(!item || (item.num || 1) < opt[1]){
       return false;
     }
-
   }
 
   return true;
-
 }
 
 function use(option){
@@ -594,6 +593,20 @@ function use(option){
     container[option.index] = undefined;
   }else{
     coolTimeEvent.call(item);
+  }
+
+}
+
+function cost(num, type = "gold"){
+
+  let costNum = Math.ceil(Number(num)) || 0,
+      container = this.$resource;
+
+  if(!costNum || costNum > container[type]){
+    return false;
+  }else{
+    container[type] -= costNum;
+    return true;
   }
 
 }
