@@ -1,8 +1,15 @@
 <template>
   <div class="game-smithy">
-    铁匠铺
-    <intensify />
-    <game-package />
+
+    <div class="left">
+      <intensify />
+      <game-package />
+    </div><!--
+
+ --><div class="right">
+
+    </div>
+
   </div>
 </template>
 
@@ -31,6 +38,14 @@ export default {
 
 <style scoped lang="less">
   .game-smithy{
-
+    .left{
+      display: inline-block;
+    }
+    .right{
+      display: inline-block;
+      width: 280px;
+      height: 500px;
+      background: black;
+    }
   }
 </style>

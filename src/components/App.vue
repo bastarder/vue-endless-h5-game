@@ -59,7 +59,7 @@ export default {
  .router-view{
    position: relative;
    height: 500px;
-   background: white;
+   background: #252830;
    border-radius: 2px;
  }
 </style>
