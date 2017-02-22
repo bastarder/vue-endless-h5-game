@@ -254,11 +254,11 @@ function getList(key, opt, isIndex){
   let condition;
 
   if(typeof opt === 'number'){
-    condition = i => i.id === opt;
+    condition = i => i && (i.id === opt);
   }
 
   if(typeof opt === 'object'){
-    condition = i => i.id === opt.id;
+    condition = i => i && (i.id === opt.id);
   }
 
   if(typeof opt === 'function'){

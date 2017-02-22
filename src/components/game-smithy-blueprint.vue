@@ -1,9 +1,12 @@
 <template>
   <div class="game-smithy-blueprint">
-    <div class="blueprint" v-for="item in blueprintList" @click="currentId = currentId === item.id ? 0 : item.id">
-      <div class="m-b-10">{{item.name}}</div>
+    <div class="blueprint" v-for="item in blueprintList">
+      <div class="m-b-10" @click="showMore(item)">{{item.name}}</div>
       <transition enter-active-class="animated zoomIn">
       <div v-show="item.id === currentId">
+        <transition enter-active-class="animated zoomIn" leave-active-class="animated zoomOut">
+          <div v-show="tip" class="tip">{{tip}}</div>
+        </transition>
         <ul class="left">
           <li>需要以下材料:</li>
           <li v-for="v in item.need">
@@ -29,7 +32,7 @@
           </li>
         </ul>
         <div>
-          <a class="btn" v-if="hero.isEnoughInPackage(item.need)" @click="build(item)">打 造</a>
+          <a class="btn" v-if="hero.isEnoughInPackage(item.need)" @click.stop="build(item)">打 造</a>
           <a class="btn disabled" v-else>无 法 打 造</a>
         </div>
       </div>
@@ -39,14 +42,15 @@
 </template>
 
 <script>
-import blueprint from '../js/blueprint';
+import BluePrint from '../js/blueprint';
 import PGET from '../js/public-static-get'
 import { GetRange, GetRandom } from '../js/public-random-range';
 
 export default {
   data(){
     return {
-      currentId : 0
+      currentId : 0,
+      tip: ''
     }
   },
   computed :{
@@ -63,8 +67,20 @@ export default {
     console.log(this)
   },
   methods:{
+    showMore (item){
+      this.tip = '';
+      this.currentId = this.currentId === item.id ? 0 : item.id;
+    },
     build (item){
+      this.tip = "";
       console.log(this.currentId,item);
+      let result = BluePrint(item);
+      if(result.success){
+        this.tip = result.msg;
+        setTimeout(() => {
+          this.tip = '';
+        }, 1000);
+      }
     }
   }
 }
@@ -92,6 +108,16 @@ export default {
     .left,.right{
       display: inline-block;
       width: 50%;
+    }
+    .tip{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+      text-align: center;
+      background: rgba(0,0,0,0.6);
+      padding-top: 60px;
     }
   }
 </style>

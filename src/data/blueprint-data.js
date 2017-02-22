@@ -33,7 +33,7 @@ const BLUEPRINT_TABLE = [
       [3000002, 1],
     ],
     synthetics : [
-      3000003,
+      30000013,
     ]
   }
 ]
