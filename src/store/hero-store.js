@@ -25,6 +25,9 @@ var hero = new Unit(
       gold: 99999,
       gem : 899999
     },
+    $blueprint: [
+      4000001, 4000002
+    ],
     $package : [test1,test2].concat(_.cloneDeep(ITEM_TABLE).slice(2)).concat(new Array(26))
   }
 );

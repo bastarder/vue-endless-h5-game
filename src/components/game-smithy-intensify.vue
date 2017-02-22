@@ -5,7 +5,7 @@
       <div class="arrow"></div>
     </div>
     <component-item class="item" :item="item" :position-index="'$intensify|0'"></component-item>
-    <a class="btn intensify" @click="intensify">
+    <a class="btn intensify red" @click="intensify">
       强化
     </a>
     <div class="tip">{{msg}}</div>
@@ -49,13 +49,29 @@ export default {
 </script>
 
 <style scoped lang="less">
+  @keyframes fire {
+    from {
+      box-shadow: 0px 0px 60px red inset;
+    }
+    30% {
+      box-shadow: 0px 0px 140px red inset;
+    }
+    to {
+      box-shadow: 0px 0px 60px red inset;
+    }
+  }
+
   .game-smithy-intensify{
-    height: 230px;
+    height: 220px;
+    margin: 10px;
     color:white;
     position: relative;
+    box-shadow: 0px 0px 170px red inset;
+    animation: fire 2s infinite;
     .title{
       display: inline-block;
       position: relative;
+      margin-top: 8px;
       width: 200px;
       padding: 6px;
       background: black;
@@ -77,6 +93,7 @@ export default {
       position: absolute;
       left: 156px;
       top: 120px;
+      border: 1px solid red;
     }
     .intensify{
       position: absolute;

@@ -74,6 +74,7 @@ Unit.prototype = {
   isEnoughInPackage,
   use,
   cost,
+  costItem,
 }
 
 /* --------------- */
@@ -525,9 +526,32 @@ function demount(equipType, index, type = '$package'){
   
 }
 
+function costItem(list, type = '$package'){
+  let container = this[type];
+
+  for(let opt of list){
+    let index = this.getList(type, opt[0], true);
+
+    let num = (()=>{
+      if(typeof opt[1] === 'function'){
+        return opt[1].call(this);
+      }
+      return opt[1];
+    })();
+
+    container[index].num -= num;
+
+    if(!container[index].num){
+      container[index] = undefined;
+    }
+  }
+
+}
+
 function isEnoughInPackage(list, type = '$package'){
   // [
   //   [200001, 5]
+  //   [function(item){ return item.id === 200001}, function(item){ return 10; }, '测试物品1','10']
   // ]
   let container = this[type];
 
@@ -540,11 +564,18 @@ function isEnoughInPackage(list, type = '$package'){
 
     item = this.getList(type, opt[0]);
     
-    if(!item || (item.num || 1) < opt[1]){
+    let num = (()=>{
+      if(typeof opt[1] === 'function'){
+        return opt[1].call(this);
+      }
+      return opt[1];
+    })();
+
+    if(!item || (item.num || 1) < num){
       return false;
     }
   }
-
+  
   return true;
 }
 

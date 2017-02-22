@@ -1,6 +1,12 @@
   *{
     -webkit-box-sizing: border-box;
     user-select: none;
+    list-style: none;
+  }
+
+  ul{
+    margin:0px;
+    padding: 0px;
   }
 
   *::-webkit-scrollbar{
@@ -20,7 +26,6 @@
     margin: 0px;
   }
 
-
 .btn{
   display: inline-block;
   text-align: center;
@@ -39,15 +44,23 @@
   color: white;
   transition:all 0.3s ease-in-out;
 }
-/*.btn:active{
-  background: #6b15a1;
-  color: white;
-}*/
 
-/*.btn-info{
-  border-color: #1bc981;
-  color: #1bc981;
-}*/
+.btn.disabled, .btn.disabled:hover{
+  color: gray;
+  border-color: gray;
+  background: none;
+  cursor: no-drop;
+}
+
+.btn.red{
+  color: red;
+  border-color: red;
+}
+
+.btn.red:hover{
+  background: red;
+  color: white;
+}
 
 .m-t-10{
   margin-top: 10px;

@@ -7,7 +7,7 @@
     </div><!--
 
  --><div class="right">
-
+      <blueprint />
     </div>
 
   </div>
@@ -16,11 +16,13 @@
 <script>
 
 import GameSmithyIntensify from './game-smithy-intensify.vue';
+import GameSmithyBlueprint from './game-smithy-blueprint.vue';
 
 
 export default {
   components: {
-    'intensify' : GameSmithyIntensify
+    'intensify' : GameSmithyIntensify,
+    'blueprint' : GameSmithyBlueprint
   },
   data(){
     return {
@@ -40,12 +42,13 @@ export default {
   .game-smithy{
     .left{
       display: inline-block;
+      vertical-align: top;
     }
     .right{
       display: inline-block;
+      vertical-align: top;
       width: 280px;
       height: 500px;
-      background: black;
     }
   }
 </style>
