@@ -8,6 +8,11 @@
         <span class="title">{{item[0]}}</span>
         <span class="num">{{hero.$resource[item[1]]}}</span>
       </div>
+      <component-item class="dustbin" position-index="$destory|0">
+        <span slot="item-name" class="item-name">
+          垃圾箱
+        </span>
+      </component-item>
       <div class="btn f-r" @click="sort">
         整理
       </div>
@@ -51,23 +56,13 @@ export default {
 </script>
 
 <style scoped lang="less">
- .base-btn{
-   display: inline-block;
-   float: right;
-   background: #5cb85c;
-   color: white;
-   padding: 2px 4px;
-   border-radius: 2px;
-   line-height: 12px;
-   cursor: pointer;
- }
-
  .game-package{
+   margin-top: 10px;
    padding: 5px;
    height: 270px;
    width: 520px;
    .block-name{
-     margin-left: 8px;
+     margin: 2px 8px 0px 8px;
      background: rgba(0,0,0,0.7);
      border-radius: 2px;
      color: white;

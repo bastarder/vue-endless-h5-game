@@ -67,7 +67,7 @@ export default {
     color:white;
     position: relative;
     box-shadow: 0px 0px 170px red inset;
-    animation: fire 2s infinite;
+    // animation: fire 2s infinite;
     .title{
       display: inline-block;
       position: relative;

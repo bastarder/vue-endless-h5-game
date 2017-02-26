@@ -15,3 +15,13 @@
 .item-tool-tip-pover .dsc{
   color: gray;
 }
+
+.item-tool-tip-pover{
+  background: rgba(12, 4, 37, 0.8);
+  border-radius: 4px;
+  padding: 6px;
+  color: white;
+  text-shadow: black 1px 1px;
+  font-size: 10px;
+  z-index: 99;
+}

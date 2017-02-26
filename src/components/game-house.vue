@@ -47,7 +47,7 @@ export default {
    height: 230px;
    width: 100%;
    .block-name{
-     margin-left: 8px;
+     margin: 2px 12px 0px 8px;
      background: rgba(0,0,0,0.7);
      border-radius: 2px;
      color: white;

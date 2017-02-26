@@ -1,33 +1,42 @@
 <template>
   <div class="game-config">
-    音效: <range-select v-model="option.volumeEffectMusic" :min="0" :max="1"/>{{option.volumeEffectMusic}}
-    <br>
-    音乐: <range-select v-model="option.volumeBackgroundMusic" :min="0" :max="1"/>{{option.volumeBackgroundMusic}}
-    <br>
-    技能失败日志: <switch-button v-model="option.skillAvailableFightTip"/> {{option.skillAvailableFightTip}}
+    <div class="item">
+      <span>音效</span>
+      <range-select v-model="option.volumeEffectMusic" :min="0" :max="1"/>
+    </div>
+
+    <div class="item">
+      <span>音乐</span>
+      <range-select v-model="option.volumeBackgroundMusic" :min="0" :max="1"/>
+    </div>
+
+    <div class="item">
+      <span>技能日志</span>
+      <switch-button v-model="option.skillAvailableFightTip"/>
+    </div>
+
+    <div class="item skillHotKey">
+      <span>技能快捷键</span>
+      <template v-for="(key,index) in option.skillHotKey">
+        <hot-key-item class="hot-key" v-model.number="option.skillHotKey[index]"/>
+      </template>
+    </div>
+
+    <div class="item itemHotKey">
+      <span>物品快捷键</span>
+      <template v-for="(key,index) in option.itemHotKey">
+        <hot-key-item class="hot-key" v-model.number="option.itemHotKey[index]"/>
+      </template>
+    </div>
 
     <div class="tip" v-if="tip">
       {{tip}}
     </div>
 
-    <div class="skillHotKey">
-      技能快捷键:<br>
-      <template v-for="(key,index) in option.skillHotKey">
-        <hot-key-item v-model.number="option.skillHotKey[index]"/>
-      </template>
-      {{option.skillHotKey}}
-    </div>
-
-    <div class="itemHotKey">
-      物品快捷键:<br>
-      <template v-for="(key,index) in option.itemHotKey">
-        <hot-key-item v-model.number="option.itemHotKey[index]"/>
-      </template>
-      {{option.itemHotKey}}
-    </div>
-
     <a class="btn" @click="save">保存</a>
+
     <router-link class="btn" to="/">返回</router-link>
+
   </div>
 </template>
 
@@ -75,9 +84,27 @@ export default {
 
 <style scoped lang="less">
   .game-config{
-    padding: 30px;
-    height: 100%;
+    padding: 100px 210px;
     background: #252830;
     color: white;
+    .hot-key{
+      margin-right: 4px;
+    }
+    .item span:nth-child(1){
+      display: inline-block;
+      width: 100px;
+      text-align: center;
+      margin-right: 20px;
+    }
+    .item{
+      margin-bottom: 8px;
+    }
+    .tip{
+      text-align: center;
+    }
+    .btn{
+      width: 100px;
+      margin: 12px 40px;
+    }
   }
 </style>

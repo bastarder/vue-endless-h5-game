@@ -28,7 +28,7 @@ const CONSTANT = {
     $dmgDown     : '伤害减免',
     $critiDmg    : '暴击伤害',
   },
-  ITEM_LEVEL: ['white','springgreen','skyblue','violet','orange'],
+  ITEM_LEVEL: ['ghostwhite','springgreen','skyblue','violet','orange'],
 }
 
 export default CONSTANT

@@ -11,18 +11,19 @@ export default function(el, binding){
       item = binding.value;
       
   let event = {
-    mousemove :  function(){
+    mouseenter :  function(e){
 
-      event.mouseout();
+      event.mouseleave();
 
       let tip = document.createElement('div');
+      
+      let {right, top} = e.target.getBoundingClientRect();
 
       Object.assign(tip.style, {
         position : 'absolute',
-        left : `${window.event.clientX + 30}px`,
-        top : `${window.event.clientY + 30}px`
+        left : `${right}px`,
+        top : `${top}px`
       })
-
 
       Object.assign(tip, {
         className : tipClassName.slice(1),
@@ -57,7 +58,7 @@ export default function(el, binding){
             let record = {v}, i = v;
   
             if(k === '$status' || k === '$skills'){
-              return ['附加' + keyName[k], _.map(v, id => PGET(id).name).join(','), false, k.slice(1)];
+              return ['附加' + keyName[k], _.map(v, id => Vue.filter('itemKey')(id, 'name')).join(','), false, k.slice(1)];
             }
 
             if(Object.prototype.toString.call(v) === '[object Array]' && v[1] === 1 || v[1] === 3){
@@ -79,7 +80,7 @@ export default function(el, binding){
       }).$mount(tipClassName);
 
     },
-    mouseout : function(){
+    mouseleave : function(){
       let old = document.querySelector(tipClassName);
       // 移除已经存在的tip;
       if(old){

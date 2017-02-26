@@ -23,17 +23,6 @@ export default {
   components: {
     'intensify' : GameSmithyIntensify,
     'blueprint' : GameSmithyBlueprint
-  },
-  data(){
-    return {
-     
-    }
-  },
-  created(){
-    
-  },
-  methods:{
-
   }
 }
 </script>
@@ -49,6 +38,7 @@ export default {
       vertical-align: top;
       width: 280px;
       height: 500px;
+      padding: 10px 10px 10px 0px;
     }
   }
 </style>

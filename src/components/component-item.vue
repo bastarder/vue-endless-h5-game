@@ -1,16 +1,20 @@
 <template>
-  <div v-item-tool-tip="item" v-drop-item="this.dropData" class="component-item" @mousedown="mousedown($event)">
-    <div v-if="item">
-      <slot name="item-name"></slot>
-      <slot name="badges"></slot>
-      <span class="item-name" v-if="item.name">{{item.name}}</span>
-      <span class="badges" v-if="item.num">{{item.num}}</span>
-      <img class="badges" v-if="item.equipType > -1" :src="require(`static/equip-type-${item.equipType}.png`)" />
+  <div v-item-tool-tip="item" v-drop-item="dropData" class="component-item">
+    <div :style="{'color':gradeColor[item.grade || 0]}" v-if="item">
+      <slot name="item-name">
+        <span class="item-name" v-if="item.name">{{item.name}}</span>
+      </slot>
+      <slot name="badges">
+        <span class="badges" v-if="item.num">{{item.num}}</span>
+        <span class="badges equip" v-if="item.equipType > -1" >{{equipCname[item.equipType]}}</span>
+      </slot>
     </div>
     <div v-else class="blank">
-      <span class="item-name">
-        {{this.position.$equipments ? this.equipCname[this.index]: ''}}
-      </span>
+      <slot name="item-name">
+        <span class="item-name">
+          {{position.$equipments ? equipCname[index]: ''}}
+        </span>
+      </slot>
     </div>
   </div>
 </template>
@@ -32,6 +36,7 @@ export default {
   data () {
     return {
       equipCname : CONSTANT.EQUIP_ID,
+      gradeColor : CONSTANT.ITEM_LEVEL,
       itemData : null
     }
   },
@@ -52,40 +57,6 @@ export default {
     '$store.state.UPDATE' : function(){
        this.$forceUpdate();
      }
-  },
-  methods :{
-    mousedown (event){
-      // if(event.button !== 2){
-      //   return;
-      // }
-      // let right_click = document.oncontextmenu;
-      // document.oncontextmenu = () => false;
-      // setTimeout(()=>{
-      //   document.oncontextmenu = right_click
-      // },50);
-      // if(this.position.$equipments){
-      //   this.demount();
-      //   return;
-      // }
-      // let target = $(event.target);
-      // let dropdown = [];
-      // let times = 0;
-      // while(!dropdown.length){
-      //   times ++;
-      //   dropdown = target.find('.dropdown-menu.item-menu');
-      //   target = target.parent();
-      //   if(times > 10){
-      //     return;
-      //     console.warn('打开右键菜单失败,未找到菜单;',this.item,this.positionIndex);
-      //   }
-      // }
-      // dropdown.show();
-      // dropdown.css('top', event.clientY - 10)
-      // dropdown.css('left', event.clientX - 10)
-      // dropdown.on('mouseleave',function(){
-      //   $('.dropdown-menu.item-menu').hide();
-      // })
-    }
   }
 }
 </script>
@@ -116,24 +87,26 @@ export default {
         color: #cfd2da;
       }
    }
-
+ }
+ .component-item:hover{
+   box-shadow: 0px 0px 4px #eee inset;
  }
 
 
  .component-item .badges{
     position: absolute;
-    min-width: 20px;
+    width: 38px;
+    margin: 0px 3px;
+    border-top: 1px solid rgba(255,255,255,0.5);
     height: 16px;
     line-height: 16px;
     text-align: center;
     left: -1px;
     top: 27px;
-    border-radius: 0px 2px 0px;
-    // border: 1px solid gray;
     padding: 0px 2px;
-    color: #1997c6;
-    font-size: 10px;
-    font-weight: 200;
+    font-size: 12px;
+    transform: scale(0.75);
+    color: aquamarine;
  }
 
  .component-item .item-name{
@@ -141,28 +114,15 @@ export default {
    transform: scale(0.75);
    letter-spacing: 2px;
    font-size: 10px;
-   color: brown;
    cursor: pointer;
    text-align: center;
    width: 100%;
  }
 
- .dropdown-menu.item-menu{
-   border-radius: 0px;
-   border-color: #eee;
- }
-
- .item-tool-tip-pover{
-   background: rgba(12, 4, 37, 0.8);
-   border-radius: 4px;
-   padding: 6px;
-   color: white;
-   text-shadow: black 1px 1px;
-   font-size: 10px;
-   z-index: 99;
- }
-
-  
-
-
+  .dustbin{
+    height: 15px;
+    .blank{
+      line-height: 14px;
+    }
+  }
 </style>

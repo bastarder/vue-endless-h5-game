@@ -2,6 +2,7 @@ import Vue from 'vue'
 import CONSTANT from '../data/constant'
 import PGET from '../js/public-static-get'
 import store from '../store';
+import dragDrop from '../js/drag-drop';
 
 export default function (el, binding){
 
@@ -19,7 +20,7 @@ export default function (el, binding){
       if(this.position === '$intensify'){
         return store.state.SmithyStore.intensifyItem;
       }else{
-        return hero[this.position][this.index];
+        return hero && hero[this.position] && hero[this.position][this.index];
       }
     })();
 
@@ -59,50 +60,15 @@ export default function (el, binding){
     drop (event){
       event.preventDefault();
 
-      let from = new moveClass(event.dataTransfer.getData("item-drop-data")),
-          to = new moveClass(position);   
-      
-      // 如果放置点跟 出发点相同 则不做操作;
-      if(from.position === to.position && from.index === to.index){
-        return ;
-      }
+      dragDrop(
+        new moveClass(event.dataTransfer.getData("item-drop-data")),
+        new moveClass(position), 
+        hero
+      );
 
-      // 如果放置点是装备栏 那么必定为 装备;
-      if(to.position === '$equipments'){
-        // 如果装备部位不同 则取消操作;
-        if(from.item.equipType === to.index){
-          hero.equip(from.item, from.index, from.position);
-        }
-        return ;
-      }
-
-      // 如果出发点是装备栏 那么必定为卸载 或者装备;
-      if(from.position === '$equipments'){
-        if(to.item){
-          if(to.item.equipType === from.index){
-            hero.equip(to.item, to.index, to.position);
-          }
-          return ;
-        }
-      }
-
-      // 叠加;
-      if(from.item && to.item && (from.item.id === to.item.id) && from.item.pile && to.item.pile){
-        to.item.num += from.item.num;
-        from.cls();
-        // 考虑到可能会加入物品切分功能 所以暂时不用下面的功能;
-        // hero.getItem([[from.item.id,from.item.num]], true, to.position);
-        store.commit('UPDATE');
-        return ;
-      }
-
-      // 交换;
-      let T = from.item;
-      from.set(to.item);
-      to.set(T);
       hero.updateAttribute();
+
       store.commit('UPDATE');
-      console.info('[Move Item] From',from,'To',to);
 
     }
   }

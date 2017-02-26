@@ -14,30 +14,41 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/login',
+    name: 'login',
     component: GameLogin
   },{ 
     path: '/', 
+    name: 'home',
     component: GameHome
   },{ 
     path: '/fight', 
+    name: 'fight',
     component: GameFight
   },{
     path: '/map',
+    name: 'map',
     component: GameMap
   },{
     path: '/map-active',
+    name: 'mapActive',
     component: GameMapActive
   },{
     path: '/config',
+    name: 'config',
     component: GameConfig
   },{
     path: '/smithy',
+    name: 'smithy',
     component: GameSmithy
   }
 ]
 
 const router = new VueRouter({
-  routes 
+  routes ,
 })
+
+router.beforeEach((to, from, next) => {
+  next();
+});
 
 export default router;

@@ -93,7 +93,9 @@
   }
 
   .Monster{
-    background: #d44950;
+    // background: url('../assets/fight.png') no-repeat;
+    // background-size: 100%;
+    background-color: #d44950;
   }
 
   .MapDialog{

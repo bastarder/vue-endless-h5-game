@@ -4,7 +4,9 @@
   <div class="container">
     <div class="main">
       <div class="router-view" id="router-view">
-        <router-view></router-view>
+        <transition enter-active-class="animated slow fadeIn">
+          <router-view></router-view>
+        </transition>
       </div>
     </div>
   </div>
@@ -61,5 +63,10 @@ export default {
    height: 500px;
    background: #252830;
    border-radius: 2px;
+ }
+ .router-view > div{
+   position: absolute;
+   height: 100%;
+   width: 100%;
  }
 </style>
