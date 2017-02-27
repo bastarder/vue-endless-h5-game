@@ -37,7 +37,6 @@ export default {
     return {
       equipCname : CONSTANT.EQUIP_ID,
       gradeColor : CONSTANT.ITEM_LEVEL,
-      itemData : null
     }
   },
   created (){

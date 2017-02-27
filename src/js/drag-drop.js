@@ -1,3 +1,5 @@
+import moveClass from '../js/different-item-move-class'
+
 const noting = function(from, to){
   if(from.position === to.position && from.index === to.index){
     return true;
@@ -6,45 +8,49 @@ const noting = function(from, to){
 
 const destory = function(from, to){
   if(to.position === '$destory'){
-    from.cls();
+    from.set();
     return true;
   }
 }
 
 const equip = function(from, to, hero){
   if(to.position === '$equipments'){
-    hero.equip(from.item, from.index, from.position);
+    hero.equip(from.get(), from.index, from.position);
     return true;
   }
 }
 
 const demount = function(from, to, hero){
   if(from.position === '$equipments'){
-    if(to.item && to.item.equipType === from.index){
-      hero.equip(to.item, to.index, to.position);
+    if(to.get() && to.get().equipType === from.index){
+      hero.equip(to.get(), to.index, to.position);
       return true;
     }
   }
 }
 
 const merge = function(from, to){
-  if(from.item && to.item && (from.item.id === to.item.id) && from.item.pile && to.item.pile){
-    to.item.num += from.item.num;
-    from.cls();
+  if(from.get() && to.get() && (from.get().id === to.get().id) && from.get().pile && to.get().pile){
+    to.get().num += from.get().num;
+    from.set();
     // 考虑到可能会加入物品切分功能 所以暂时不用下面的功能;
-    // hero.getItem([[from.item.id,from.item.num]], true, to.position);
+    // hero.getget()([[from.get().id,from.get().num]], true, to.position);
     return true;
   }
 }
 
 const change = function(from, to){
-  let T = from.item;
-  from.set(to.item);
+  let T = from.get();
+  from.set(to.get());
   to.set(T);
   return true;
 }
 
 const initDrop = function(from, to, hero){
+
+  from = new moveClass(from);
+
+  to = new moveClass(to);
 
   for(let event of [noting, destory, equip, demount, merge, change]){
 

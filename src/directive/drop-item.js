@@ -3,44 +3,11 @@ import CONSTANT from '../data/constant'
 import PGET from '../js/public-static-get'
 import store from '../store';
 import dragDrop from '../js/drag-drop';
+import moveClass from '../js/different-item-move-class'
 
 export default function (el, binding){
 
   let { hero, position } = binding.value;
-
-  let moveClass = function(str){
-
-    let opt = str.split('|')
-
-    this.position = opt[0];
-
-    this.index = Number(opt[1]);
-
-    this.item = (() => {
-      if(this.position === '$intensify'){
-        return store.state.SmithyStore.intensifyItem;
-      }else{
-        return hero && hero[this.position] && hero[this.position][this.index];
-      }
-    })();
-
-    this.set = function(obj){
-      if(this.position === '$intensify'){
-        store.commit('ChangeIntensifyItem', obj);
-      }else{
-        hero[this.position][this.index] = obj;
-      }
-    }
-
-    this.cls = function(){
-      if(this.position === '$intensify'){
-        store.commit('ChangeIntensifyItem', undefined);
-      }else{
-        hero[this.position][this.index] = undefined;
-      }
-    }
-
-  }
   
   let event = {
     dragend (event){
@@ -59,10 +26,10 @@ export default function (el, binding){
     },
     drop (event){
       event.preventDefault();
-
+      
       dragDrop(
-        new moveClass(event.dataTransfer.getData("item-drop-data")),
-        new moveClass(position), 
+        event.dataTransfer.getData("item-drop-data"), 
+        position, 
         hero
       );
 
@@ -70,14 +37,22 @@ export default function (el, binding){
 
       store.commit('UPDATE');
 
+      from = null;
+
+      to = null;
+
     }
   }
 
   // 如果是格子是空的则禁用拖动;
-  if(new moveClass(position).item){
-    el.setAttribute('draggable','true');
-  }else{
-    el.removeAttribute('draggable');
+  {
+    let block = new moveClass(position).get();
+    if(block){
+      el.setAttribute('draggable','true');
+    }else{
+      el.removeAttribute('draggable');
+    }
+    block = null;
   }
 
   // 创建事件,并销毁已销毁的事件;
