@@ -33,8 +33,6 @@ const merge = function(from, to){
   if(from.get() && to.get() && (from.get().id === to.get().id) && from.get().pile && to.get().pile){
     to.get().num += from.get().num;
     from.set();
-    // 考虑到可能会加入物品切分功能 所以暂时不用下面的功能;
-    // hero.getget()([[from.get().id,from.get().num]], true, to.position);
     return true;
   }
 }

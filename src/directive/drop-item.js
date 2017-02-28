@@ -26,7 +26,7 @@ export default function (el, binding){
     },
     drop (event){
       event.preventDefault();
-      
+
       dragDrop(
         event.dataTransfer.getData("item-drop-data"), 
         position, 
@@ -36,10 +36,6 @@ export default function (el, binding){
       hero.updateAttribute();
 
       store.commit('UPDATE');
-
-      from = null;
-
-      to = null;
 
     }
   }

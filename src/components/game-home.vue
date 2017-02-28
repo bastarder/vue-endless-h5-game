@@ -24,10 +24,10 @@ export default {
     if(!this.$store.state.HeroStore.hero){
       this.$router.push('/login');
     }
-    new GameAudio({
-      key : 'backgroundMusic',
-      loop : true,
-    });
+    // new GameAudio({
+    //   key : 'backgroundMusic',
+    //   loop : true,
+    // });
   }
 }
 

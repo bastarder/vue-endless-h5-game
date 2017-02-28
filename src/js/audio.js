@@ -16,7 +16,7 @@ let GameAudio = function (opt){
     autoplay : true,
     loop : false,
   },opt);
-  // this.start();
+  this.start();
 }
 
 GameAudio.prototype = {

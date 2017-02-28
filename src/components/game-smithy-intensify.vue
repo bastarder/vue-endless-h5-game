@@ -5,8 +5,10 @@
       <div class="arrow"></div>
     </div>
     <component-item class="item" :item="item" :position-index="'$intensify|0'"></component-item>
-    <a class="btn intensify red" @click="intensify">
-      强化
+    <a :class="['btn','intensify','red', intensifying? 'intensifying' : '']" @click="intensify">
+      <div class="loadingbar"></div>
+      <span v-show="!intensifying">强化</span>
+      <span v-show="intensifying">强化中...</span>
     </a>
     <div class="tip">{{msg}}</div>
   </div>
@@ -15,12 +17,14 @@
 <script>
 import Intensify from '../js/intensify';
 import { GetRange, GetRandom } from '../js/public-random-range';
+import GameAudio from '../js/audio'
 
 export default {
   data(){
     return {
       msg : '',
-      title : ''
+      title : '',
+      intensifying : false,
     }
   },
   computed :{
@@ -39,10 +43,24 @@ export default {
   },
   methods:{
     intensify : function(){
+
+      if(this.intensifying || !this.item){
+        return false;
+      }
+
+      new GameAudio({
+        src : require('static/audio/intensify-ing.ogg'),
+      });
+
+      this.intensifying = true;
       this.msg = null;
-      let result = Intensify(this.item);
-      this.msg = result.msg;
-      console.log(result);
+
+      setTimeout(()=>{
+        this.intensifying = false;
+        let result = Intensify(this.item);
+        this.msg = result.msg;
+      }, 4000)
+
     }
   }
 }
@@ -102,6 +120,21 @@ export default {
       height: 44px;
       line-height: 40px;
       width: 140px;
+      .loadingbar{
+        position: absolute;
+        height: 42px;
+        background: red;
+        width: 0px;
+        left: 0px;
+        top: 0px;
+        transition: width 0.3s;
+      }
+    }
+    .intensify.intensifying{
+      .loadingbar{
+        width: 138px;
+        transition: width 3.2s;
+      }
     }
     .tip{
       position: absolute;

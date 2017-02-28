@@ -1,5 +1,20 @@
 import store from '../store';
 import { GetRange, GetRandom } from './public-random-range';
+import GameAudio from './audio'
+
+let audio = function(){
+  let data = {
+    success : require('static/audio/intensify-success.ogg'),
+    fail    : require('static/audio/intensify-fail.ogg'),
+    zero    : require('static/audio/intensify-zero.ogg'),
+    broken  : require('static/audio/intensify-broken.ogg')
+  }
+  return function(key){
+    new GameAudio({
+      src : data[key]
+    });
+  }
+}();
 
 const excuteSuccess = {
   type : function(){
@@ -39,14 +54,18 @@ const failureHandle = function(item){
   let intensify = item.intensify || 0;
   if(intensify < 3){
     // noop
+    audio('fail');
   }else if(intensify < 8){
     // 退级 1-3之间;
+    audio('fail');
     intensify -= GetRange(1,2);
     item.intensify = Math.min(intensify, 3);
   }else if(intensify < 10){
     item.intensify = 0;
+    audio('zero');
   }else{
     // 摧毁
+    audio('broken');
     store.commit('ChangeIntensifyItem', null);
   }
   return item;
@@ -97,6 +116,7 @@ const Intensify = function(item){
   for(let key in validate){
     let re = excuteSuccess[key].apply(item, validate[key]);
     if(re){
+      audio('fail');
       return re;
     }
   }
@@ -109,9 +129,10 @@ const Intensify = function(item){
       msg : "强化失败!"
     })
   }else{
+    audio('success');
     item.intensify ? (item.intensify++) : (item.intensify = 1);
     Object.assign(result, {
-      success: false,
+      success: true,
       msg : "强化成功!"
     })
   }

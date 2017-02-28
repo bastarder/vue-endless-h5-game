@@ -169,10 +169,6 @@ const MapDialog = function(event, callback){
 
 }
 
-// setTimeout(function(){
-//   MapDialog(PGET(7000001))
-// },100)
-
 const MapFight = function(opt){
 
   let data = {
