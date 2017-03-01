@@ -144,8 +144,7 @@
       },
       end(win){
         // 清空战斗参数;
-        this.$store.state.FightScopeParm.monsters = null;
-
+        this.$store.state.FightStore.monsters = null;
         // 如果英雄死亡,则 清空地图信息 返回主界面;
         if(!win){
           this.$store.state.MapStore.map = null;

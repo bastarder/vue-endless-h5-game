@@ -29,7 +29,7 @@
       <div class="right">
         <div :class="['attr', i > 5 ? 'last' : '']" v-for="(key,i) in this.infoKeyList">
           <span class="name">{{key | heroAttrKey}}</span>
-          <span class="value">{{hero.$r[key]}}</span>
+          <span class="value">{{hero.$r[key].toFixed(1)}}</span>
         </div>
       </div>
     </div>

@@ -214,8 +214,9 @@ let Equipment = [
       '武器'
     ],
     equip : {
+      $con: 100,
       $atk: 70,
-      $critical    : 20,
+      $critical  : 20,
       $status : [2000003],
     },
     dsc : '流传在世间,创世神的武器'

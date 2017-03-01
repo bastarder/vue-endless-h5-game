@@ -22,7 +22,7 @@ var hero = new Unit(
     $skills  : [PGET(1000001),PGET(1000002),PGET(1000003),PGET(1000004)],
     $status  : [],
     $resource : {
-      gold: 99999,
+      gold: 999999999,
       gem : 899999
     },
     $blueprint: [

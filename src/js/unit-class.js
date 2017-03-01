@@ -10,6 +10,10 @@ import PGET from '../js/public-static-get';
 import coolTimeEvent from './cool-time-event';
 import Vue from 'vue';
 
+// prototype
+import updateAttribute from './hero/update-attribute'
+
+
 
 function Unit(obj = {}){
   this.id = 1000 + (Math.random()* 1000).toFixed(0)  // 编号
@@ -103,73 +107,6 @@ function endFight(){
   !this.$alive && this.reset();
 
   this.updateAttribute();
-}
-
-function updateAttribute(){
-
-  let hp_per = Math.min(this.$hp / (this.$r.$maxHp || this.$maxHp), 1);
-  let mp_per = Math.min(this.$mp / (this.$r.$maxMp || this.$maxMp), 1);
-
-  let promote = {
-    // 基础值 基础百分 高级值 高级百分
-    // ((默认 + 基础值) * (1 + 基础百分) + 高级值) * (1 +  高级百分)
-    $maxHp       : [0,0,0,0],
-    $maxMp       : [0,0,0,0],
-    $atk         : [0,0,0,0],
-    $def         : [0,0,0,0],
-    $str         : [0,0,0,0],
-    $dex         : [0,0,0,0],
-    $con         : [0,0,0,0],
-    $int         : [0,0,0,0],
-    $critical    : [0,0,0,0],
-    $dodge       : [0,0,0,0],
-    $coolTimePer : [0,0,0,0],
-    $critiDmg    : [0,0,0,0],
-    $dmgDown : [0,0],
-  }
-
-  let data = (this.$equipments || []).concat(this.$status || []);
-
-  for(let item of data){
-    
-    if(!item){
-      continue;
-    }
-
-    let opt = item.equip || item.powerUp;
-
-    for(let key in opt){
-
-      let v = opt[key];
-
-      if(!promote[key]){
-        continue;
-      }
-
-      let index = 0,up = v;
-
-      if(v instanceof Array){
-        index = v[1];
-        up = v[0];
-      }
-
-      promote[key][index] += up;
-    }
-
-  };
-
-  for(let key in promote){
-    let v = promote[key];
-    if(key === '$dmgDown'){
-      this.$r[key] = v;
-      continue ;
-    }
-    this.$r[key] = Math.floor(((this[key] + v[0]) * (1 + v[1] / 100) + v[2]) * (1 + v[3] / 100));
-  }
-
-  this.$hp = Math.floor(hp_per * this.$r.$maxHp) || 0;
-  this.$mp = Math.floor(mp_per * this.$r.$maxMp) || 0;
-
 }
 
 function changeMp(value) {

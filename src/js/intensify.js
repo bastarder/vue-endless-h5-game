@@ -58,7 +58,7 @@ const failureHandle = function(item){
   }else if(intensify < 8){
     // 退级 1-3之间;
     audio('fail');
-    intensify -= GetRange(1,2);
+    intensify -= GetRange([1,2]);
     item.intensify = Math.min(intensify, 3);
   }else if(intensify < 10){
     item.intensify = 0;
