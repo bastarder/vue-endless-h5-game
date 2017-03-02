@@ -1,10 +1,16 @@
+import store from '../store';
+
 const coolTimeEvent = function(currentCoolTime){
+
+  let hero = store.state.HeroStore.hero;
+
+  currentCoolTime = Math.max(1000, (1 - hero.$r.$coolTimePer / 100) * (currentCoolTime || this.defaultTime));
 
   this.coolTimeTimer && clearInterval(this.coolTimeTimer);
 
-  this.coolTime = currentCoolTime || this.defaultTime;
+  this.coolTime = currentCoolTime;
 
-  this.currentCoolTime = currentCoolTime || this.defaultTime;
+  this.currentCoolTime = currentCoolTime;
 
   this.coolTimeTimer = setInterval( () => {
     this.coolTime -= 30;

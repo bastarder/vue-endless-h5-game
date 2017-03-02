@@ -55,6 +55,7 @@ let Equipment = [
     ],
     equip : {
       $atk: 5,
+      $coolTimePer: 50,
       $skills : [1000004],
       $status : [2000001],
       $maxHp : [-10,1],

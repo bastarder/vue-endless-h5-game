@@ -1,11 +1,5 @@
 export default function updateAttribute(){
 
-  // 基础属性计算;
-  // 强化属性计算;
-  // 同步HP MP;
-
-  // handelAttr(hero);
-
   // 记录当前血量,魔量百分比;
   let hp_per = Math.min(this.$hp / (this.$r.$maxHp || this.$maxHp), 1);
   let mp_per = Math.min(this.$mp / (this.$r.$maxMp || this.$maxMp), 1);
@@ -25,7 +19,7 @@ export default function updateAttribute(){
     $dodge       : [0,0,0,0],    // 闪避几率    90 => 闪避率90%
     $coolTimePer : [0,0,0,0],    // 冷却时间减少 10 => 冷却时间减少10%
     $critiDmg    : [0,0,0,0],    // 暴击伤害倍数 1.5 => 1.5倍
-    $dmgDown : [0,0],            // 伤害减少 [5,10], 免伤 5 + 10%
+    $dmgDown     : [0,0],        // 伤害减少 [5,10], 免伤 5 + 10%
   }
 
   let data = (this.$equipments || []).concat(this.$status || []);
