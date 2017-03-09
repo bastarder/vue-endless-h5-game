@@ -11,6 +11,7 @@ import Vuex from 'vuex'
 import router from './router'
 import filter from './filter'
 import store from './store'
+import axios from 'axios'
 
 // components
 import App from './components/App.vue'
@@ -29,8 +30,19 @@ Vue.component('game-skill-item', GameSkillItem)
 Vue.component('game-state-item', GameStateItem)
 Vue.component('component-item', ComponentItem)
 
+Vue.config.errorHandler = function (err, vm) {
+  console.error(err,vm);
+  router.replace('/login');
+}
+
+Object.assign(axios.defaults,{
+  baseURL : 'http://127.0.0.1:8000',
+})
+
 const app = new Vue({
   store,
   router,
   template: `<App/>`
 }).$mount('#app')
+
+

@@ -1,7 +1,5 @@
 import store from '../store';
 
-let hero = store.state.HeroStore.hero;
-
 const eventList = {
   $intensify : {
     get: function(){
@@ -13,9 +11,11 @@ const eventList = {
   },
   $default : {
     get: function(){
+      let hero = store.state.HeroStore.hero;
       return hero && hero[this.position] && hero[this.position][this.index];
     },
     set: function(obj){
+      let hero = store.state.HeroStore.hero;
       hero[this.position][this.index] = obj;
     }
   }

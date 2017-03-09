@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import {login} from '../api/login'
+
 export default {
   data(){
     return {
@@ -25,6 +27,7 @@ export default {
       this.setPosition();
     }
     this.setPosition();
+    login();
   },
   methods:{
     setPosition : function(){

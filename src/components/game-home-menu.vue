@@ -22,7 +22,7 @@ export default {
       menu : [
         ['出征', 'Fight', '/map', require('static/menu-fight.png')],
         ['锻造', 'Equip', '/smithy', require('static/menu-forge.png')],
-        ['商店', 'Shop', '/hero-info', require('static/menu-shop.png')],
+        ['商店', 'Shop', '/shop', require('static/menu-shop.png')],
         ['设置', 'Option', '/config', require('static/menu-setting.png')],
       ]
     }

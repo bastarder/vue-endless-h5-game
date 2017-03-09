@@ -8,6 +8,7 @@ import GameMapActive from './components/game-map-active.vue'
 import GameLogin from './components/game-login.vue'
 import GameConfig from './components/game-config.vue'
 import GameSmithy from './components/game-smithy.vue'
+import GameShop from './components/game-shop.vue'
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,10 @@ const routes = [
     path: '/smithy',
     name: 'smithy',
     component: GameSmithy
+  },{
+    path: '/shop',
+    name: 'shop',
+    component: GameShop
   }
 ]
 
@@ -48,6 +53,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // if(from.path === to.path){
+  //   location.reload();
+  // }
   next();
 });
 

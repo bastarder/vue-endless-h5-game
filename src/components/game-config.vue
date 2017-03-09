@@ -33,6 +33,8 @@
       {{tip}}
     </div>
 
+    <a class="btn" @click="saveGame">保存游戏</a>
+
     <a class="btn" @click="save">保存</a>
 
     <router-link class="btn" to="/">返回</router-link>
@@ -44,6 +46,7 @@
 import GameSwitchButton from './game-switch-button.vue';
 import GameRangeSelect from './game-range-select.vue';
 import GameHotKeyItem from './game-hot-key-item.vue';
+import {SaveGame,LoadGame} from "../js/save-load"
 
 export default {
   components:{
@@ -59,8 +62,12 @@ export default {
   },
   created(){
     this.option = this.$store.state.ConfigStore;
+    // LoadGame();
   },
   methods:{
+    saveGame(){
+      SaveGame();
+    },
     save(){
       this.tip = "";
       // 检查热键冲突

@@ -20,7 +20,7 @@
           <div class="label">密码</div>
           <input type="text" class="password"/>
           <a class="goToRegister" @click="opt.isLoginType = false">注册账号</a>
-          <button class="btn login-btn" @click="testa">登录</button>
+          <button class="btn login-btn" @click="login">登录</button>
         </div>
       </transition>
 
@@ -41,46 +41,37 @@
 </template>
 
 <script>
-import Unit from '../js/unit-class'
-import MAP_TABLE from '../data/map-data'
-
-import MONSTER_DATA from '../data/monster-data';
-import SKILL_TABLE from "../data/skill-data";
-import STATE_TABLE from "../data/state-data";
-import {ITEM_TABLE} from '../data/item-data';
-import PGET from '../js/public-static-get';
-
-let test1 = PGET(3000001);
-test1.num = 10;
-let test2 = PGET(3000002);
-test2.num = 5;
-
-var hero = new Unit(
-  {
-    $showName : 'Bastarder',
-    $type    : 'Hero',
-    $skills  : [_.cloneDeep(SKILL_TABLE[0]),_.cloneDeep(SKILL_TABLE[1]),_.cloneDeep(SKILL_TABLE[2]),_.cloneDeep(SKILL_TABLE[3])],
-    $status  : [],
-    $package : _.cloneDeep(ITEM_TABLE).slice(2).concat([test1,test2]).concat(new Array(26))
-  }
-);
-
+import {LoadGame} from "../js/save-load"
 
 export default {
   data(){
     return {
       opt:{
         isLoginType : true,
-      },
-      test : 22,
-      test2 : false,
+      }
+    }
+  },
+  created(){
+    let isLogin = false;
+    if(isLogin){
+      LoadGame();
+      this.$router.push('/');
     }
   },
   methods:{
-    testa(){
-      console.log(123);
-      this.$store.state.HeroStore.hero = hero;
-      this.$router.push('/');
+    login(){
+      let loginPromise = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            success: true
+          })
+        }, 500);
+      })
+
+      loginPromise.then((data)=>{
+        LoadGame();
+        this.$router.push('/');
+      })
     }
   }
 }

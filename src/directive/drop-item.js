@@ -43,6 +43,7 @@ export default function (el, binding){
   // 如果是格子是空的则禁用拖动;
   {
     let block = new moveClass(position).get();
+
     if(block){
       el.setAttribute('draggable','true');
     }else{
