@@ -31,7 +31,7 @@ Vue.component('game-state-item', GameStateItem)
 Vue.component('component-item', ComponentItem)
 
 Vue.config.errorHandler = function (err, vm) {
-  console.error(err,vm);
+  console.warn(err,vm);
   router.replace('/login');
 }
 

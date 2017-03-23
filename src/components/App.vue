@@ -27,7 +27,7 @@ export default {
       this.setPosition();
     }
     this.setPosition();
-    login();
+    // login();
   },
   methods:{
     setPosition : function(){

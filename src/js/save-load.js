@@ -110,7 +110,7 @@ const LoadGame = function(){
       $package : [test1,test2].concat(_.cloneDeep(ITEM_TABLE).slice(2)).concat(new Array(26))
     }
   );
-  Vue.set(store.state.HeroStore,'hero', new Unit(hero));
+  Vue.set(store.state.HeroStore,'hero', hero);
 
 }
 
