@@ -48,9 +48,9 @@ export default {
         return false;
       }
 
-      new GameAudio({
-        src : require('static/audio/intensify-ing.ogg'),
-      });
+      // new GameAudio({
+      //   src : require('static/audio/intensify-ing.ogg'),
+      // });
 
       this.intensifying = true;
       this.msg = null;

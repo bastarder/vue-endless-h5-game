@@ -3,12 +3,19 @@
   <head>
     <meta charset="UTF-8"/>  
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <style>
+      body{background:#333;}
+      .aboutMe{display:none;}
+      .game-main-loading{color:white;}
+    </style>
   </head>
   <body>
+    <ul class="aboutMe">
+      <li><a target="_target" href="http://www.bastarder.cn:9000/">关于作者</a></li>
+      <li><a target="_target" href="http://github.com/bastarder/vue-endless-h5-game">Github</a></li>
+    </ul>
+    <div class="game-main-loading">游戏加载中...服务器渣...第一次进入游戏,字体文件可能加载较慢...</div>
     <div id="app"></div>
-    <a class="aboutMe" target="_target" href="http://www.bastarder.cn:9000/">
-      关于作者
-    </a>
     <script src="dist/build.js"></script>
   </body>
 </html>

@@ -1,9 +1,11 @@
 import store from '../store';
 
-let dist = {
-  'backgroundMusic': require('static/audio/bgm.wav'),
-  'fight-attack' : require('static/audio/fight-attack.wav'),
-}
+// let dist = {
+//   'backgroundMusic': require('static/audio/bgm.wav'),
+//   'fight-attack' : require('static/audio/fight-attack.wav'),
+// }
+
+let dist = {};
 
 let AudioList = [];
 window.AudioList = AudioList;
@@ -16,7 +18,7 @@ let GameAudio = function (opt){
     autoplay : true,
     loop : false,
   },opt);
-  this.start();
+  // this.start();
 }
 
 GameAudio.prototype = {

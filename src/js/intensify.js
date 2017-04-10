@@ -4,10 +4,10 @@ import GameAudio from './audio'
 
 let audio = function(){
   let data = {
-    success : require('static/audio/intensify-success.ogg'),
-    fail    : require('static/audio/intensify-fail.ogg'),
-    zero    : require('static/audio/intensify-zero.ogg'),
-    broken  : require('static/audio/intensify-broken.ogg')
+    // success : require('static/audio/intensify-success.ogg'),
+    // fail    : require('static/audio/intensify-fail.ogg'),
+    // zero    : require('static/audio/intensify-zero.ogg'),
+    // broken  : require('static/audio/intensify-broken.ogg')
   }
   return function(key){
     new GameAudio({
