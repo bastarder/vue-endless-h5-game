@@ -51,6 +51,7 @@ actionClass.prototype.init = function(){
   let [v,per] = s.attacker.$r.$dmgDown;
   let atk = ((this.attacker_beAttack || 0) - v - s.attacker.$r.$def) * (1 - per / 100);
   atk = atk > 0 ? atk : 0;
+  console.log(this)
   this.attacker_changeHp = (this.attacker_beCure || 0) - atk - s.holyDmga;
 
   [v,per] = s.enemy.$r.$dmgDown;

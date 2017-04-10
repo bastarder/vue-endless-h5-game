@@ -35,7 +35,9 @@
 
     <a class="btn" @click="saveGame">保存游戏</a>
 
-    <a class="btn" @click="save">保存</a>
+    <a class="btn" @click="save">保存配置</a>
+
+    <a class="btn" @click="reset">重置游戏</a>
 
     <router-link class="btn" to="/">返回</router-link>
 
@@ -67,6 +69,10 @@ export default {
   methods:{
     saveGame(){
       SaveGame();
+    },
+    reset(){
+      localStorage.setItem('ENDLESS_QWHIDHIASDYQWD','');
+      location.reload();
     },
     save(){
       this.tip = "";

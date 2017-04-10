@@ -1,7 +1,9 @@
+import { GetRange, GetRandom } from '../js/public-random-range';
+
 const SKILL_TABLE = [
   {
     id: 1000001,
-    name: '普通攻击',
+    name: '斩',
     dsc : '简简单单的一击',
     label : ['普攻','伤害'],
     defaultTime : 1000,
@@ -11,9 +13,9 @@ const SKILL_TABLE = [
   },
   {
     id: 1000002,
-    name: '净化',
-    dsc : '净化中毒效果~',
-    label : ['测试2','伤害2'],
+    name: '魔',
+    dsc : '造成双倍伤害,并恢复等同于伤害的血量,有一定几率使对方进入中毒状态.',
+    label : ['吸血','加倍'],
     defaultTime : 3000,
     currentCoolTime : 3000,
     coolTime : 0,
@@ -28,38 +30,60 @@ const SKILL_TABLE = [
       }
     ],
     eventList: [
-      `[11]attacker@changeState@[{ id: 2000001, state: "REMOVE" }]`
+      `[11]
+          enemy@beAttack@ attacker.$r.$atk * 2;
+      `,{
+        width: 11,
+        eventStr : function(action, attacker, enemy){
+          if(GetRandom(100)){
+            action.change('enemy_changeState',[
+              { id: 2000001, state: "ADD" }
+            ])
+          }
+        }
+      },{
+        width: 91,
+        eventStr : function(action, attacker, enemy){
+          console.log(action)
+          action.change('attacker_beCure', action.enemy_beAttack)
+        }
+      },
     ]
+    // eventList: [
+    //   `[11]attacker@changeState@[{ id: 2000001, state: "REMOVE" }]`
+    // ]
   },
   {
     id: 1000003,
-    name: '毒物',
-    dsc : '是敌人进入中毒状态!',
-    label : ['测试2'],
+    name: '圣光术',
+    dsc : '恢复大量生命!',
+    label : ['恢复'],
     defaultTime : 5000,
     restrict : [
       "[attacker]{$mp} >= {105}",
     ],
     eventList: [
       `[11]
-          enemy@changeState@[{ id: 2000001, state: "ADD" }];
-          enemy@changeMp@-105
+          attacker@changeMp@-15;
+          attacker@beCure@ attacker.$r.$maxHp * 0.5
       `
     ]
   },
   {
     id: 1000004,
-    name: '破釜沉舟',
-    logo: '盾',
-    dsc : '造成自身攻击*2的伤害,但是会自身受到自身攻击*0.3的伤害',
+    name: '净',
+    dsc : '净化负面状态!',
     label : ['测试2','伤害2'],
     defaultTime : 10000,
     eventList: [
-      `[11]
-          enemy@beAttack@ attacker.$r.$atk * 2;
-          attacker@beAttack@ attacker.$r.$atk * 0.3
-      `
+      `[11]attacker@changeState@[{ id: 2000001, state: "REMOVE" }]`
     ]
+    // eventList: [
+    //   `[11]
+    //       enemy@beAttack@ attacker.$r.$atk * 2;
+    //       attacker@beAttack@ attacker.$r.$atk * 0.3
+    //   `
+    // ]
   },
   {
     id: 1000005,

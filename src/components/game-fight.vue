@@ -20,11 +20,15 @@
       class="monster rubberBand animated">
     </game-fight-unit-info>
 
-    <div>
-      <a type="button" class="btn" @click="StartFight" v-if="this.btn.start">开始战斗</a>
-      <a type="button" class="btn" @click="NextMonster" v-if="this.btn.next">继续战斗</a>
-      <a type="button" class="btn" @click="end(true)" v-if="this.btn.end">结束战斗</a>
-      <a type="button" class="btn" @click="test">测试战果</a>
+    <div class="fight-menu">
+      <a type="button" class="btn red" @click="StartFight" v-if="this.btn.start">开始战斗</a>
+      <a type="button" class="btn red" @click="NextMonster" v-if="this.btn.next">继续战斗</a>
+      <a type="button" class="btn red" @click="end(true)" v-if="this.btn.end">结束战斗</a>
+      <!--<a type="button" class="btn" @click="test">测试战果</a>-->
+    </div>
+
+    <div class="test-tip">
+      提示 : 默认攻击键为Q,W,E,R
     </div>
 
   </div>
@@ -177,6 +181,24 @@
       width: 360px;
       padding: 0px 4px;
       vertical-align: top;
+    }
+    .fight-menu{
+      position: absolute;
+      top:50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      background: rgba(0,0,0,0.6);
+      .btn{
+        display: inline-block;
+        width: 200px;
+        height: 50px;
+        line-height: 48px;
+      }
+    }
+    .test-tip{
+      color: white;
+      position: absolute;
+      bottom: 0;
     }
  }
 </style>

@@ -171,4 +171,12 @@
   background: #1997c6;
 }
 
-
+.aboutMe{
+  position: fixed;
+  background: #1bc98e;
+  color: white;
+  top: 0;
+  padding: 8px 20px;
+  cursor: pointer;
+  text-decoration: none;
+}

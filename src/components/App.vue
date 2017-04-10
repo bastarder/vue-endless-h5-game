@@ -1,8 +1,8 @@
 <template>
-  <!--<div class="container" :style="{'margin-top':`${margin}px`,'transform': `scale(${scale})`}">
-    <div class="main">-->
-  <div class="container">
+  <div class="container" :style="{'margin-top':`${margin}px`,'transform': `scale(${scale})`}">
     <div class="main">
+  <!--<div class="container">
+    <div class="main">-->
       <div class="router-view" id="router-view">
         <transition enter-active-class="animated slow fadeIn">
           <router-view></router-view>
@@ -14,6 +14,7 @@
 
 <script>
 import {login} from '../api/login'
+import {LoadGame} from "../js/save-load"
 
 export default {
   data(){
@@ -27,7 +28,7 @@ export default {
       this.setPosition();
     }
     this.setPosition();
-    // login();
+    LoadGame();
   },
   methods:{
     setPosition : function(){

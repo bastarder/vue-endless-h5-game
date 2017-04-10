@@ -17,7 +17,7 @@ const STATE_TABLE = [
       var per = 1;
       var current = 1;
       self.stateEventTimer = setInterval(function(){
-        hero.changeHp(-30);
+        hero.changeHp(-10);
         current +=1;
         if(current > 5){
           clearInterval(self.stateEventTimer);

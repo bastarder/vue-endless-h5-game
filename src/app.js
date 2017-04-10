@@ -11,7 +11,7 @@ import Vuex from 'vuex'
 import router from './router'
 import filter from './filter'
 import store from './store'
-import axios from 'axios'
+// import axios from 'axios'
 
 // components
 import App from './components/App.vue'
@@ -32,12 +32,13 @@ Vue.component('component-item', ComponentItem)
 
 Vue.config.errorHandler = function (err, vm) {
   console.warn(err,vm);
-  router.replace('/login');
+  router.replace('/');
+  // router.replace('/login');
 }
 
-Object.assign(axios.defaults,{
-  baseURL : 'http://127.0.0.1:8000',
-})
+// Object.assign(axios.defaults,{
+//   baseURL : 'http://127.0.0.1:8000',
+// })
 
 const app = new Vue({
   store,

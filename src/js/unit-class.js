@@ -111,7 +111,7 @@ function endFight(){
 
 function changeMp(value) {
 
-  let v = parseInt(v);
+  let v = parseInt(value);
 
   if(!v){
     return false;

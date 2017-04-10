@@ -30,6 +30,10 @@ const Fight = (attacker, enemy, skill) => {
   // 拼接父技能;
   _.each(event, skill => {
     _.each(skill.eventList, item => {
+      if(item.width){
+        eventList.push(item);
+        return;
+      }
       eventList.push({
         father   : skill,
         eventStr : item,
