@@ -6,7 +6,30 @@
     <style>
       body{background:#333;}
       .aboutMe{display:none;}
-      .game-main-loading{color:white;}
+      .game-main-loading{
+        color:white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 500px;
+        height: 120px;
+        margin: auto;
+        font-weight: 200;
+        line-height: 30px;
+        text-align: center;
+        font-size: 24px;
+      }
+      #ie-warn{
+        color: black;
+        background: #faebd7;
+        margin-top: 8px;
+        font-size: 16px;
+      }
+      #ie-warn a{
+        text-decoration: none;
+      }
     </style>
   </head>
   <body>
@@ -14,7 +37,16 @@
       <li><a target="_target" href="http://www.bastarder.cn:9000/">关于作者</a></li>
       <li><a target="_target" href="http://github.com/bastarder/vue-endless-h5-game">Github</a></li>
     </ul>
-    <div class="game-main-loading">游戏加载中...服务器渣...第一次进入游戏,字体文件可能加载较慢...</div>
+    <div class="game-main-loading">
+      <div> 游 戏 加 载 中 ...</div>
+      <!--[if IE]>
+      <div id="ie-warn">
+        <div>发现您正在使用IE内核浏览器,请下载 <a href="http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html">谷歌浏览器</a> 以确保游戏正确加载!</div>
+        <a target="_target" href="http://www.bastarder.cn:9000/">关于作者</a>
+        <a target="_target" href="http://github.com/bastarder/vue-endless-h5-game">游戏Github</a>
+      </div>
+      <![endif]-->
+    </div>
     <div id="app"></div>
     <script src="dist/build.js"></script>
   </body>

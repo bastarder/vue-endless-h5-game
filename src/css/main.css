@@ -24,6 +24,7 @@
     font-family: mainfont;
     padding: 0px;
     margin: 0px;
+    font-weight: 200;
   }
 
 .btn{
@@ -192,5 +193,5 @@
 }
 
 .game-main-loading{
-  display: none;
+  /*display: none;*/
 }

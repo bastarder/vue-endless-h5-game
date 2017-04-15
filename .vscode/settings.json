@@ -4,5 +4,5 @@
     "files.associations": {
     "*.vue": "vue"
     },
-    "vsicons.presets.angular": false
+    "vsicons.presets.angular": true
   }
