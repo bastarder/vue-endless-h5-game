@@ -1,7 +1,11 @@
   *{
-    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     user-select: none;
     list-style: none;
+    -ms-box-sizing: border-box; 	/* IE 9 */
+    -moz-box-sizing: border-box; 	/* Firefox */
+    -webkit-box-sizing: border-box; /* Safari 和 Chrome */
+    -o-box-sizing: border-box; 	/* Opera */
   }
 
   ul{
@@ -25,6 +29,10 @@
     padding: 0px;
     margin: 0px;
     font-weight: 200;
+    -ms-overflow-style: none;
+    -moz-overflow-style: none;
+    -webkit-overflow-style: none;
+    -o-overflow-style: none;
   }
 
 .btn{
@@ -193,5 +201,5 @@
 }
 
 .game-main-loading{
-  /*display: none;*/
+  display: none;
 }

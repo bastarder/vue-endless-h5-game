@@ -11,7 +11,7 @@ export default function (el, binding){
   
   let event = {
     dragend (event){
-      event.dataTransfer.clearData("item-drop-data");
+      event.dataTransfer.clearData("text");
       return false;
     },
     dragover (event){
@@ -19,8 +19,12 @@ export default function (el, binding){
       return true;
     },
     dragstart (event){
-      event.dataTransfer.setData("item-drop-data", position);
-      event.dataTransfer.setDragImage(!~event.target.className.indexOf("component-item") ? event.target.parentNode : event.target, 20, 20);
+      event.dataTransfer.setData("text", position);
+      try {
+        event.dataTransfer.setDragImage(!~event.target.className.indexOf("component-item") ? event.target.parentNode : event.target, 20, 20);
+      } catch (error) {
+        // pass
+      }
       let itemPover = document.querySelector('.item-tool-tip-pover');
       itemPover && itemPover.parentNode.removeChild(itemPover);
     },
@@ -28,7 +32,7 @@ export default function (el, binding){
       event.preventDefault();
 
       dragDrop(
-        event.dataTransfer.getData("item-drop-data"), 
+        event.dataTransfer.getData("text"), 
         position, 
         hero
       );

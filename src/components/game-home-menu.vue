@@ -42,6 +42,7 @@ export default {
       vertical-align: top;
       display: inline-block;
       height: 100%;
+      min-height: 220px;
       color: rgb(207, 210, 218);
       padding-right: 6px;
       overflow: hidden;

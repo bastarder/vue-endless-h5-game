@@ -194,6 +194,7 @@ export default {
       overflow: hidden;
       background: #1e2127;
       .map{
+        line-height: 0;
         z-index: 1;
         position: absolute;
         width: 800px;

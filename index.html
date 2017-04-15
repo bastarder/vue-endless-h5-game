@@ -39,15 +39,23 @@
     </ul>
     <div class="game-main-loading">
       <div> 游 戏 加 载 中 ...</div>
-      <!--[if IE]>
       <div id="ie-warn">
-        <div>发现您正在使用IE内核浏览器,请下载 <a href="http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html">谷歌浏览器</a> 以确保游戏正确加载!</div>
+        <!--[if !IE]>
+          <div>欢迎进入Endless,有你的世界更精彩!</div>
+        <![endif]-->
+        <!--[if gte IE 10]>
+          <div>发现您正在使用IE内核浏览器,请下载 <a href="http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html">谷歌浏览器</a> 来获得最佳游戏体验!</div>
+        <![endif]-->
+        <!--[if lt IE 10]>
+          <div>您使用的浏览器版本过低,请下载 <a href="http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html">谷歌浏览器</a> 来获得最佳游戏体验![游戏至少需要IE10或以上浏览器的支持]</div>
+        <![endif]-->
         <a target="_target" href="http://www.bastarder.cn:9000/">关于作者</a>
         <a target="_target" href="http://github.com/bastarder/vue-endless-h5-game">游戏Github</a>
       </div>
-      <![endif]-->
+ 
     </div>
     <div id="app"></div>
+    <script src="http://cdn.bootcss.com/babel-polyfill/7.0.0-alpha.7/polyfill.min.js"></script>
     <script src="dist/build.js"></script>
   </body>
 </html>

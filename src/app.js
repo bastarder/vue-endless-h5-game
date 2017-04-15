@@ -2,6 +2,9 @@
 require("./css/animate.css");
 require("./css/main.css");
 require("./css/map-dialog-modal.css");
+require("normalize.css");
+
+// require('babel-polyfill');
 
 // public js
 import public_function from './js/public-function.js';
