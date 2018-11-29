@@ -2,8 +2,6 @@
 
 > 一个用 Vue.js 开发的冒险类游戏;
 
-> 游戏Demo部署在: www.bastarder.cn
-
 ![image](https://github.com/bastarder/Endless/blob/master/game.gif)
 
 ## 项目安装&启动
